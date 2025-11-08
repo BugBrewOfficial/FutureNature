@@ -35,6 +35,12 @@ a {
   text-decoration: none;
 }
 
+/* Hide Next.js development indicator */
+#__next-build-watcher,
+nextjs-portal {
+  display: none !important;
+}
+
 @media (prefers-color-scheme: dark) {
   html {
     color-scheme: dark;
