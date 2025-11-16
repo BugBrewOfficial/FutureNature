@@ -1,9 +1,12 @@
+import { useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
+import AuthModal from "./AuthModal";
 
 export default function Navbar() {
   const router = useRouter();
+  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   
   return (
     <nav style={{
@@ -142,7 +145,9 @@ export default function Navbar() {
           
           <span style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
           
-          <button style={{
+          <button 
+            onClick={() => setIsAuthModalOpen(true)}
+            style={{
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
@@ -171,6 +176,9 @@ export default function Navbar() {
           </button>
         </div>
       </div>
+
+      {/* Auth Modal */}
+      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
     </nav>
   );
 }

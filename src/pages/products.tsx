@@ -126,30 +126,36 @@ export default function Products() {
         {/* Hero Section */}
         <div style={{
           backgroundImage: 'url(/Assets/product.png)',
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center center',
           backgroundRepeat: 'no-repeat',
           position: 'relative',
           overflow: 'hidden',
-          padding: '80px 84px',
+          padding: '160px 84px',
+          marginTop: '0px',
           marginBottom: '80px',
           width: '100%',
+          height: '600px',
+          display: 'flex',
+          alignItems: 'center'
         }}>
           <div style={{
             maxWidth: '1400px',
             margin: '0 auto',
+            width: '100%',
             position: 'relative',
             zIndex: 1
           }}>
             {/* Left Content */}
-            <div style={{ maxWidth: '600px' }}>
+            <div style={{ maxWidth: '700px' }}>
               <h1 style={{
-                fontSize: '56px',
+                fontSize: '64px',
                 fontWeight: '900',
                 color: 'white',
                 margin: '0',
-                lineHeight: '1.2',
-                textShadow: '2px 2px 8px rgba(0,0,0,0.3)'
+                lineHeight: '1.1',
+                textShadow: '3px 3px 10px rgba(0,0,0,0.3)',
+                letterSpacing: '2px'
               }}>
                 RAW HONEY &<br />HAND CRAFTED
               </h1>
@@ -169,13 +175,14 @@ export default function Products() {
             marginBottom: '50px'
           }}>
             <h2 style={{
-              fontSize: '16px',
-              fontWeight: '600',
+              fontSize: '42px',
+              fontWeight: '800',
               color: '#f59e0b',
               marginBottom: '10px',
-              letterSpacing: '1px'
+              letterSpacing: '2px',
+              textTransform: 'uppercase'
             }}>
-              🐝 OUR PRODUCTS 🐝
+              OUR PRODUCTS
             </h2>
           </div>
 
@@ -209,21 +216,22 @@ export default function Products() {
                 {/* Product Image */}
                 <div style={{
                   backgroundColor: '#f9fafb',
-                  padding: '40px',
                   display: 'flex',
                   justifyContent: 'center',
                   alignItems: 'center',
-                  height: '280px',
-                  position: 'relative'
+                  height: '320px',
+                  position: 'relative',
+                  overflow: 'hidden'
                 }}>
                   <Image
                     src={product.image}
                     alt={product.name}
-                    width={200}
-                    height={200}
+                    width={400}
+                    height={320}
                     style={{
-                      objectFit: 'contain',
-                      maxHeight: '100%'
+                      objectFit: 'cover',
+                      width: '100%',
+                      height: '100%'
                     }}
                   />
                 </div>
