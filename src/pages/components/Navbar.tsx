@@ -115,7 +115,7 @@ export default function Navbar() {
           alignItems: 'center',
           gap: '20px'
         }}>
-          <button style={{
+          <Link href="/cart" style={{
             display: 'flex',
             alignItems: 'center',
             gap: '12px',
@@ -126,7 +126,8 @@ export default function Navbar() {
             fontSize: '18px',
             fontWeight: '400',
             cursor: 'pointer',
-            transition: 'all 0.2s'
+            transition: 'all 0.2s',
+            textDecoration: 'none'
           }}>
             <div style={{
               display: 'flex',
@@ -141,7 +142,7 @@ export default function Navbar() {
               />
             </div>
             Cart
-          </button>
+          </Link>
           
           <span style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
           

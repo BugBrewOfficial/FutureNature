@@ -219,7 +219,7 @@ export default function WhatsAppBanner() {
             e.currentTarget.style.boxShadow = '0 4px 12px rgba(16, 185, 129, 0.3)';
           }}
           onClick={() => {
-            window.open('https://wa.me/', '_blank');
+            window.open('https://api.whatsapp.com/send/?phone=917418187578&text&type=phone_number&app_absent=0', '_blank');
           }}
           >
             Click here
