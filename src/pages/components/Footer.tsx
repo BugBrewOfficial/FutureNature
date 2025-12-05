@@ -23,7 +23,7 @@ export default function Footer() {
       <div style={{
         maxWidth: '1400px',
         margin: '0 auto',
-        padding: '0px 24px 30px',
+        padding: '60px 24px 30px',
         position: 'relative',
         zIndex: 1
       }}>
