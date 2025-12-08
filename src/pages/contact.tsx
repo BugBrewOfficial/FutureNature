@@ -6,7 +6,7 @@ import { useState } from "react";
 
 export default function Contact() {
   const [formData, setFormData] = useState({
-    nickName: "",
+    Name: "",
     email: "",
     message: ""
   });
@@ -23,7 +23,7 @@ export default function Contact() {
     e.preventDefault();
     console.log("Form submitted:", formData);
     // Add your form submission logic here
-    setFormData({ nickName: "", email: "", message: "" });
+    setFormData({ Name: "", email: "", message: "" });
   };
 
   return (

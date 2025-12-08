@@ -35,9 +35,9 @@ export default function Navbar() {
           <Image 
             src="/Assets/logo.png" 
             alt="FutureNature Logo" 
-            width={180} 
-            height={180}
-            style={{ objectFit: 'contain', marginBottom: '50px' }}
+            width={150} 
+            height={60}
+            style={{ objectFit: 'contain' }}
           />
         </Link>
 

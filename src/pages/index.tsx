@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
 import DailyDeals from "./components/DailyDeals";
 import WhatsAppBanner from "./components/WhatsAppBanner";
+import HoneyProcess from "./components/HoneyProcess";
 import Footer from "./components/Footer";
 import Tile from "./components/Tile";
 
@@ -120,6 +121,10 @@ export default function Home() {
           <Tile />
         </div>
       </div>
+
+      {/* Honey Process Timeline Section */}
+      <HoneyProcess />
+
       <Footer />
 
       {/* Back to Top Button */}
