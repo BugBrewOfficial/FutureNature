@@ -3,10 +3,82 @@ import Image from "next/image";
 import Link from "next/link";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
+import ShippingScreen from "./components/ShippingScreen";
+import Payment from "./components/Payment";
+import { useCart } from "./components/CartContext";
 import { useState } from "react";
 
 export default function Cart() {
-  const [cartItems, setCartItems] = useState<any[]>([]);
+  const { cart, removeFromCart, updateQuantity } = useCart();
+  const [showShipping, setShowShipping] = useState(false);
+  const [showPayment, setShowPayment] = useState(false);
+
+  // All products data matching products.tsx
+  const products: { [key: number]: { name: string; price: number; image: string; weight: string } } = {
+    1: { name: "Wild Honey", price: 850, image: "/Assets/Products/15.png", weight: "Half kg" },
+    2: { name: "Honey Comb", price: 900, image: "/Assets/Products/18.png", weight: "Half kg" },
+    3: { name: "Moringa Honey", price: 500, image: "/Assets/Products/11.png", weight: "Half kg" },
+    4: { name: "Panner Rose Gulkhand", price: 400, image: "/Assets/Products/3.png", weight: "250 gms" },
+    5: { name: "தேன் அத்தி", price: 300, image: "/Assets/Products/8.png", weight: "250 gms" },
+    6: { name: "Cavity Honey", price: 450, image: "/Assets/Products/2.png", weight: "Half kg" },
+    7: { name: "Country Cow Ghee", price: 600, image: "/Assets/Products/7.png", weight: "Half litre" },
+    8: { name: "Cavity Honey (750g)", price: 650, image: "/Assets/Products/10.png", weight: "750 grams" },
+    9: { name: "Moringa Honey (750g)", price: 750, image: "/Assets/Products/13.png", weight: "750 grams" },
+    10: { name: "Dryfruits with Honey (7 in 1)", price: 500, image: "/Assets/Products/16.png", weight: "Half kg" },
+    11: { name: "Forest Honey", price: 900, image: "/Assets/Products/4.png", weight: "Half kg" },
+    12: { name: "Forest Honey (750g)", price: 1350, image: "/Assets/Products/15.png", weight: "750 grams" },
+    13: { name: "Moringa Atta", price: 70, image: "/Assets/Products/9.png", weight: "250 gms" },
+    14: { name: "Stingless Bee Honey", price: 2500, image: "/Assets/Products/1.png", weight: "250 gms" },
+    15: { name: "Stingless Bee Honey (50g)", price: 500, image: "/Assets/Products/1.png", weight: "50 gms" },
+    16: { name: "உளுந்து உருண்டை", price: 400, image: "/Assets/Products/17.png", weight: "Half kg" }
+  };
+
+  // Calculate totals
+  const subtotal = cart.reduce((sum, item) => {
+    const product = products[item.id];
+    return sum + (product ? product.price * item.quantity : 0);
+  }, 0);
+
+  const salesTax = Math.round(subtotal * 0.09);
+  const total = subtotal + salesTax;
+
+  if (showPayment) {
+    return (
+      <>
+        <Head>
+          <title>Payment - FutureNature</title>
+          <meta name="description" content="Select payment method" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Navbar />
+        <Payment onClose={() => setShowPayment(false)} />
+        <Footer />
+      </>
+    );
+  }
+
+  if (showShipping) {
+    return (
+      <>
+        <Head>
+          <title>Shipping Details - FutureNature</title>
+          <meta name="description" content="Enter your shipping details" />
+          <meta name="viewport" content="width=device-width, initial-scale=1" />
+          <link rel="icon" href="/favicon.ico" />
+        </Head>
+        <Navbar />
+        <ShippingScreen 
+          onClose={() => setShowShipping(false)}
+          onContinue={() => {
+            setShowShipping(false);
+            setShowPayment(true);
+          }}
+        />
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
@@ -21,13 +93,13 @@ export default function Cart() {
         <Navbar />
 
         {/* Cart Container */}
-        <div style={{
+        <div className="cart-container" style={{
           maxWidth: '1200px',
           margin: '0 auto',
           padding: '60px 24px',
           minHeight: 'calc(100vh - 80px - 200px)'
         }}>
-          {cartItems.length === 0 ? (
+          {cart.length === 0 ? (
             /* Empty Cart State */
             <div style={{
               display: 'flex',
@@ -46,45 +118,17 @@ export default function Cart() {
                 alignItems: 'center',
                 justifyContent: 'center'
               }}>
-                <svg
-                  viewBox="0 0 400 300"
+                <Image
+                  src="/Assets/cart.png"
+                  alt="Empty Cart"
+                  width={400}
+                  height={400}
                   style={{
                     width: '100%',
-                    height: 'auto'
+                    height: 'auto',
+                    objectFit: 'contain'
                   }}
-                >
-                  {/* Background boxes */}
-                  <rect x="120" y="100" width="60" height="60" fill="#fef3c7" rx="4" />
-                  <rect x="200" y="80" width="70" height="70" fill="#fef3c7" rx="4" />
-                  <rect x="130" y="180" width="50" height="50" fill="#fef3c7" rx="4" />
-                  <rect x="210" y="190" width="60" height="40" fill="#fef3c7" rx="4" />
-
-                  {/* Large box in center */}
-                  <rect x="140" y="120" width="120" height="140" fill="#fbbf24" rx="6" stroke="#f59e0b" strokeWidth="3" />
-
-                  {/* Woman illustration */}
-                  <circle cx="200" cy="100" r="12" fill="#000" />
-                  <rect x="190" y="115" width="20" height="30" fill="#fff" stroke="#000" strokeWidth="1.5" />
-                  <circle cx="185" cy="125" r="5" fill="#000" />
-                  <circle cx="215" cy="125" r="5" fill="#000" />
-                  <rect x="190" y="150" width="20" height="25" fill="#1f2937" rx="2" />
-
-                  {/* Woman's hand reaching for box */}
-                  <path d="M 170 130 Q 160 120 155 115" stroke="#000" strokeWidth="2" fill="none" strokeLinecap="round" />
-                  <circle cx="155" cy="115" r="4" fill="#000" />
-
-                  {/* Shelving/warehouse background */}
-                  <rect x="90" y="110" width="250" height="2" fill="#d4a574" />
-                  <rect x="90" y="140" width="250" height="2" fill="#d4a574" />
-                  <rect x="90" y="170" width="250" height="2" fill="#d4a574" />
-
-                  {/* Sun/light rays */}
-                  <circle cx="80" cy="50" r="15" fill="#fbbf24" />
-                  <line x1="80" y1="20" x2="80" y2="10" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-                  <line x1="80" y1="80" x2="80" y2="90" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-                  <line x1="50" y1="50" x2="38" y2="50" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-                  <line x1="110" y1="50" x2="122" y2="50" stroke="#fbbf24" strokeWidth="2" strokeLinecap="round" />
-                </svg>
+                />
               </div>
 
               {/* Empty Cart Message */}
@@ -141,45 +185,324 @@ export default function Cart() {
           ) : (
             /* Cart with Items */
             <div style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 350px',
-              gap: '30px',
-              alignItems: 'start'
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '40px'
             }}>
               {/* Cart Items Section */}
               <div>
                 <h2 style={{
                   fontSize: '28px',
                   fontWeight: '700',
-                  color: '#1f2937',
-                  marginBottom: '20px'
+                  color: '#f59e0b',
+                  marginBottom: '30px',
+                  textTransform: 'uppercase'
                 }}>
-                  Shopping Cart ({cartItems.length})
+                  Your Cart Items ({cart.length})
                 </h2>
-                {/* Items will be displayed here */}
+
+                {/* Cart Table */}
+                <div style={{
+                  backgroundColor: 'white',
+                  borderRadius: '8px',
+                  overflow: 'hidden'
+                }}>
+                  <table style={{
+                    width: '100%',
+                    borderCollapse: 'collapse'
+                  }}>
+                    <thead>
+                      <tr style={{
+                        borderBottom: '2px solid #e5e7eb',
+                        backgroundColor: '#f9fafb'
+                      }}>
+                        <th style={{
+                          padding: '16px',
+                          textAlign: 'left',
+                          fontWeight: '700',
+                          color: '#111827',
+                          fontSize: '14px'
+                        }}>
+                          Item
+                        </th>
+                        <th style={{
+                          padding: '16px',
+                          textAlign: 'left',
+                          fontWeight: '700',
+                          color: '#111827',
+                          fontSize: '14px',
+                          width: '120px'
+                        }}>
+                          Price
+                        </th>
+                        <th style={{
+                          padding: '16px',
+                          textAlign: 'left',
+                          fontWeight: '700',
+                          color: '#111827',
+                          fontSize: '14px',
+                          width: '150px'
+                        }}>
+                          Quantity
+                        </th>
+                        <th style={{
+                          padding: '16px',
+                          textAlign: 'right',
+                          fontWeight: '700',
+                          color: '#111827',
+                          fontSize: '14px',
+                          width: '100px'
+                        }}>
+                          Total
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {cart.map((item, index) => {
+                        const product = products[item.id];
+                        const itemTotal = product ? product.price * item.quantity : 0;
+
+                        if (!product) return null;
+
+                        return (
+                          <tr key={index} style={{
+                            borderBottom: '1px solid #e5e7eb'
+                          }}>
+                            <td style={{
+                              padding: '16px'
+                            }}>
+                              <div style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                gap: '4px'
+                              }}>
+                                <span style={{
+                                  color: '#111827',
+                                  fontWeight: '600',
+                                  fontSize: '16px'
+                                }}>
+                                  {product.name}
+                                </span>
+                                <span style={{
+                                  color: '#6b7280',
+                                  fontSize: '14px'
+                                }}>
+                                  {product.weight}
+                                </span>
+                              </div>
+                            </td>
+                            <td style={{
+                              padding: '16px',
+                              color: '#111827',
+                              fontWeight: '600',
+                              fontSize: '16px'
+                            }}>
+                              ₹{product.price}
+                            </td>
+                            <td style={{
+                              padding: '16px'
+                            }}>
+                              <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                width: 'fit-content'
+                              }}>
+                                <button
+                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                  style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    border: '1px solid #d1d5db',
+                                    backgroundColor: 'white',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                    color: '#374151'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'white';
+                                  }}
+                                >
+                                  −
+                                </button>
+                                <span style={{
+                                  width: '30px',
+                                  textAlign: 'center',
+                                  backgroundColor: '#e5e7eb',
+                                  padding: '4px 8px',
+                                  borderRadius: '4px',
+                                  fontWeight: '600',
+                                  color: '#111827'
+                                }}>
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                  style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    border: '1px solid #d1d5db',
+                                    backgroundColor: 'white',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                    color: '#374151'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'white';
+                                  }}
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </td>
+                            <td style={{
+                              padding: '16px',
+                              textAlign: 'right',
+                              color: '#111827',
+                              fontWeight: '600'
+                            }}>
+                              ₹{itemTotal}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
               </div>
 
               {/* Cart Summary Section */}
               <div style={{
-                backgroundColor: '#f9fafb',
-                border: '1px solid #e5e7eb',
-                borderRadius: '12px',
-                padding: '24px',
-                height: 'fit-content',
-                position: 'sticky',
-                top: '100px'
+                display: 'grid',
+                gridTemplateColumns: '1fr 350px',
+                gap: '30px',
+                width: '100%'
               }}>
-                <h3 style={{
-                  fontSize: '18px',
-                  fontWeight: '700',
-                  color: '#1f2937',
-                  marginBottom: '20px'
+                
+
+                {/* Empty left column */}
+                <div></div>
+
+                {/* Right side summary box */}
+                <div style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: '12px',
+                  backgroundColor: 'white',
+                  padding: '20px',
+                  borderRadius: '8px',
+                  border: '1px solid #e5e7eb'
                 }}>
-                  Order Summary
-                </h3>
-                {/* Summary content will be displayed here */}
+                  {/* Subtotal */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingBottom: '10px',
+                    borderBottom: '1px solid #e5e7eb'
+                  }}>
+                    <span style={{
+                      color: '#6b7280',
+                      fontSize: '14px'
+                    }}>
+                      Subtotal
+                    </span>
+                    <span style={{
+                      fontWeight: '700',
+                      color: '#111827',
+                      fontSize: '14px'
+                    }}>
+                      ₹{subtotal}
+                    </span>
+                  </div>
+
+                  {/* Sales Tax */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingBottom: '10px',
+                    borderBottom: '1px solid #e5e7eb'
+                  }}>
+                    <span style={{
+                      color: '#6b7280',
+                      fontSize: '14px'
+                    }}>
+                      Sales Tax
+                    </span>
+                    <span style={{
+                      fontWeight: '700',
+                      color: '#111827',
+                      fontSize: '14px'
+                    }}>
+                      ₹{salesTax}
+                    </span>
+                  </div>
+
+                  {/* Grand Total */}
+                  <div style={{
+                    display: 'flex',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    paddingTop: '10px'
+                  }}>
+                    <span style={{
+                      color: '#f59e0b',
+                      fontSize: '16px',
+                      fontWeight: '700'
+                    }}>
+                      Grand total
+                    </span>
+                    <span style={{
+                      fontWeight: '700',
+                      color: '#f59e0b',
+                      fontSize: '16px'
+                    }}>
+                      ₹{total}
+                    </span>
+                  </div>
+
+                  {/* Order Button */}
+                  <button
+                    onClick={() => {
+                      console.log('Order now clicked');
+                      setShowShipping(true);
+                    }}
+                    style={{
+                      width: '100%',
+                      backgroundColor: '#f59e0b',
+                      color: '#000',
+                      border: 'none',
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      fontSize: '14px',
+                      fontWeight: '700',
+                      cursor: 'pointer',
+                      transition: 'all 0.2s',
+                      marginTop: '8px'
+                    }}
+                    onMouseEnter={(e) => {
+                      e.currentTarget.style.backgroundColor = '#d97706';
+                    }}
+                    onMouseLeave={(e) => {
+                      e.currentTarget.style.backgroundColor = '#f59e0b';
+                    }}
+                  >
+                    Order now
+                  </button>
+                  </div>
+                </div>
               </div>
-            </div>
           )}
         </div>
       </div>

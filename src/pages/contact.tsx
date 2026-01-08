@@ -44,7 +44,7 @@ export default function Contact() {
           margin: '40px auto 60px',
           padding: '0 24px'
         }}>
-          <div style={{
+          <div className="contact-hero-banner" style={{
             background: 'linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)',
             borderRadius: '60px',
             padding: '30px 50px',
@@ -62,7 +62,7 @@ export default function Contact() {
               flex: '0 0 220px',
               position: 'relative'
             }}>
-              <div style={{
+              <div className="contact-hero-image-circle" style={{
                 width: '220px',
                 height: '220px',
                 borderRadius: '50%',
@@ -89,7 +89,7 @@ export default function Contact() {
 
             {/* Right Text */}
             <div style={{ flex: 1 }}>
-              <h1 style={{
+              <h1 className="contact-hero-title" style={{
                 fontSize: '72px',
                 fontWeight: '900',
                 color: '#000',
@@ -109,7 +109,7 @@ export default function Contact() {
           margin: '0 auto 60px',
           padding: '0 24px'
         }}>
-          <div style={{
+          <div className="contact-form-grid" style={{
             display: 'grid',
             gridTemplateColumns: '1fr 4px 1fr',
             gap: '40px',
@@ -160,6 +160,7 @@ export default function Contact() {
                     value={formData.Name}
                     onChange={handleChange}
                     placeholder=""
+                    className="form-input"
                     style={{
                       width: '100%',
                       padding: '14px 18px',
@@ -192,6 +193,7 @@ export default function Contact() {
                     value={formData.email}
                     onChange={handleChange}
                     placeholder=""
+                    className="form-input"
                     style={{
                       width: '100%',
                       padding: '14px 18px',
@@ -224,6 +226,7 @@ export default function Contact() {
                     onChange={handleChange}
                     placeholder=""
                     rows={6}
+                    className="form-textarea"
                     style={{
                       width: '100%',
                       padding: '14px 18px',
@@ -244,6 +247,7 @@ export default function Contact() {
                 {/* Submit Button */}
                 <button
                   type="submit"
+                  className="form-button"
                   style={{
                     backgroundColor: '#fbbf24',
                     color: '#000',

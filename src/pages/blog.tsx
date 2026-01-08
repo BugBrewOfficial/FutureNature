@@ -280,6 +280,7 @@ export default function Blog() {
                   });
                 }
               }}
+              className="blog-scroll-button"
               style={{
                 position: "absolute",
                 left: "50%",
@@ -328,6 +329,7 @@ export default function Blog() {
                   });
                 }
               }}
+              className="blog-scroll-button"
               style={{
                 position: "absolute",
                 left: "50%",

@@ -28,6 +28,7 @@ export default function About() {
           }}
         >
           <div
+            className="about-hero-banner"
             style={{
               background: "linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%)",
               borderRadius: "360px",
@@ -44,12 +45,14 @@ export default function About() {
           >
             {/* Left Circle Image */}
             <div
+              className="about-hero-image"
               style={{
                 flex: "0 0 220px",
                 position: "relative",
               }}
             >
               <div
+                className="about-hero-image-circle"
                 style={{
                   width: "320px",
                   height: "320px",
@@ -81,6 +84,7 @@ export default function About() {
             {/* Right Text */}
             <div style={{ flex: 1 }}>
               <h1
+                className="about-hero-title-main"
                 style={{
                   fontSize: "138px",
                   fontWeight: "900",
@@ -94,6 +98,7 @@ export default function About() {
                 ALL
               </h1>
               <h2
+                className="about-hero-title-sub"
                 style={{
                   fontSize: "60px",
                   fontWeight: "900",
@@ -127,6 +132,7 @@ export default function About() {
           >
             {/* Section 1: Beekeeper Info */}
             <div
+              className="about-beekeeper-section"
               style={{
                 display: "grid",
                 gridTemplateColumns: "350px 1fr",
@@ -136,6 +142,7 @@ export default function About() {
             >
               {/* Left Section - Beekeeper Image */}
               <div
+                className="about-beekeeper-image"
                 style={{
                   width: "100%",
                   height: "300px",
@@ -162,8 +169,7 @@ export default function About() {
               </div>
 
               {/* Right Section - Beekeeper Info */}
-              <div>
-                <h3
+              <divclassName="about-section-title"
                   style={{
                     fontSize: "18px",
                     fontWeight: "700",
@@ -174,6 +180,9 @@ export default function About() {
                   }}
                 >
                   MEET THE BEEKEEPER BEHIND FUTURE NATURE
+                </h3>
+                <p
+                  className="about-section-text"MEET THE BEEKEEPER BEHIND FUTURE NATURE
                 </h3>
                 <p
                   style={{
@@ -193,8 +202,7 @@ export default function About() {
               </div>
             </div>
 
-            {/* Section 2: Bookkeeping Practices and Certificate */}
-            <div
+            {/className="about-content-grid-2col"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
@@ -205,6 +213,7 @@ export default function About() {
               {/* Left - Bookkeeping Practices */}
               <div>
                 <h3
+                  className="about-section-title"
                   style={{
                     fontSize: "16px",
                     fontWeight: "700",
@@ -215,6 +224,9 @@ export default function About() {
                   }}
                 >
                   OUR BOOKKEEPING PRACTICES:
+                </h3>
+                <p
+                  className="about-section-text"OUR BOOKKEEPING PRACTICES:
                 </h3>
                 <p
                   style={{
@@ -229,11 +241,7 @@ export default function About() {
                   beekeeping practices to ensure the well-being of our bees
                   while delivering 100% pure, raw honey to you.
                 </p>
-              </div>
-
-              {/* Right - Certificate Section */}
-              <div>
-                <div
+              </diclassName="about-certificate-box"
                   style={{
                     backgroundColor: "#fbbf24",
                     borderRadius: "360px",
@@ -248,6 +256,7 @@ export default function About() {
                   }}
                 >
                   <div
+                    className="about-certificate-title"
                     style={{
                       fontSize: "52px",
                       fontWeight: "700",
@@ -255,6 +264,12 @@ export default function About() {
                       fontStyle: "italic",
                       fontFamily: "serif",
                       marginBottom: "16px",
+                    }}
+                  >
+                    fssai
+                  </div>
+                  <div
+                    className="about-certificate-number"marginBottom: "16px",
                     }}
                   >
                     fssai

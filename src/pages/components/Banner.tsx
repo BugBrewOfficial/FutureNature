@@ -35,7 +35,7 @@ export default function Banner() {
       margin: '30px auto',
       padding: '0 24px'
     }}>
-      <div style={{
+      <div className="banner-container" style={{
         background: '#F9D371',
         borderRadius: '30px',
         padding: '50px 60px',
@@ -108,7 +108,7 @@ export default function Banner() {
         </div>
 
         {/* Left Content - Honey Jars Illustration */}
-        <div style={{
+        <div className="banner-left-image" style={{
           position: 'relative',
           zIndex: 1,
           flex: '0 0 150px',
@@ -138,14 +138,14 @@ export default function Banner() {
         </div>
 
         {/* Center Text Content */}
-        <div style={{
+        <div className="banner-center-content" style={{
           position: 'relative',
           zIndex: 1,
           flex: 1,
           paddingLeft: '30px',
           paddingRight: '20px'
         }}>
-          <h2 style={{
+          <h2 className="banner-subtitle" style={{
             fontSize: '40px',
             fontWeight: '800',
             color: '#734300',
@@ -156,7 +156,7 @@ export default function Banner() {
           }}>
             LIMITED-TIME
           </h2>
-          <h1 style={{
+          <h1 className="banner-title-main" style={{
             fontSize: '100px',
             fontWeight: '900',
             color: '#734300',
@@ -168,7 +168,7 @@ export default function Banner() {
             BUZZ!
           </h1>
           
-          <div style={{
+          <div className="banner-button" style={{
             backgroundColor: '#734300',
             color: '#FFF8DC',
             border: 'none',
@@ -179,7 +179,8 @@ export default function Banner() {
             cursor: 'pointer',
             letterSpacing: '1.8px',
             textTransform: 'uppercase',
-            transition: 'all 0.3s ease'
+            transition: 'all 0.3s ease',
+            display: 'inline-block'
           }}
           >
             Taste the Savings
@@ -187,7 +188,7 @@ export default function Banner() {
         </div>
 
         {/* Right Side - Product Info with Circular Image */}
-        <div style={{
+        <div className="banner-right-content" style={{
           position: 'relative',
           zIndex: 1,
           flex: '0 0 auto',
@@ -197,7 +198,7 @@ export default function Banner() {
           paddingRight: '10px'
         }}>
           {/* Product Info Card - Blob Shape */}
-          <div style={{
+          <div className="banner-product-card" style={{
             position: 'relative',
             backgroundColor: '#734300',
             borderRadius: '150px 80px 80px 150px',
@@ -206,7 +207,7 @@ export default function Banner() {
             textAlign: 'center',
             zIndex: 2
           }}>
-            <h3 style={{
+            <h3 className="banner-product-name" style={{
               color: '#FFFFFF',
               fontSize: '30px',
               fontWeight: '900',
@@ -217,7 +218,7 @@ export default function Banner() {
             }}>
               FOREST HONEY
             </h3>
-            <p style={{
+            <p className="banner-product-tamil" style={{
               color: '#F9D371',
               fontSize: '19px',
               margin: '0 0 16px 0',
@@ -225,7 +226,7 @@ export default function Banner() {
             }}>
               {slides[0].productNameTamil}
             </p>
-            <p style={{
+            <p className="banner-product-weight" style={{
               color: '#FFFFFF',
               fontSize: '23px',
               fontWeight: '700',
@@ -235,7 +236,7 @@ export default function Banner() {
             </p>
             
             {/* Price Tag - Inside Card */}
-            <div style={{
+            <div className="banner-price" style={{
               backgroundColor: '#04A55C',
               color: 'white',
               padding: '12px 34px',
@@ -250,7 +251,7 @@ export default function Banner() {
           </div>
 
           {/* Circular Product Image - Overlapping */}
-          <div style={{
+          <div className="banner-product-image" style={{
             position: 'relative',
             width: '240px',
             height: '240px',

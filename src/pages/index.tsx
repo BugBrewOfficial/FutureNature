@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import { useState, useEffect } from "react";
 import Navbar from "./components/Navbar";
 import Banner from "./components/Banner";
@@ -85,6 +84,7 @@ export default function Home() {
 
         {/* Honey Products Showcase Section */}
         <div
+          className="honey-showcase-section"
           style={{
             padding: "80px 20px",
             backgroundColor: "#f9fafb",
@@ -95,26 +95,17 @@ export default function Home() {
           {/* Section Title */}
           <div style={{ textAlign: "center", marginBottom: "60px" }}>
             <h2
+              className="section-title"
               style={{
                 fontSize: "42px",
                 fontWeight: "700",
-                color: "#1f2937",
+                color: "#fbbf24",
                 margin: "0 0 12px 0",
                 letterSpacing: "0.5px",
               }}
             >
-              Honey Created In The Laps Of Nature
+              Honey Gallery
             </h2>
-            <p
-              style={{
-                fontSize: "16px",
-                color: "#9ca3af",
-                margin: 0,
-                fontStyle: "italic",
-              }}
-            >
-              (From Beehive To Bottle)
-            </p>
           </div>
 
           {/* Tile Grid Layout */}
@@ -130,6 +121,7 @@ export default function Home() {
       {/* Back to Top Button */}
       {showBackToTop && (
         <button
+          className="back-to-top-button"
           onClick={scrollToTop}
           style={{
             position: "fixed",
