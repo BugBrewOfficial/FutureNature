@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import AuthModal from "./AuthModal";
 import { useCart } from "./CartContext";
+import Cookies from 'js-cookie';
 
 export default function Navbar() {
   const router = useRouter();
@@ -11,7 +12,29 @@ export default function Navbar() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
   const cartItemCount = getTotalItems();
-  
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  useEffect(() => {
+    const checkLoginStatus = () => {
+      const token = Cookies.get('token');
+      setIsLoggedIn(!!token);
+    };
+
+    // Check initially
+    checkLoginStatus();
+
+    // Check on interval to handle expiration or manual cookie deletion
+    const interval = setInterval(checkLoginStatus, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleLogout = () => {
+    Cookies.remove('token');
+    setIsLoggedIn(false);
+    router.push('/');
+  };
+
   return (
     <nav style={{
       backgroundColor: 'white',
@@ -36,10 +59,10 @@ export default function Navbar() {
           alignItems: 'center',
           textDecoration: 'none'
         }}>
-          <Image 
-            src="/Assets/logo.png" 
-            alt="FutureNature Logo" 
-            width={150} 
+          <Image
+            src="/Assets/logo.png"
+            alt="FutureNature Logo"
+            width={150}
             height={60}
             className="navbar-logo"
             style={{ objectFit: 'contain' }}
@@ -98,9 +121,9 @@ export default function Navbar() {
           alignItems: 'center',
           gap: '40px'
         }}>
-          <Link 
-            href="/" 
-            className="navbar-link" 
+          <Link
+            href="/"
+            className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
               color: router.pathname === '/' ? '#f59e0b' : '#374151',
@@ -114,8 +137,8 @@ export default function Navbar() {
             }}>
             Home
           </Link>
-          <Link 
-            href="/products" 
+          <Link
+            href="/products"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
@@ -130,8 +153,8 @@ export default function Navbar() {
             }}>
             Products
           </Link>
-          <Link 
-            href="/blog" 
+          <Link
+            href="/blog"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
@@ -146,8 +169,8 @@ export default function Navbar() {
             }}>
             Blog
           </Link>
-          <Link 
-            href="/about" 
+          <Link
+            href="/about"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
@@ -162,8 +185,8 @@ export default function Navbar() {
             }}>
             About Us
           </Link>
-          <Link 
-            href="/contact" 
+          <Link
+            href="/contact"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
@@ -235,39 +258,72 @@ export default function Navbar() {
             </div>
             <span className="navbar-cart-text">Cart</span>
           </Link>
-          
+
           <span className="navbar-divider" style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
-          
-          <button 
-            onClick={() => setIsAuthModalOpen(true)}
-            className="navbar-login-button"
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              backgroundColor: 'transparent',
-              color: '#000',
-              border: 'none',
-              padding: '0',
-              fontSize: '18px',
-              fontWeight: '400',
-              cursor: 'pointer',
-              transition: 'all 0.2s'
-            }}>
-            <span className="navbar-login-text">Login</span>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Image
-                src="/Assets/Svg/profile.svg"
-                alt="Login"
-                width={42}
-                height={42}
-              />
-            </div>
-          </button>
+
+          {isLoggedIn ? (
+            <button
+              onClick={handleLogout}
+              className="navbar-login-button"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                backgroundColor: 'transparent',
+                color: '#000',
+                border: 'none',
+                padding: '0',
+                fontSize: '18px',
+                fontWeight: '400',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}>
+              <span className="navbar-login-text">Logout</span>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <Image
+                  src="/Assets/Svg/profile.svg"
+                  alt="Logout"
+                  width={42}
+                  height={42}
+                />
+              </div>
+            </button>
+          ) : (
+            <button
+              onClick={() => setIsAuthModalOpen(true)}
+              className="navbar-login-button"
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '12px',
+                backgroundColor: 'transparent',
+                color: '#000',
+                border: 'none',
+                padding: '0',
+                fontSize: '18px',
+                fontWeight: '400',
+                cursor: 'pointer',
+                transition: 'all 0.2s'
+              }}>
+              <span className="navbar-login-text">Login</span>
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}>
+                <Image
+                  src="/Assets/Svg/profile.svg"
+                  alt="Login"
+                  width={42}
+                  height={42}
+                />
+              </div>
+            </button>
+          )}
         </div>
       </div>
 
