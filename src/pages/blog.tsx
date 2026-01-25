@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 import { useRef } from "react";
 
 export default function Blog() {
@@ -190,7 +190,7 @@ export default function Blog() {
                   letterSpacing: "1px",
                 }}
               >
-                FUTURE NATURE'S
+                FUTURE NATURE&apos;S
                 <br />
                 MISSION IS CUSTOMERS
                 <br />
@@ -246,7 +246,7 @@ export default function Blog() {
                 textAlign: "center",
               }}
             >
-              In today's fast-paced world, reconnecting with nature's rhythms
+              In today&apos;s fast-paced world, reconnecting with nature&apos;s rhythms
               brings a sense of deep healing. More people are embracing simple,
               natural ways to care for both body and mind. Natural Honey
               Products and herbal medicine offer a timeless approach to wellness
@@ -543,7 +543,7 @@ export default function Blog() {
                 letterSpacing: "1px",
               }}
             >
-              HONEY PRODUCTS FROM THE NATURE: NATURE'S SWEETEST REMEDIES
+              HONEY PRODUCTS FROM THE NATURE: NATURE&apos;S SWEETEST REMEDIES
             </h2>
             <p
               style={{
@@ -555,7 +555,7 @@ export default function Blog() {
                 textAlign: "center",
               }}
             >
-              Bringing nature into your daily self-care routine doesn't have to
+              Bringing nature into your daily self-care routine doesn&apos;t have to
               be complicated. At Future Nature, we offer a handcrafted
               collection of Natural honey products infused with carefully chosen
               herbs. Each one is designed to support your well-being from the

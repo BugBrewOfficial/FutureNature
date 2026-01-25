@@ -1,12 +1,12 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import Navbar from "./components/Navbar";
-import Banner from "./components/Banner";
-import DailyDeals from "./components/DailyDeals";
-import WhatsAppBanner from "./components/WhatsAppBanner";
-import HoneyProcess from "./components/HoneyProcess";
-import Footer from "./components/Footer";
-import Tile from "./components/Tile";
+import Navbar from "@/components/Navbar";
+import Banner from "@/components/Banner";
+import DailyDeals from "@/components/DailyDeals";
+import WhatsAppBanner from "@/components/WhatsAppBanner";
+import HoneyProcess from "@/components/HoneyProcess";
+import Footer from "@/components/Footer";
+import Tile from "@/components/Tile";
 
 export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -28,44 +28,6 @@ export default function Home() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
-  const processes = [
-    {
-      title: "Honey Treatment",
-      description:
-        "Honey treatment enhances texture, removes impurities, preserves its golden essence.",
-      icon: "🍯",
-    },
-    {
-      title: "Bee Keeping",
-      description:
-        "Beekeeping is the art of nurturing bees to create nature's purest honey.",
-      icon: "🏺",
-    },
-    {
-      title: "Honey Shop",
-      description:
-        "A honey shop is where nature's sweetness meets pure craftsmanship.",
-      icon: "🛒",
-    },
-    {
-      title: "Flower Produce",
-      description:
-        "Flowers produce nectar, the natural source of sweetness for bees and honey.",
-      icon: "🌸",
-    },
-    {
-      title: "Home Delivery",
-      description:
-        "Enjoy the sweetness of nature with our fast and safe home delivery.",
-      icon: "🏠",
-    },
-    {
-      title: "Honey Production",
-      description:
-        "Bees craft honey inside the hive, turning nature's nectar into liquid gold.",
-      icon: "🍯",
-    },
-  ];
 
   return (
     <>

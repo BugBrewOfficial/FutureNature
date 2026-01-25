@@ -4,6 +4,7 @@ import OtpInput from "react-otp-input";
 import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import CustomInputError from "./CustomInputError";
+import { userApi } from "../api/userApi";
 
 interface AuthModalProps {
   isOpen: boolean;
@@ -80,15 +81,7 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     }
 
     try {
-      const response = await fetch(
-        "http://localhost:8081/api/user/triggerOtp",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ mobileNumber: cleanPhone }),
-        }
-      );
-      if (!response.ok) throw new Error("Failed to send OTP");
+      await userApi.triggerOtp(cleanPhone);
       toast.success("OTP sent successfully");
       setStep("OTP");
       setErrors({});
@@ -109,12 +102,8 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
 
     const cleanPhone = phoneNumber.replace(/\s/g, "");
     try {
-      const response = await fetch("http://localhost:8081/api/user/verifyOtp", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ mobileNumber: cleanPhone, otp }),
-      });
-      const data = await response.json();
+      const response = await userApi.verifyOtp(cleanPhone, otp);
+      const data = response.data;
 
       if (!data.status) {
         setErrors((prev) => ({ ...prev, otp: data.message || "Invalid OTP" }));
@@ -141,22 +130,13 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
     e.preventDefault();
     if (!validateRegistration()) return;
 
-    const token = Cookies.get("token");
     const cleanPhone = phoneNumber.replace(/\s/g, "");
 
     try {
-      const response = await fetch("http://localhost:8081/api/user/register", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...signupData,
-          mobileNumber: cleanPhone,
-        }),
+      await userApi.register({
+        ...signupData,
+        mobileNumber: cleanPhone,
       });
-
-      if (!response.ok) throw new Error("Registration failed");
 
       toast.success("Registration successful");
       onClose();
@@ -401,9 +381,6 @@ export default function AuthModal({ isOpen, onClose }: AuthModalProps) {
                   outline: "none",
                   transition: "border-color 0.2s",
                   fontFamily: "inherit",
-                }}
-                focusStyle={{
-                  borderColor: errors.otp ? "#ef4444" : "#FFB400",
                 }}
               />
               <CustomInputError message={errors.otp} />
