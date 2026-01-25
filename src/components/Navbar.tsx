@@ -154,6 +154,22 @@ export default function Navbar() {
             Products
           </Link>
           <Link
+            href="/wishlist"
+            className="navbar-link"
+            onClick={() => setIsMobileMenuOpen(false)}
+            style={{
+              color: router.pathname === '/wishlist' ? '#f59e0b' : '#374151',
+              fontSize: '16px',
+              fontWeight: router.pathname === '/wishlist' ? '600' : '500',
+              textDecoration: 'none',
+              transition: 'color 0.2s',
+              position: 'relative',
+              paddingBottom: '8px',
+              borderBottom: router.pathname === '/wishlist' ? '3px solid #f59e0b' : '3px solid transparent'
+            }}>
+            Wishlist
+          </Link>
+          <Link
             href="/blog"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}

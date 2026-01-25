@@ -1,11 +1,11 @@
 import Head from "next/head";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
-import ShippingScreen from "./components/ShippingScreen";
-import Payment from "./components/Payment";
-import { useCart } from "./components/CartContext";
+import Navbar from "@/components/Navbar";
+import Footer from "@/components/Footer";
+import ShippingScreen from "@/components/ShippingScreen";
+import Payment from "@/components/Payment";
+import { useCart, CartItem } from "@/components/CartContext";
 import { useState } from "react";
 
 export default function Cart() {
@@ -13,30 +13,11 @@ export default function Cart() {
   const [showShipping, setShowShipping] = useState(false);
   const [showPayment, setShowPayment] = useState(false);
 
-  // All products data matching products.tsx
-  const products: { [key: number]: { name: string; price: number; image: string; weight: string } } = {
-    1: { name: "Wild Honey", price: 850, image: "/Assets/Products/15.png", weight: "Half kg" },
-    2: { name: "Honey Comb", price: 900, image: "/Assets/Products/18.png", weight: "Half kg" },
-    3: { name: "Moringa Honey", price: 500, image: "/Assets/Products/11.png", weight: "Half kg" },
-    4: { name: "Panner Rose Gulkhand", price: 400, image: "/Assets/Products/3.png", weight: "250 gms" },
-    5: { name: "தேன் அத்தி", price: 300, image: "/Assets/Products/8.png", weight: "250 gms" },
-    6: { name: "Cavity Honey", price: 450, image: "/Assets/Products/2.png", weight: "Half kg" },
-    7: { name: "Country Cow Ghee", price: 600, image: "/Assets/Products/7.png", weight: "Half litre" },
-    8: { name: "Cavity Honey (750g)", price: 650, image: "/Assets/Products/10.png", weight: "750 grams" },
-    9: { name: "Moringa Honey (750g)", price: 750, image: "/Assets/Products/13.png", weight: "750 grams" },
-    10: { name: "Dryfruits with Honey (7 in 1)", price: 500, image: "/Assets/Products/16.png", weight: "Half kg" },
-    11: { name: "Forest Honey", price: 900, image: "/Assets/Products/4.png", weight: "Half kg" },
-    12: { name: "Forest Honey (750g)", price: 1350, image: "/Assets/Products/15.png", weight: "750 grams" },
-    13: { name: "Moringa Atta", price: 70, image: "/Assets/Products/9.png", weight: "250 gms" },
-    14: { name: "Stingless Bee Honey", price: 2500, image: "/Assets/Products/1.png", weight: "250 gms" },
-    15: { name: "Stingless Bee Honey (50g)", price: 500, image: "/Assets/Products/1.png", weight: "50 gms" },
-    16: { name: "உளுந்து உருண்டை", price: 400, image: "/Assets/Products/17.png", weight: "Half kg" }
-  };
+  console.log({ cart })
 
   // Calculate totals
-  const subtotal = cart.reduce((sum, item) => {
-    const product = products[item.id];
-    return sum + (product ? product.price * item.quantity : 0);
+  const subtotal = cart.reduce((sum: number, item: CartItem) => {
+    return sum + ((item.price || 0) * item.quantity);
   }, 0);
 
   const salesTax = Math.round(subtotal * 0.09);
@@ -68,7 +49,7 @@ export default function Cart() {
           <link rel="icon" href="/favicon.ico" />
         </Head>
         <Navbar />
-        <ShippingScreen 
+        <ShippingScreen
           onClose={() => setShowShipping(false)}
           onContinue={() => {
             setShowShipping(false);
@@ -152,7 +133,7 @@ export default function Cart() {
                   margin: 0,
                   lineHeight: '1.6'
                 }}>
-                  Looks like you haven't added any honey products yet. Start shopping and add your favorite items!
+                  Looks like you haven&apos;t added any honey products yet. Start shopping and add your favorite items!
                 </p>
 
                 {/* Continue Shopping Button */}
@@ -170,14 +151,14 @@ export default function Cart() {
                   cursor: 'pointer',
                   marginTop: '20px'
                 }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = '#000';
-                  e.currentTarget.style.color = '#fff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = '#fbbf24';
-                  e.currentTarget.style.color = '#000';
-                }}>
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#000';
+                    e.currentTarget.style.color = '#fff';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = '#fbbf24';
+                    e.currentTarget.style.color = '#000';
+                  }}>
                   Continue Shopping
                 </Link>
               </div>
@@ -258,14 +239,11 @@ export default function Cart() {
                       </tr>
                     </thead>
                     <tbody>
-                      {cart.map((item, index) => {
-                        const product = products[item.id];
-                        const itemTotal = product ? product.price * item.quantity : 0;
-
-                        if (!product) return null;
+                      {cart.map((item: CartItem, index: number) => {
+                        const itemTotal = (item.price || 0) * item.quantity;
 
                         return (
-                          <tr key={index} style={{
+                          <tr key={item.variantId || index} style={{
                             borderBottom: '1px solid #e5e7eb'
                           }}>
                             <td style={{
@@ -273,22 +251,59 @@ export default function Cart() {
                             }}>
                               <div style={{
                                 display: 'flex',
-                                flexDirection: 'column',
-                                gap: '4px'
+                                alignItems: 'center',
+                                gap: '16px'
                               }}>
-                                <span style={{
-                                  color: '#111827',
-                                  fontWeight: '600',
-                                  fontSize: '16px'
+                                <div style={{
+                                  width: '60px',
+                                  height: '60px',
+                                  position: 'relative',
+                                  borderRadius: '8px',
+                                  overflow: 'hidden',
+                                  backgroundColor: '#f3f4f6'
                                 }}>
-                                  {product.name}
-                                </span>
-                                <span style={{
-                                  color: '#6b7280',
-                                  fontSize: '14px'
+                                  <Image
+                                    src={item.image || "/Assets/Products/15.png"}
+                                    alt={item.name || "Product"}
+                                    fill
+                                    style={{ objectFit: 'cover' }}
+                                  />
+                                </div>
+                                <div style={{
+                                  display: 'flex',
+                                  flexDirection: 'column',
+                                  gap: '4px'
                                 }}>
-                                  {product.weight}
-                                </span>
+                                  <span style={{
+                                    color: '#111827',
+                                    fontWeight: '600',
+                                    fontSize: '16px'
+                                  }}>
+                                    {item.name}
+                                  </span>
+                                  <span style={{
+                                    color: '#6b7280',
+                                    fontSize: '14px'
+                                  }}>
+                                    {item.weight}
+                                  </span>
+                                  <button
+                                    onClick={() => removeFromCart(item.id, item.variantId, item.cartItemId)}
+                                    style={{
+                                      color: '#ef4444',
+                                      fontSize: '12px',
+                                      fontWeight: '600',
+                                      background: 'none',
+                                      border: 'none',
+                                      padding: 0,
+                                      cursor: 'pointer',
+                                      textAlign: 'left',
+                                      marginTop: '4px'
+                                    }}
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
                               </div>
                             </td>
                             <td style={{
@@ -297,7 +312,7 @@ export default function Cart() {
                               fontWeight: '600',
                               fontSize: '16px'
                             }}>
-                              ₹{product.price}
+                              ₹{item.price}
                             </td>
                             <td style={{
                               padding: '16px'
@@ -309,7 +324,7 @@ export default function Cart() {
                                 width: 'fit-content'
                               }}>
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.quantity - 1)}
+                                  onClick={() => updateQuantity(item.id, item.variantId, item.quantity - 1)}
                                   style={{
                                     width: '24px',
                                     height: '24px',
@@ -342,7 +357,7 @@ export default function Cart() {
                                   {item.quantity}
                                 </span>
                                 <button
-                                  onClick={() => updateQuantity(item.id, item.quantity + 1)}
+                                  onClick={() => updateQuantity(item.id, item.variantId, item.quantity + 1)}
                                   style={{
                                     width: '24px',
                                     height: '24px',
@@ -388,7 +403,7 @@ export default function Cart() {
                 gap: '30px',
                 width: '100%'
               }}>
-                
+
 
                 {/* Empty left column */}
                 <div></div>
@@ -500,9 +515,9 @@ export default function Cart() {
                   >
                     Order now
                   </button>
-                  </div>
                 </div>
               </div>
+            </div>
           )}
         </div>
       </div>

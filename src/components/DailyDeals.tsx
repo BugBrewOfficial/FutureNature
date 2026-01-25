@@ -1,15 +1,16 @@
 import Image from "next/image";
 import { useState } from "react";
 import { useCart } from "./CartContext";
+import { Rating } from "react-simple-star-rating";
 
 export default function DailyDeals() {
   const { addToCart, updateQuantity } = useCart();
-  const [quantities, setQuantities] = useState<{[key: number]: number}>({
+  const [quantities, setQuantities] = useState<{ [key: number]: number }>({
     1: 1,
     2: 1,
     3: 1
   });
-  const [showQuantityControls, setShowQuantityControls] = useState<{[key: number]: boolean}>({});
+  const [showQuantityControls, setShowQuantityControls] = useState<{ [key: number]: boolean }>({});
   const products = [
     {
       id: 1,
@@ -46,32 +47,6 @@ export default function DailyDeals() {
     }
   ];
 
-  const renderStars = (rating: number) => {
-    const stars = [];
-    const fullStars = Math.floor(rating);
-    const hasHalfStar = rating % 1 !== 0;
-
-    for (let i = 0; i < fullStars; i++) {
-      stars.push(
-        <span key={`full-${i}`} style={{ color: '#10b981', fontSize: '14px' }}>★</span>
-      );
-    }
-
-    if (hasHalfStar) {
-      stars.push(
-        <span key="half" style={{ color: '#10b981', fontSize: '14px' }}>★</span>
-      );
-    }
-
-    const emptyStars = 5 - Math.ceil(rating);
-    for (let i = 0; i < emptyStars; i++) {
-      stars.push(
-        <span key={`empty-${i}`} style={{ color: '#d1d5db', fontSize: '14px' }}>★</span>
-      );
-    }
-
-    return stars;
-  };
 
   return (
     <div style={{
@@ -202,7 +177,7 @@ export default function DailyDeals() {
                 marginBottom: '18px'
               }}>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-                  {renderStars(product.rating)}
+                  <Rating initialValue={product.rating} readonly size={14} allowFraction />
                   <span style={{
                     fontSize: '14px',
                     color: '#10b981',
@@ -248,7 +223,7 @@ export default function DailyDeals() {
                 </div>
 
                 {!showQuantityControls[product.id] ? (
-                  <button 
+                  <button
                     style={{
                       backgroundColor: '#fbbf24',
                       color: '#000',

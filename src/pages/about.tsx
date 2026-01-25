@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
-import Navbar from "./components/Navbar";
-import Footer from "./components/Footer";
+import Navbar from "../components/Navbar";
+import Footer from "../components/Footer";
 
 export default function About() {
   return (
@@ -169,7 +169,9 @@ export default function About() {
               </div>
 
               {/* Right Section - Beekeeper Info */}
-              <divclassName="about-section-title"
+              <div>
+                <h3
+                  className="about-section-title"
                   style={{
                     fontSize: "18px",
                     fontWeight: "700",
@@ -182,9 +184,6 @@ export default function About() {
                   MEET THE BEEKEEPER BEHIND FUTURE NATURE
                 </h3>
                 <p
-                  className="about-section-text"MEET THE BEEKEEPER BEHIND FUTURE NATURE
-                </h3>
-                <p
                   style={{
                     fontSize: "14px",
                     color: "#4b5563",
@@ -192,7 +191,7 @@ export default function About() {
                     margin: 0,
                   }}
                 >
-                  Hi, I'm Vidhya sri, the passionate beekeeper behind future
+                  Hi, I&apos;m Vidhya sri, the passionate beekeeper behind future
                   nature. My journey into beekeeping started with a deep
                   appreciation for nature and a curiosity about the incredible
                   world of bees. What began as a small venture soon turned into
@@ -202,7 +201,9 @@ export default function About() {
               </div>
             </div>
 
-            {/className="about-content-grid-2col"
+            {/* Section 2: Practices and Certificate */}
+            <div
+              className="about-content-grid-2col"
               style={{
                 display: "grid",
                 gridTemplateColumns: "1fr 1fr",
@@ -223,10 +224,7 @@ export default function About() {
                     letterSpacing: "1px",
                   }}
                 >
-                  OUR BOOKKEEPING PRACTICES:
-                </h3>
-                <p
-                  className="about-section-text"OUR BOOKKEEPING PRACTICES:
+                  OUR BEEKEEPING PRACTICES:
                 </h3>
                 <p
                   style={{
@@ -237,61 +235,58 @@ export default function About() {
                   }}
                 >
                   At FUTURE NATURE, we believe that healthy bees create the
-                  finest honey. That's why we follow ethical, sustainable
+                  finest honey. That&apos;s why we follow ethical, sustainable
                   beekeeping practices to ensure the well-being of our bees
                   while delivering 100% pure, raw honey to you.
                 </p>
-              </diclassName="about-certificate-box"
+              </div>
+
+              {/* Right - Certificate Box */}
+              <div
+                className="about-certificate-box"
+                style={{
+                  backgroundColor: "#fbbf24",
+                  borderRadius: "360px",
+                  padding: "50px 40px",
+                  textAlign: "center",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  boxShadow: "0 8px 24px rgba(245, 158, 11, 0.2)",
+                  minHeight: "200px",
+                }}
+              >
+                <div
+                  className="about-certificate-title"
                   style={{
-                    backgroundColor: "#fbbf24",
-                    borderRadius: "360px",
-                    padding: "50px 40px",
-                    textAlign: "center",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    boxShadow: "0 8px 24px rgba(245, 158, 11, 0.2)",
-                    minHeight: "200px",
+                    fontSize: "52px",
+                    fontWeight: "700",
+                    color: "#8b5a00",
+                    fontStyle: "italic",
+                    fontFamily: "serif",
+                    marginBottom: "8px",
                   }}
                 >
-                  <div
-                    className="about-certificate-title"
-                    style={{
-                      fontSize: "52px",
-                      fontWeight: "700",
-                      color: "#8b5a00",
-                      fontStyle: "italic",
-                      fontFamily: "serif",
-                      marginBottom: "16px",
-                    }}
-                  >
-                    fssai
-                  </div>
-                  <div
-                    className="about-certificate-number"marginBottom: "16px",
-                    }}
-                  >
-                    fssai
-                  </div>
-                  <div
-                    style={{
-                      fontSize: "32px",
-                      fontWeight: "700",
-                      color: "#000",
-                      letterSpacing: "2px",
-                      fontFamily: "monospace",
-                    }}
-                  >
-                    22424445000161
-                  </div>
+                  fssai
+                </div>
+                <div
+                  style={{
+                    fontSize: "32px",
+                    fontWeight: "700",
+                    color: "#000",
+                    letterSpacing: "2px",
+                    fontFamily: "monospace",
+                  }}
+                >
+                  22424445000161
                 </div>
               </div>
             </div>
           </div>
         </div>
+        <Footer />
       </div>
-      <Footer />
     </>
   );
 }
