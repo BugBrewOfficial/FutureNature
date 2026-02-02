@@ -14,14 +14,9 @@ interface IAddProductPayload {
 }
 
 export const productApi = {
-<<<<<<< Updated upstream
-    getAllProducts: () => apiClient.get("/product/products"),
-    getProductById: (id: string) => apiClient.get(`/product/getProductInfo/${id}`),
-=======
   getAllProducts: () => apiClient.get("/product/products"),
   getProductById: (id: string) =>
     apiClient.get(`/product/getProductInfo/${id}`),
   addProduct: (data: IAddProductPayload) =>
     apiClient.post("/product/add", data),
->>>>>>> Stashed changes
 };

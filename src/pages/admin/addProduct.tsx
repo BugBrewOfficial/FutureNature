@@ -1,6 +1,9 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import Image from "next/image";
+import toast, { Toaster } from "react-hot-toast";
+import { productApi } from "@/api/productApi";
+import { isAdminUser } from "@/utils/authUtils";
+import Cookies from "js-cookie";
 
 export default function AddProduct() {
   const router = useRouter();
@@ -11,18 +14,12 @@ export default function AddProduct() {
     descriptionT: "",
     price: "",
     salePrice: "",
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-    discountPercentage: ""
-=======
     discountPercentage: "",
     availableQuantity: "",
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
   });
 
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string>("");
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-=======
   const [loading, setLoading] = useState(false);
 
   // Admin Verification
@@ -33,13 +30,12 @@ export default function AddProduct() {
       router.push("/");
     }
   }, [router]);
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
 
   // Auto-calculate discount percentage
   useEffect(() => {
     const price = parseFloat(formData.price);
     const salePrice = parseFloat(formData.salePrice);
-    
+
     if (price > 0 && salePrice > 0 && salePrice < price) {
       const discount = ((price - salePrice) / price) * 100;
       setFormData((prev) => ({
@@ -94,8 +90,6 @@ export default function AddProduct() {
     });
   };
 
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-=======
   const validateForm = () => {
     if (!formData.productNameE.trim())
       return "Product Name (English) is required";
@@ -155,7 +149,6 @@ export default function AddProduct() {
     }
   };
 
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
   const inputStyle = {
     width: "100%",
     padding: "10px 12px",
@@ -174,9 +167,6 @@ export default function AddProduct() {
   };
 
   return (
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-    <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "24px" }}>
-=======
     <div
       style={{
         backgroundColor: "#f9fafb",
@@ -185,7 +175,6 @@ export default function AddProduct() {
       }}
     >
       <Toaster />
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
       <style jsx>{`
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
@@ -397,15 +386,11 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="Description in English"
                     rows={4}
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-                    style={{...inputStyle, resize: "vertical", fontFamily: "inherit"}}
-=======
                     style={{
                       ...inputStyle,
                       resize: "vertical",
                       fontFamily: "inherit",
                     }}
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                   />
                 </div>
                 <div>
@@ -426,28 +411,17 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="Description in Tamil"
                     rows={4}
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-                    style={{...inputStyle, resize: "vertical", fontFamily: "inherit"}}
-=======
                     style={{
                       ...inputStyle,
                       resize: "vertical",
                       fontFamily: "inherit",
                     }}
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                   />
                 </div>
               </div>
             </div>
 
             {/* Pricing Details */}
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-            <div style={{ backgroundColor: "white", padding: "24px", borderRadius: "8px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
-              <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px" }}>
-                Pricing Details
-              </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
-=======
             <div
               style={{
                 backgroundColor: "white",
@@ -474,7 +448,6 @@ export default function AddProduct() {
                   marginBottom: "16px",
                 }}
               >
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                 <div>
                   <label
                     style={{
@@ -519,8 +492,6 @@ export default function AddProduct() {
                     style={noSpinnerStyle}
                   />
                 </div>
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-=======
               </div>
               <div
                 style={{
@@ -529,7 +500,6 @@ export default function AddProduct() {
                   gap: "16px",
                 }}
               >
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                 <div>
                   <label
                     style={{
@@ -552,9 +522,6 @@ export default function AddProduct() {
                     }
                     readOnly
                     placeholder="10.00%"
-<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
-                    style={{...noSpinnerStyle, backgroundColor: "#f9fafb", cursor: "not-allowed"}}
-=======
                     style={{
                       ...noSpinnerStyle,
                       backgroundColor: "#f9fafb",
@@ -582,7 +549,6 @@ export default function AddProduct() {
                     placeholder="e.g 100"
                     min="0"
                     style={noSpinnerStyle}
->>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                   />
                 </div>
               </div>
@@ -609,7 +575,7 @@ export default function AddProduct() {
               >
                 Upload Product Images (0-3)
               </h2>
-              
+
               {/* Main Image Display */}
               <div
                 style={{

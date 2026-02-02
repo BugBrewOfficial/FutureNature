@@ -1,20 +1,22 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import AuthModal from "./AuthModal";
-import AdminPanel from "./AdminPanel";
 import { useCart } from "./CartContext";
 import Cookies from 'js-cookie';
+import { useAuth } from "./AuthContext";
+import AdminPanel from "./AdminPanel";
 
 export default function Navbar() {
   const router = useRouter();
-  const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
-  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
+  const { openLoginModal } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const { getTotalItems } = useCart();
   const cartItemCount = getTotalItems();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const checkLoginStatus = () => {
@@ -28,12 +30,25 @@ export default function Navbar() {
     // Check on interval to handle expiration or manual cookie deletion
     const interval = setInterval(checkLoginStatus, 1000);
 
-    return () => clearInterval(interval);
+    // Click outside listener for profile menu
+    const handleClickOutside = (event: MouseEvent) => {
+      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+        setIsProfileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
   }, []);
 
   const handleLogout = () => {
     Cookies.remove('token');
     setIsLoggedIn(false);
+    setIsProfileMenuOpen(false);
     router.push('/');
   };
 
@@ -258,9 +273,6 @@ export default function Navbar() {
             </div>
             <span className="navbar-admin-text">Admin</span>
           </button>
-
-          <span className="navbar-divider" style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
-
           <Link href="/cart" className="navbar-cart-link" style={{
             display: 'flex',
             alignItems: 'center',
@@ -314,39 +326,95 @@ export default function Navbar() {
           <span className="navbar-divider" style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
 
           {isLoggedIn ? (
-            <button
-              onClick={handleLogout}
-              className="navbar-login-button"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                backgroundColor: 'transparent',
-                color: '#000',
-                border: 'none',
-                padding: '0',
-                fontSize: '18px',
-                fontWeight: '400',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}>
-              <span className="navbar-login-text">Logout</span>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
-                <Image
-                  src="/Assets/Svg/profile.svg"
-                  alt="Logout"
-                  width={42}
-                  height={42}
-                />
-              </div>
-            </button>
+            <div style={{ position: 'relative' }} ref={profileMenuRef}>
+              <button
+                onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
+                className="navbar-login-button"
+                style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  gap: '12px',
+                  backgroundColor: 'transparent',
+                  color: '#000',
+                  border: 'none',
+                  padding: '0',
+                  fontSize: '18px',
+                  fontWeight: '400',
+                  cursor: 'pointer',
+                  transition: 'all 0.2s'
+                }}>
+                <span className="navbar-login-text">Profile</span>
+                <div style={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                }}>
+                  <Image
+                    src="/Assets/Svg/profile.svg"
+                    alt="Profile"
+                    width={42}
+                    height={42}
+                  />
+                </div>
+              </button>
+
+              {/* Dropdown Menu */}
+              {isProfileMenuOpen && (
+                <div style={{
+                  position: 'absolute',
+                  top: '120%',
+                  right: 0,
+                  width: '200px',
+                  backgroundColor: 'white',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
+                  border: '1px solid #e5e7eb',
+                  zIndex: 1001,
+                  overflow: 'hidden'
+                }}>
+                  <div style={{ padding: '8px 0' }}>
+                    <Link
+                      href="/address"
+                      onClick={() => setIsProfileMenuOpen(false)}
+                      style={{
+                        display: 'block',
+                        padding: '10px 16px',
+                        color: '#374151',
+                        textDecoration: 'none',
+                        fontSize: '15px',
+                        transition: 'background-color 0.2s',
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      My Addresses
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      style={{
+                        width: '100%',
+                        textAlign: 'left',
+                        padding: '10px 16px',
+                        color: '#ef4444',
+                        backgroundColor: 'transparent',
+                        border: 'none',
+                        fontSize: '15px',
+                        cursor: 'pointer',
+                        transition: 'background-color 0.2s',
+                        borderTop: '1px solid #f3f4f6'
+                      }}
+                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#fef2f2'}
+                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
           ) : (
             <button
-              onClick={() => setIsAuthModalOpen(true)}
+              onClick={() => openLoginModal()}
               className="navbar-login-button"
               style={{
                 display: 'flex',
@@ -377,13 +445,10 @@ export default function Navbar() {
             </button>
           )}
         </div>
-      </div>
+      </div >
 
-      {/* Auth Modal */}
-      <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
 
-      {/* Admin Panel */}
       <AdminPanel isOpen={isAdminPanelOpen} onClose={() => setIsAdminPanelOpen(false)} />
-    </nav>
+    </nav >
   );
 }
