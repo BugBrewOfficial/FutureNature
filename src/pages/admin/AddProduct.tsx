@@ -11,11 +11,29 @@ export default function AddProduct() {
     descriptionT: "",
     price: "",
     salePrice: "",
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
     discountPercentage: ""
+=======
+    discountPercentage: "",
+    availableQuantity: "",
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
   });
 
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string>("");
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
+=======
+  const [loading, setLoading] = useState(false);
+
+  // Admin Verification
+  useEffect(() => {
+    const token = Cookies.get("token");
+    if (!token || !isAdminUser(token)) {
+      toast.error("Unauthorized access");
+      router.push("/");
+    }
+  }, [router]);
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
 
   // Auto-calculate discount percentage
   useEffect(() => {
@@ -24,14 +42,14 @@ export default function AddProduct() {
     
     if (price > 0 && salePrice > 0 && salePrice < price) {
       const discount = ((price - salePrice) / price) * 100;
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        discountPercentage: discount.toFixed(2)
+        discountPercentage: discount.toFixed(2),
       }));
     } else if (salePrice >= price || !salePrice) {
-      setFormData(prev => ({
+      setFormData((prev) => ({
         ...prev,
-        discountPercentage: ""
+        discountPercentage: "",
       }));
     }
   }, [formData.price, formData.salePrice]);
@@ -65,13 +83,79 @@ export default function AddProduct() {
     }
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >,
+  ) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
   };
 
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
+=======
+  const validateForm = () => {
+    if (!formData.productNameE.trim())
+      return "Product Name (English) is required";
+    if (!formData.productNameT.trim())
+      return "Product Name (Tamil) is required";
+    if (!formData.descriptionE.trim())
+      return "Description (English) is required";
+    if (!formData.descriptionT.trim()) return "Description (Tamil) is required";
+    if (!formData.price || parseFloat(formData.price) <= 0)
+      return "Valid Price is required";
+    if (uploadedImages.length === 0)
+      return "At least one product image is required";
+    if (!formData.availableQuantity || parseInt(formData.availableQuantity) < 0)
+      return "Valid Quantity is required";
+    return null;
+  };
+
+  const handleSubmit = async () => {
+    const error = validateForm();
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Construct payload matching backend schema
+      const payload = {
+        productName: formData.productNameE,
+        productNameTamil: formData.productNameT,
+        description: formData.descriptionE,
+        descriptionTamil: formData.descriptionT,
+        price: formData.price,
+        discountedType: "percentage", // Defaulting to percentage based on UI logic
+        discountedAmount: formData.discountPercentage || "0",
+        imageUrl: uploadedImages,
+        availableQuantity: formData.availableQuantity,
+        variants: [], // Sending empty variants as per current UI
+      };
+
+      const response = await productApi.addProduct(payload);
+      if (response.data.status) {
+        toast.success("Product added successfully!");
+        setTimeout(() => {
+          router.push("/products"); // Or back to admin panel
+        }, 1000);
+      } else {
+        toast.error(response.data.message || "Failed to add product");
+      }
+    } catch (err: any) {
+      console.error(err);
+      toast.error(
+        err.response?.data?.message || err.message || "Something went wrong",
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
   const inputStyle = {
     width: "100%",
     padding: "10px 12px",
@@ -79,18 +163,29 @@ export default function AddProduct() {
     border: "1px solid #d1d5db",
     fontSize: "14px",
     color: "#374151",
-    backgroundColor: "white"
+    backgroundColor: "white",
   };
 
   const noSpinnerStyle = {
     ...inputStyle,
     MozAppearance: "textfield" as const,
     WebkitAppearance: "none" as const,
-    appearance: "none" as const
+    appearance: "none" as const,
   };
 
   return (
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
     <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "24px" }}>
+=======
+    <div
+      style={{
+        backgroundColor: "#f9fafb",
+        minHeight: "100vh",
+        padding: "24px",
+      }}
+    >
+      <Toaster />
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
       <style jsx>{`
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
@@ -103,7 +198,14 @@ export default function AddProduct() {
       `}</style>
       {/* Header */}
       <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "24px" }}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "24px",
+          }}
+        >
           <div>
             <button
               onClick={() => router.back()}
@@ -117,12 +219,19 @@ export default function AddProduct() {
                 fontWeight: "600",
                 color: "#1f2937",
                 cursor: "pointer",
-                padding: "0"
+                padding: "0",
               }}
             >
               <span style={{ fontSize: "20px" }}>←</span> Products
             </button>
-            <p style={{ color: "#6b7280", fontSize: "14px", marginTop: "4px", marginLeft: "28px" }}>
+            <p
+              style={{
+                color: "#6b7280",
+                fontSize: "14px",
+                marginTop: "4px",
+                marginLeft: "28px",
+              }}
+            >
               Add a New Product
             </p>
           </div>
@@ -138,7 +247,7 @@ export default function AddProduct() {
                 fontSize: "14px",
                 fontWeight: "600",
                 cursor: "pointer",
-                transition: "all 0.2s"
+                transition: "all 0.2s",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.borderColor = "#d1d5db";
@@ -162,7 +271,7 @@ export default function AddProduct() {
                 fontWeight: "700",
                 cursor: "pointer",
                 transition: "all 0.2s",
-                letterSpacing: "0.5px"
+                letterSpacing: "0.5px",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.backgroundColor = "#000";
@@ -181,17 +290,54 @@ export default function AddProduct() {
         </div>
 
         {/* Main Content */}
-        <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "24px" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "2fr 1fr",
+            gap: "24px",
+          }}
+        >
           {/* Left Column - Form */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div
+            style={{ display: "flex", flexDirection: "column", gap: "24px" }}
+          >
             {/* General Information */}
-            <div style={{ backgroundColor: "white", padding: "24px", borderRadius: "8px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
-              <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px" }}>
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: "24px",
+                borderRadius: "8px",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "600",
+                  color: "#1f2937",
+                  marginBottom: "20px",
+                }}
+              >
                 General Information
               </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: "16px" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                  marginBottom: "16px",
+                }}
+              >
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Product Name (E)
                   </label>
                   <input
@@ -204,7 +350,15 @@ export default function AddProduct() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Product Name (T)
                   </label>
                   <input
@@ -218,9 +372,23 @@ export default function AddProduct() {
                 </div>
               </div>
 
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
+              >
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Description (E)
                   </label>
                   <textarea
@@ -229,11 +397,27 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="Description in English"
                     rows={4}
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
                     style={{...inputStyle, resize: "vertical", fontFamily: "inherit"}}
+=======
+                    style={{
+                      ...inputStyle,
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                    }}
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Description (T)
                   </label>
                   <textarea
@@ -242,20 +426,65 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="Description in Tamil"
                     rows={4}
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
                     style={{...inputStyle, resize: "vertical", fontFamily: "inherit"}}
+=======
+                    style={{
+                      ...inputStyle,
+                      resize: "vertical",
+                      fontFamily: "inherit",
+                    }}
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                   />
                 </div>
               </div>
             </div>
 
             {/* Pricing Details */}
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
             <div style={{ backgroundColor: "white", padding: "24px", borderRadius: "8px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
               <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px" }}>
                 Pricing Details
               </h2>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+=======
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: "24px",
+                borderRadius: "8px",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "600",
+                  color: "#1f2937",
+                  marginBottom: "20px",
+                }}
+              >
+                Pricing & Inventory
+              </h2>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                  marginBottom: "16px",
+                }}
+              >
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Price
                   </label>
                   <input
@@ -269,7 +498,15 @@ export default function AddProduct() {
                   />
                 </div>
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Sale Price
                   </label>
                   <input
@@ -282,17 +519,70 @@ export default function AddProduct() {
                     style={noSpinnerStyle}
                   />
                 </div>
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
+=======
+              </div>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr 1fr",
+                  gap: "16px",
+                }}
+              >
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                 <div>
-                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
                     Discount Percentage
                   </label>
                   <input
                     type="text"
                     name="discountPercentage"
-                    value={formData.discountPercentage ? `${formData.discountPercentage}%` : ""}
+                    value={
+                      formData.discountPercentage
+                        ? `${formData.discountPercentage}%`
+                        : ""
+                    }
                     readOnly
                     placeholder="10.00%"
+<<<<<<< Updated upstream:src/pages/admin/AddProduct.tsx
                     style={{...noSpinnerStyle, backgroundColor: "#f9fafb", cursor: "not-allowed"}}
+=======
+                    style={{
+                      ...noSpinnerStyle,
+                      backgroundColor: "#f9fafb",
+                      cursor: "not-allowed",
+                    }}
+                  />
+                </div>
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "13px",
+                      fontWeight: "500",
+                      color: "#374151",
+                      marginBottom: "6px",
+                    }}
+                  >
+                    Available Quantity
+                  </label>
+                  <input
+                    type="number"
+                    name="availableQuantity"
+                    value={formData.availableQuantity}
+                    onChange={handleInputChange}
+                    placeholder="e.g 100"
+                    min="0"
+                    style={noSpinnerStyle}
+>>>>>>> Stashed changes:src/pages/admin/addProduct.tsx
                   />
                 </div>
               </div>
@@ -301,8 +591,22 @@ export default function AddProduct() {
 
           {/* Right Column - Image Upload */}
           <div>
-            <div style={{ backgroundColor: "white", padding: "24px", borderRadius: "8px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
-              <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px" }}>
+            <div
+              style={{
+                backgroundColor: "white",
+                padding: "24px",
+                borderRadius: "8px",
+                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
+              }}
+            >
+              <h2
+                style={{
+                  fontSize: "18px",
+                  fontWeight: "600",
+                  color: "#1f2937",
+                  marginBottom: "20px",
+                }}
+              >
                 Upload Product Images (0-3)
               </h2>
               
@@ -318,25 +622,38 @@ export default function AddProduct() {
                   justifyContent: "center",
                   marginBottom: "16px",
                   position: "relative",
-                  overflow: "hidden"
+                  overflow: "hidden",
                 }}
               >
                 {mainImage ? (
                   <img
                     src={mainImage}
                     alt="Product"
-                    style={{ width: "100%", height: "100%", objectFit: "contain" }}
+                    style={{
+                      width: "100%",
+                      height: "100%",
+                      objectFit: "contain",
+                    }}
                   />
                 ) : (
                   <div style={{ textAlign: "center", color: "#9ca3af" }}>
-                    <div style={{ fontSize: "48px", marginBottom: "8px" }}>📷</div>
+                    <div style={{ fontSize: "48px", marginBottom: "8px" }}>
+                      📷
+                    </div>
                     <p style={{ fontSize: "14px" }}>Upload main image</p>
                   </div>
                 )}
               </div>
 
               {/* Thumbnail Images */}
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(3, 1fr)", gap: "12px", marginBottom: "16px" }}>
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(3, 1fr)",
+                  gap: "12px",
+                  marginBottom: "16px",
+                }}
+              >
                 {uploadedImages.map((img, index) => (
                   <div
                     key={index}
@@ -348,14 +665,18 @@ export default function AddProduct() {
                       position: "relative",
                       overflow: "hidden",
                       cursor: "pointer",
-                      border: mainImage === img ? "2px solid #fbbf24" : "none"
+                      border: mainImage === img ? "2px solid #fbbf24" : "none",
                     }}
                     onClick={() => setMainImage(img)}
                   >
                     <img
                       src={img}
                       alt={`Thumbnail ${index + 1}`}
-                      style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        objectFit: "cover",
+                      }}
                     />
                     <button
                       onClick={(e) => {
@@ -377,14 +698,16 @@ export default function AddProduct() {
                         display: "flex",
                         alignItems: "center",
                         justifyContent: "center",
-                        padding: "0"
+                        padding: "0",
                       }}
                     >
                       ×
                     </button>
                   </div>
                 ))}
-                {Array.from({ length: Math.max(0, 3 - uploadedImages.length) }).map((_, index) => (
+                {Array.from({
+                  length: Math.max(0, 3 - uploadedImages.length),
+                }).map((_, index) => (
                   <div
                     key={`empty-${index}`}
                     style={{
@@ -392,7 +715,7 @@ export default function AddProduct() {
                       height: "80px",
                       backgroundColor: "#f3f4f6",
                       borderRadius: "6px",
-                      border: "2px dashed #d1d5db"
+                      border: "2px dashed #d1d5db",
                     }}
                   />
                 ))}
@@ -412,7 +735,7 @@ export default function AddProduct() {
                   fontSize: "14px",
                   fontWeight: "700",
                   transition: "all 0.2s",
-                  letterSpacing: "0.5px"
+                  letterSpacing: "0.5px",
                 }}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.backgroundColor = "#000";
@@ -434,8 +757,16 @@ export default function AddProduct() {
                   style={{ display: "none" }}
                 />
               </label>
-              <p style={{ fontSize: "12px", color: "#6b7280", marginTop: "8px", textAlign: "center" }}>
-                You can upload up to 3 images (Click on thumbnail to set as main)
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "#6b7280",
+                  marginTop: "8px",
+                  textAlign: "center",
+                }}
+              >
+                You can upload up to 3 images (Click on thumbnail to set as
+                main)
               </p>
             </div>
           </div>
