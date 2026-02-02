@@ -236,7 +236,7 @@ export default function Blog() {
                 letterSpacing: "1px",
               }}
             >
-              HONEY & HERBS: NATURE'S REMEDY FOR EVERYDAY WELLNESS
+              HONEY & HERBS: NATURE&apos;S REMEDY FOR EVERYDAY WELLNESS
             </h2>
             <p
               style={{
@@ -561,7 +561,7 @@ export default function Blog() {
               be complicated. At Future Nature, we offer a handcrafted
               collection of Natural honey products infused with carefully chosen
               herbs. Each one is designed to support your well-being from the
-              inside out. Below, you'll find some of our most-loved honey blends
+              inside out. Below, you&apos;ll find some of our most-loved honey blends
               and the powerful benefits they provide.
             </p>
           </div>

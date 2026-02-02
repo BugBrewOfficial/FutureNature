@@ -11,7 +11,6 @@ import toast from "react-hot-toast";
 import { Rating } from "react-simple-star-rating";
 import { wishlistApi } from "@/api/wishlistApi";
 import Cookies from "js-cookie";
-import AuthModal from "@/components/AuthModal";
 
 interface Product {
     id: string
@@ -58,7 +57,6 @@ export default function ViewProduct({ product }: { product: Product }) {
     const [hasFetchedReviews, setHasFetchedReviews] = useState(false);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [isWishlisted, setIsWishlisted] = useState(false);
-    const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
     const [pendingWishlist, setPendingWishlist] = useState(false);
 
     useEffect(() => {
@@ -82,8 +80,7 @@ export default function ViewProduct({ product }: { product: Product }) {
     const handleToggleWishlist = useCallback(async () => {
         const token = Cookies.get("token");
         if (!token) {
-            setPendingWishlist(true);
-            setIsAuthModalOpen(true);
+            toast.error("Please login to add to wishlist");
             return;
         }
 
@@ -872,7 +869,6 @@ export default function ViewProduct({ product }: { product: Product }) {
                 </div>
             </div>
             <Footer />
-            <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
         </>
     );
 }

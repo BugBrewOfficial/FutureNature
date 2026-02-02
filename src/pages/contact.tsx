@@ -1,15 +1,90 @@
+import Footer from "@/components/Footer";
+import Navbar from "@/components/Navbar";
 import Head from "next/head";
 import Image from "next/image";
-import Navbar from "../components/Navbar";
-import Footer from "../components/Footer";
 import { useState } from "react";
 
+interface FormData {
+  name: string;
+  email: string;
+  mobile: string;
+  message: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  mobile?: string;
+  message?: string;
+}
+
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    Name: "",
+  const [formData, setFormData] = useState<FormData>({
+    name: "",
     email: "",
+    mobile: "",
     message: ""
   });
+
+  const [errors, setErrors] = useState<FormErrors>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<{
+    type: 'success' | 'error' | null;
+    message: string;
+  }>({ type: null, message: '' });
+
+  // Validation functions
+  const validateName = (name: string): string | undefined => {
+    if (!name.trim()) return "Name is required";
+    if (name.trim().length < 3) return "Name must be at least 3 characters long";
+    return undefined;
+  };
+
+  const validateEmail = (email: string): string | undefined => {
+    if (!email.trim()) return "Email is required";
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) return "Invalid email address";
+    return undefined;
+  };
+
+  const validateMobile = (mobile: string): string | undefined => {
+    if (!mobile.trim()) return "Mobile number is required";
+    // Indian mobile number: 10 digits, optional +91 prefix, starts with 6-9
+    const mobileRegex = /^(\+91)?[6-9]\d{9}$/;
+    if (!mobileRegex.test(mobile.replace(/\s/g, ''))) {
+      return "Invalid Indian mobile number. Must be 10 digits starting with 6-9";
+    }
+    return undefined;
+  };
+
+  const validateMessage = (message: string): string | undefined => {
+    if (!message.trim()) return "Message is required";
+    return undefined;
+  };
+
+  const validateField = (name: keyof FormData, value: string) => {
+    let error: string | undefined;
+
+    switch (name) {
+      case 'name':
+        error = validateName(value);
+        break;
+      case 'email':
+        error = validateEmail(value);
+        break;
+      case 'mobile':
+        error = validateMobile(value);
+        break;
+      case 'message':
+        error = validateMessage(value);
+        break;
+    }
+
+    setErrors(prev => ({
+      ...prev,
+      [name]: error
+    }));
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -17,13 +92,79 @@ export default function Contact() {
       ...prev,
       [name]: value
     }));
+
+    // Validate on change
+    validateField(name as keyof FormData, value);
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleBlur = (e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    validateField(name as keyof FormData, value);
+  };
+
+  const isFormValid = (): boolean => {
+    const nameError = validateName(formData.name);
+    const emailError = validateEmail(formData.email);
+    const mobileError = validateMobile(formData.mobile);
+    const messageError = validateMessage(formData.message);
+
+    return !nameError && !emailError && !mobileError && !messageError;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
-    // Add your form submission logic here
-    setFormData({ Name: "", email: "", message: "" });
+
+    // Validate all fields
+    const newErrors: FormErrors = {
+      name: validateName(formData.name),
+      email: validateEmail(formData.email),
+      mobile: validateMobile(formData.mobile),
+      message: validateMessage(formData.message),
+    };
+
+    setErrors(newErrors);
+
+    // Check if there are any errors
+    if (Object.values(newErrors).some(error => error !== undefined)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus({ type: null, message: '' });
+
+    try {
+      const response = await fetch('http://localhost:8081/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (response.ok && data.success) {
+        setSubmitStatus({
+          type: 'success',
+          message: data.message || 'Your message has been sent successfully!'
+        });
+        setFormData({ name: "", email: "", mobile: "", message: "" });
+        setErrors({});
+      } else {
+        setSubmitStatus({
+          type: 'error',
+          message: data.message || 'Failed to send your message. Please try again.'
+        });
+      }
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      setSubmitStatus({
+        type: 'error',
+        message: 'Failed to send your message. Please try again later.'
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
@@ -137,13 +278,29 @@ export default function Contact() {
                 </h2>
               </div>
 
+              {/* Success/Error Message */}
+              {submitStatus.type && (
+                <div style={{
+                  padding: '16px',
+                  borderRadius: '12px',
+                  marginBottom: '20px',
+                  backgroundColor: submitStatus.type === 'success' ? '#d1fae5' : '#fee2e2',
+                  border: `2px solid ${submitStatus.type === 'success' ? '#10b981' : '#ef4444'}`,
+                  color: submitStatus.type === 'success' ? '#065f46' : '#991b1b',
+                  fontWeight: '600',
+                  fontSize: '14px'
+                }}>
+                  {submitStatus.message}
+                </div>
+              )}
+
               {/* Form */}
               <form onSubmit={handleSubmit} style={{
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '20px'
               }}>
-                {/* Nick Name Field */}
+                {/* Name Field */}
                 <div>
                   <label style={{
                     display: 'block',
@@ -152,19 +309,20 @@ export default function Contact() {
                     color: '#000',
                     marginBottom: '8px'
                   }}>
-                    Name:
+                    Name: <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <input
                     type="text"
-                    name="Name"
-                    value={formData.Name}
+                    name="name"
+                    value={formData.name}
                     onChange={handleChange}
-                    placeholder=""
+                    onBlur={handleBlur}
+                    placeholder="Enter your name"
                     className="form-input"
                     style={{
                       width: '100%',
                       padding: '14px 18px',
-                      border: '2px solid #d1d5db',
+                      border: `2px solid ${errors.name ? '#ef4444' : '#d1d5db'}`,
                       borderRadius: '14px',
                       fontSize: '14px',
                       boxSizing: 'border-box',
@@ -174,6 +332,16 @@ export default function Contact() {
                       transition: 'border-color 0.3s'
                     }}
                   />
+                  {errors.name && (
+                    <p style={{
+                      color: '#ef4444',
+                      fontSize: '12px',
+                      marginTop: '6px',
+                      marginBottom: '0'
+                    }}>
+                      {errors.name}
+                    </p>
+                  )}
                 </div>
 
                 {/* Email Field */}
@@ -185,19 +353,20 @@ export default function Contact() {
                     color: '#000',
                     marginBottom: '8px'
                   }}>
-                    Email Address:
+                    Email Address: <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <input
                     type="email"
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    placeholder=""
+                    onBlur={handleBlur}
+                    placeholder="Enter your email"
                     className="form-input"
                     style={{
                       width: '100%',
                       padding: '14px 18px',
-                      border: '2px solid #d1d5db',
+                      border: `2px solid ${errors.email ? '#ef4444' : '#d1d5db'}`,
                       borderRadius: '14px',
                       fontSize: '14px',
                       boxSizing: 'border-box',
@@ -207,6 +376,60 @@ export default function Contact() {
                       transition: 'border-color 0.3s'
                     }}
                   />
+                  {errors.email && (
+                    <p style={{
+                      color: '#ef4444',
+                      fontSize: '12px',
+                      marginTop: '6px',
+                      marginBottom: '0'
+                    }}>
+                      {errors.email}
+                    </p>
+                  )}
+                </div>
+
+                {/* Mobile Number Field */}
+                <div>
+                  <label style={{
+                    display: 'block',
+                    fontSize: '14px',
+                    fontWeight: '600',
+                    color: '#000',
+                    marginBottom: '8px'
+                  }}>
+                    Mobile Number: <span style={{ color: '#ef4444' }}>*</span>
+                  </label>
+                  <input
+                    type="tel"
+                    name="mobile"
+                    value={formData.mobile}
+                    onChange={handleChange}
+                    onBlur={handleBlur}
+                    placeholder="Enter 10-digit mobile number"
+                    className="form-input"
+                    style={{
+                      width: '100%',
+                      padding: '14px 18px',
+                      border: `2px solid ${errors.mobile ? '#ef4444' : '#d1d5db'}`,
+                      borderRadius: '14px',
+                      fontSize: '14px',
+                      boxSizing: 'border-box',
+                      outline: 'none',
+                      backgroundColor: '#fff',
+                      color: '#000',
+                      transition: 'border-color 0.3s'
+                    }}
+                  />
+                  {errors.mobile && (
+                    <p style={{
+                      color: '#ef4444',
+                      fontSize: '12px',
+                      marginTop: '6px',
+                      marginBottom: '0'
+                    }}>
+                      {errors.mobile}
+                    </p>
+                  )}
                 </div>
 
                 {/* Message Field */}
@@ -218,19 +441,20 @@ export default function Contact() {
                     color: '#000',
                     marginBottom: '8px'
                   }}>
-                    Write a message:
+                    Write a message: <span style={{ color: '#ef4444' }}>*</span>
                   </label>
                   <textarea
                     name="message"
                     value={formData.message}
                     onChange={handleChange}
-                    placeholder=""
+                    onBlur={handleBlur}
+                    placeholder="Enter your message"
                     rows={6}
                     className="form-textarea"
                     style={{
                       width: '100%',
                       padding: '14px 18px',
-                      border: '2px solid #d1d5db',
+                      border: `2px solid ${errors.message ? '#ef4444' : '#d1d5db'}`,
                       borderRadius: '14px',
                       fontSize: '14px',
                       boxSizing: 'border-box',
@@ -242,35 +466,51 @@ export default function Contact() {
                       transition: 'border-color 0.3s'
                     }}
                   />
+                  {errors.message && (
+                    <p style={{
+                      color: '#ef4444',
+                      fontSize: '12px',
+                      marginTop: '6px',
+                      marginBottom: '0'
+                    }}>
+                      {errors.message}
+                    </p>
+                  )}
                 </div>
 
                 {/* Submit Button */}
                 <button
                   type="submit"
+                  disabled={!isFormValid() || isSubmitting}
                   className="form-button"
                   style={{
-                    backgroundColor: '#fbbf24',
-                    color: '#000',
+                    backgroundColor: (!isFormValid() || isSubmitting) ? '#d1d5db' : '#fbbf24',
+                    color: (!isFormValid() || isSubmitting) ? '#9ca3af' : '#000',
                     padding: '14px 26px',
                     border: 'none',
                     borderRadius: '10px',
                     fontSize: '14px',
                     fontWeight: '600',
-                    cursor: 'pointer',
+                    cursor: (!isFormValid() || isSubmitting) ? 'not-allowed' : 'pointer',
                     alignSelf: 'flex-start',
                     transition: 'all 0.2s',
-                    marginBottom: '40px'
+                    marginBottom: '40px',
+                    opacity: (!isFormValid() || isSubmitting) ? 0.6 : 1
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#000';
-                    e.currentTarget.style.color = '#fff';
+                    if (isFormValid() && !isSubmitting) {
+                      e.currentTarget.style.backgroundColor = '#000';
+                      e.currentTarget.style.color = '#fff';
+                    }
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#fbbf24';
-                    e.currentTarget.style.color = '#000';
+                    if (isFormValid() && !isSubmitting) {
+                      e.currentTarget.style.backgroundColor = '#fbbf24';
+                      e.currentTarget.style.color = '#000';
+                    }
                   }}
                 >
-                  Send Message
+                  {isSubmitting ? 'Sending...' : 'Send Message'}
                 </button>
               </form>
             </div>
