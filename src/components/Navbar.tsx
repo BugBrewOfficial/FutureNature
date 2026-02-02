@@ -3,7 +3,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import { useCart } from "./CartContext";
-import Cookies from 'js-cookie';
+import Cookies from "js-cookie";
 import { useAuth } from "./AuthContext";
 import AdminPanel from "./AdminPanel";
 
@@ -20,7 +20,7 @@ export default function Navbar() {
 
   useEffect(() => {
     const checkLoginStatus = () => {
-      const token = Cookies.get('token');
+      const token = Cookies.get("token");
       setIsLoggedIn(!!token);
     };
 
@@ -32,7 +32,10 @@ export default function Navbar() {
 
     // Click outside listener for profile menu
     const handleClickOutside = (event: MouseEvent) => {
-      if (profileMenuRef.current && !profileMenuRef.current.contains(event.target as Node)) {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target as Node)
+      ) {
         setIsProfileMenuOpen(false);
       }
     };
@@ -46,43 +49,51 @@ export default function Navbar() {
   }, []);
 
   const handleLogout = () => {
-    Cookies.remove('token');
+    Cookies.remove("token");
     setIsLoggedIn(false);
     setIsProfileMenuOpen(false);
-    router.push('/');
+    router.push("/");
   };
 
   return (
-    <nav style={{
-      backgroundColor: 'white',
-      borderBottom: '1px solid #e5e7eb',
-      position: 'sticky',
-      top: 0,
-      zIndex: 1000,
-      boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
-    }}>
-      <div className="navbar-container" style={{
-        maxWidth: '1400px',
-        margin: '0 auto',
-        padding: '0 24px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        height: '80px'
-      }}>
+    <nav
+      style={{
+        backgroundColor: "white",
+        borderBottom: "1px solid #e5e7eb",
+        position: "sticky",
+        top: 0,
+        zIndex: 1000,
+        boxShadow: "0 2px 4px rgba(0,0,0,0.05)",
+      }}
+    >
+      <div
+        className="navbar-container"
+        style={{
+          maxWidth: "1400px",
+          margin: "0 auto",
+          padding: "0 24px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "space-between",
+          height: "80px",
+        }}
+      >
         {/* Logo */}
-        <Link href="/" style={{
-          display: 'flex',
-          alignItems: 'center',
-          textDecoration: 'none'
-        }}>
+        <Link
+          href="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            textDecoration: "none",
+          }}
+        >
           <Image
             src="/Assets/logo.png"
             alt="FutureNature Logo"
             width={150}
             height={60}
             className="navbar-logo"
-            style={{ objectFit: 'contain' }}
+            style={{ objectFit: "contain" }}
           />
         </Link>
 
@@ -91,67 +102,80 @@ export default function Navbar() {
           className="mobile-menu-button"
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           style={{
-            display: 'none',
-            flexDirection: 'column',
-            justifyContent: 'space-around',
-            width: '30px',
-            height: '24px',
-            background: 'transparent',
-            border: 'none',
-            cursor: 'pointer',
+            display: "none",
+            flexDirection: "column",
+            justifyContent: "space-around",
+            width: "30px",
+            height: "24px",
+            background: "transparent",
+            border: "none",
+            cursor: "pointer",
             padding: 0,
-            zIndex: 10
+            zIndex: 10,
           }}
           aria-label="Toggle menu"
         >
-          <span style={{
-            width: '30px',
-            height: '3px',
-            background: '#f59e0b',
-            borderRadius: '10px',
-            transition: 'all 0.3s',
-            transformOrigin: '1px',
-            transform: isMobileMenuOpen ? 'rotate(45deg)' : 'rotate(0)'
-          }} />
-          <span style={{
-            width: '30px',
-            height: '3px',
-            background: '#f59e0b',
-            borderRadius: '10px',
-            transition: 'all 0.3s',
-            opacity: isMobileMenuOpen ? 0 : 1
-          }} />
-          <span style={{
-            width: '30px',
-            height: '3px',
-            background: '#f59e0b',
-            borderRadius: '10px',
-            transition: 'all 0.3s',
-            transformOrigin: '1px',
-            transform: isMobileMenuOpen ? 'rotate(-45deg)' : 'rotate(0)'
-          }} />
+          <span
+            style={{
+              width: "30px",
+              height: "3px",
+              background: "#f59e0b",
+              borderRadius: "10px",
+              transition: "all 0.3s",
+              transformOrigin: "1px",
+              transform: isMobileMenuOpen ? "rotate(45deg)" : "rotate(0)",
+            }}
+          />
+          <span
+            style={{
+              width: "30px",
+              height: "3px",
+              background: "#f59e0b",
+              borderRadius: "10px",
+              transition: "all 0.3s",
+              opacity: isMobileMenuOpen ? 0 : 1,
+            }}
+          />
+          <span
+            style={{
+              width: "30px",
+              height: "3px",
+              background: "#f59e0b",
+              borderRadius: "10px",
+              transition: "all 0.3s",
+              transformOrigin: "1px",
+              transform: isMobileMenuOpen ? "rotate(-45deg)" : "rotate(0)",
+            }}
+          />
         </button>
 
         {/* Navigation Links */}
-        <div className={`navbar-links ${isMobileMenuOpen ? 'mobile-menu-open' : ''}`} style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '40px'
-        }}>
+        <div
+          className={`navbar-links ${isMobileMenuOpen ? "mobile-menu-open" : ""}`}
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "40px",
+          }}
+        >
           <Link
             href="/"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
-              color: router.pathname === '/' ? '#f59e0b' : '#374151',
-              fontSize: '16px',
-              fontWeight: router.pathname === '/' ? '600' : '500',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-              position: 'relative',
-              paddingBottom: '8px',
-              borderBottom: router.pathname === '/' ? '3px solid #f59e0b' : '3px solid transparent'
-            }}>
+              color: router.pathname === "/" ? "#f59e0b" : "#374151",
+              fontSize: "16px",
+              fontWeight: router.pathname === "/" ? "600" : "500",
+              textDecoration: "none",
+              transition: "color 0.2s",
+              position: "relative",
+              paddingBottom: "8px",
+              borderBottom:
+                router.pathname === "/"
+                  ? "3px solid #f59e0b"
+                  : "3px solid transparent",
+            }}
+          >
             Home
           </Link>
           <Link
@@ -159,15 +183,19 @@ export default function Navbar() {
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
-              color: router.pathname === '/products' ? '#f59e0b' : '#374151',
-              fontSize: '16px',
-              fontWeight: router.pathname === '/products' ? '600' : '500',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-              position: 'relative',
-              paddingBottom: '8px',
-              borderBottom: router.pathname === '/products' ? '3px solid #f59e0b' : '3px solid transparent'
-            }}>
+              color: router.pathname === "/products" ? "#f59e0b" : "#374151",
+              fontSize: "16px",
+              fontWeight: router.pathname === "/products" ? "600" : "500",
+              textDecoration: "none",
+              transition: "color 0.2s",
+              position: "relative",
+              paddingBottom: "8px",
+              borderBottom:
+                router.pathname === "/products"
+                  ? "3px solid #f59e0b"
+                  : "3px solid transparent",
+            }}
+          >
             Products
           </Link>
           <Link
@@ -175,15 +203,19 @@ export default function Navbar() {
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
-              color: router.pathname === '/wishlist' ? '#f59e0b' : '#374151',
-              fontSize: '16px',
-              fontWeight: router.pathname === '/wishlist' ? '600' : '500',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-              position: 'relative',
-              paddingBottom: '8px',
-              borderBottom: router.pathname === '/wishlist' ? '3px solid #f59e0b' : '3px solid transparent'
-            }}>
+              color: router.pathname === "/wishlist" ? "#f59e0b" : "#374151",
+              fontSize: "16px",
+              fontWeight: router.pathname === "/wishlist" ? "600" : "500",
+              textDecoration: "none",
+              transition: "color 0.2s",
+              position: "relative",
+              paddingBottom: "8px",
+              borderBottom:
+                router.pathname === "/wishlist"
+                  ? "3px solid #f59e0b"
+                  : "3px solid transparent",
+            }}
+          >
             Wishlist
           </Link>
           <Link
@@ -191,15 +223,19 @@ export default function Navbar() {
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
-              color: router.pathname === '/blog' ? '#f59e0b' : '#374151',
-              fontSize: '16px',
-              fontWeight: router.pathname === '/blog' ? '600' : '500',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-              position: 'relative',
-              paddingBottom: '8px',
-              borderBottom: router.pathname === '/blog' ? '3px solid #f59e0b' : '3px solid transparent'
-            }}>
+              color: router.pathname === "/blog" ? "#f59e0b" : "#374151",
+              fontSize: "16px",
+              fontWeight: router.pathname === "/blog" ? "600" : "500",
+              textDecoration: "none",
+              transition: "color 0.2s",
+              position: "relative",
+              paddingBottom: "8px",
+              borderBottom:
+                router.pathname === "/blog"
+                  ? "3px solid #f59e0b"
+                  : "3px solid transparent",
+            }}
+          >
             Blog
           </Link>
           <Link
@@ -207,15 +243,19 @@ export default function Navbar() {
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
-              color: router.pathname === '/about' ? '#f59e0b' : '#374151',
-              fontSize: '16px',
-              fontWeight: router.pathname === '/about' ? '600' : '500',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-              position: 'relative',
-              paddingBottom: '8px',
-              borderBottom: router.pathname === '/about' ? '3px solid #f59e0b' : '3px solid transparent'
-            }}>
+              color: router.pathname === "/about" ? "#f59e0b" : "#374151",
+              fontSize: "16px",
+              fontWeight: router.pathname === "/about" ? "600" : "500",
+              textDecoration: "none",
+              transition: "color 0.2s",
+              position: "relative",
+              paddingBottom: "8px",
+              borderBottom:
+                router.pathname === "/about"
+                  ? "3px solid #f59e0b"
+                  : "3px solid transparent",
+            }}
+          >
             About Us
           </Link>
           <Link
@@ -223,47 +263,57 @@ export default function Navbar() {
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
             style={{
-              color: router.pathname === '/contact' ? '#f59e0b' : '#374151',
-              fontSize: '16px',
-              fontWeight: router.pathname === '/contact' ? '600' : '500',
-              textDecoration: 'none',
-              transition: 'color 0.2s',
-              position: 'relative',
-              paddingBottom: '8px',
-              borderBottom: router.pathname === '/contact' ? '3px solid #f59e0b' : '3px solid transparent'
-            }}>
+              color: router.pathname === "/contact" ? "#f59e0b" : "#374151",
+              fontSize: "16px",
+              fontWeight: router.pathname === "/contact" ? "600" : "500",
+              textDecoration: "none",
+              transition: "color 0.2s",
+              position: "relative",
+              paddingBottom: "8px",
+              borderBottom:
+                router.pathname === "/contact"
+                  ? "3px solid #f59e0b"
+                  : "3px solid transparent",
+            }}
+          >
             Contact Us
           </Link>
         </div>
 
         {/* Cart and Login - Desktop */}
-        <div className="navbar-actions" style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: '20px'
-        }}>
+        <div
+          className="navbar-actions"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "20px",
+          }}
+        >
           <button
             onClick={() => setIsAdminPanelOpen(true)}
             className="navbar-admin-button"
             style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '12px',
-              backgroundColor: 'transparent',
-              color: '#000',
-              border: 'none',
-              padding: '0',
-              fontSize: '18px',
-              fontWeight: '400',
-              cursor: 'pointer',
-              transition: 'all 0.2s',
-              textDecoration: 'none'
-            }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              backgroundColor: "transparent",
+              color: "#000",
+              border: "none",
+              padding: "0",
+              fontSize: "18px",
+              fontWeight: "400",
+              cursor: "pointer",
+              transition: "all 0.2s",
+              textDecoration: "none",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+              }}
+            >
               <Image
                 src="/Assets/Svg/profile.svg"
                 alt="Admin"
@@ -271,29 +321,35 @@ export default function Navbar() {
                 height={42}
               />
             </div>
-            <span className="navbar-admin-text">Admin</span>
+            <span className="navbar-admin-text">Admins</span>
           </button>
-          <Link href="/cart" className="navbar-cart-link" style={{
-            display: 'flex',
-            alignItems: 'center',
-            gap: '12px',
-            backgroundColor: 'transparent',
-            color: '#000',
-            border: 'none',
-            padding: '0',
-            fontSize: '18px',
-            fontWeight: '400',
-            cursor: 'pointer',
-            transition: 'all 0.2s',
-            textDecoration: 'none',
-            position: 'relative'
-          }}>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              position: 'relative'
-            }}>
+          <Link
+            href="/cart"
+            className="navbar-cart-link"
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: "12px",
+              backgroundColor: "transparent",
+              color: "#000",
+              border: "none",
+              padding: "0",
+              fontSize: "18px",
+              fontWeight: "400",
+              cursor: "pointer",
+              transition: "all 0.2s",
+              textDecoration: "none",
+              position: "relative",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                position: "relative",
+              }}
+            >
               <Image
                 src="/Assets/Svg/cart.svg"
                 alt="Cart"
@@ -301,21 +357,24 @@ export default function Navbar() {
                 height={42}
               />
               {cartItemCount > 0 && (
-                <span className="navbar-cart-badge" style={{
-                  position: 'absolute',
-                  top: '-8px',
-                  right: '-8px',
-                  backgroundColor: '#f59e0b',
-                  color: 'white',
-                  borderRadius: '50%',
-                  width: '24px',
-                  height: '24px',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  fontSize: '12px',
-                  fontWeight: 'bold'
-                }}>
+                <span
+                  className="navbar-cart-badge"
+                  style={{
+                    position: "absolute",
+                    top: "-8px",
+                    right: "-8px",
+                    backgroundColor: "#f59e0b",
+                    color: "white",
+                    borderRadius: "50%",
+                    width: "24px",
+                    height: "24px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: "12px",
+                    fontWeight: "bold",
+                  }}
+                >
                   {cartItemCount}
                 </span>
               )}
@@ -323,32 +382,40 @@ export default function Navbar() {
             <span className="navbar-cart-text">Cart</span>
           </Link>
 
-          <span className="navbar-divider" style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
+          <span
+            className="navbar-divider"
+            style={{ color: "#d1d5db", fontSize: "24px", fontWeight: "300" }}
+          >
+            |
+          </span>
 
           {isLoggedIn ? (
-            <div style={{ position: 'relative' }} ref={profileMenuRef}>
+            <div style={{ position: "relative" }} ref={profileMenuRef}>
               <button
                 onClick={() => setIsProfileMenuOpen(!isProfileMenuOpen)}
                 className="navbar-login-button"
                 style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '12px',
-                  backgroundColor: 'transparent',
-                  color: '#000',
-                  border: 'none',
-                  padding: '0',
-                  fontSize: '18px',
-                  fontWeight: '400',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s'
-                }}>
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "12px",
+                  backgroundColor: "transparent",
+                  color: "#000",
+                  border: "none",
+                  padding: "0",
+                  fontSize: "18px",
+                  fontWeight: "400",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+              >
                 <span className="navbar-login-text">Profile</span>
-                <div style={{
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                }}>
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
                   <Image
                     src="/Assets/Svg/profile.svg"
                     alt="Profile"
@@ -360,51 +427,62 @@ export default function Navbar() {
 
               {/* Dropdown Menu */}
               {isProfileMenuOpen && (
-                <div style={{
-                  position: 'absolute',
-                  top: '120%',
-                  right: 0,
-                  width: '200px',
-                  backgroundColor: 'white',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)',
-                  border: '1px solid #e5e7eb',
-                  zIndex: 1001,
-                  overflow: 'hidden'
-                }}>
-                  <div style={{ padding: '8px 0' }}>
+                <div
+                  style={{
+                    position: "absolute",
+                    top: "120%",
+                    right: 0,
+                    width: "200px",
+                    backgroundColor: "white",
+                    borderRadius: "8px",
+                    boxShadow:
+                      "0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06)",
+                    border: "1px solid #e5e7eb",
+                    zIndex: 1001,
+                    overflow: "hidden",
+                  }}
+                >
+                  <div style={{ padding: "8px 0" }}>
                     <Link
                       href="/address"
                       onClick={() => setIsProfileMenuOpen(false)}
                       style={{
-                        display: 'block',
-                        padding: '10px 16px',
-                        color: '#374151',
-                        textDecoration: 'none',
-                        fontSize: '15px',
-                        transition: 'background-color 0.2s',
+                        display: "block",
+                        padding: "10px 16px",
+                        color: "#374151",
+                        textDecoration: "none",
+                        fontSize: "15px",
+                        transition: "background-color 0.2s",
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#f3f4f6'}
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#f3f4f6")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.backgroundColor = "transparent")
+                      }
                     >
                       My Addresses
                     </Link>
                     <button
                       onClick={handleLogout}
                       style={{
-                        width: '100%',
-                        textAlign: 'left',
-                        padding: '10px 16px',
-                        color: '#ef4444',
-                        backgroundColor: 'transparent',
-                        border: 'none',
-                        fontSize: '15px',
-                        cursor: 'pointer',
-                        transition: 'background-color 0.2s',
-                        borderTop: '1px solid #f3f4f6'
+                        width: "100%",
+                        textAlign: "left",
+                        padding: "10px 16px",
+                        color: "#ef4444",
+                        backgroundColor: "transparent",
+                        border: "none",
+                        fontSize: "15px",
+                        cursor: "pointer",
+                        transition: "background-color 0.2s",
+                        borderTop: "1px solid #f3f4f6",
                       }}
-                      onMouseOver={(e) => e.currentTarget.style.backgroundColor = '#fef2f2'}
-                      onMouseOut={(e) => e.currentTarget.style.backgroundColor = 'transparent'}
+                      onMouseOver={(e) =>
+                        (e.currentTarget.style.backgroundColor = "#fef2f2")
+                      }
+                      onMouseOut={(e) =>
+                        (e.currentTarget.style.backgroundColor = "transparent")
+                      }
                     >
                       Logout
                     </button>
@@ -417,24 +495,27 @@ export default function Navbar() {
               onClick={() => openLoginModal()}
               className="navbar-login-button"
               style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '12px',
-                backgroundColor: 'transparent',
-                color: '#000',
-                border: 'none',
-                padding: '0',
-                fontSize: '18px',
-                fontWeight: '400',
-                cursor: 'pointer',
-                transition: 'all 0.2s'
-              }}>
+                display: "flex",
+                alignItems: "center",
+                gap: "12px",
+                backgroundColor: "transparent",
+                color: "#000",
+                border: "none",
+                padding: "0",
+                fontSize: "18px",
+                fontWeight: "400",
+                cursor: "pointer",
+                transition: "all 0.2s",
+              }}
+            >
               <span className="navbar-login-text">Login</span>
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-              }}>
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
                 <Image
                   src="/Assets/Svg/profile.svg"
                   alt="Login"
@@ -445,10 +526,12 @@ export default function Navbar() {
             </button>
           )}
         </div>
-      </div >
+      </div>
 
-
-      <AdminPanel isOpen={isAdminPanelOpen} onClose={() => setIsAdminPanelOpen(false)} />
-    </nav >
+      <AdminPanel
+        isOpen={isAdminPanelOpen}
+        onClose={() => setIsAdminPanelOpen(false)}
+      />
+    </nav>
   );
 }
