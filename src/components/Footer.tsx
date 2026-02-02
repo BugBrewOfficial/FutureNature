@@ -286,13 +286,14 @@ export default function Footer() {
         </div>
 
         {/* Social Media Icons */}
-        <div style={{
+        <div className="footer-social-icons" style={{
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
           gap: '24px',
           paddingTop: '10px',
-          paddingBottom: '20px'
+          paddingBottom: '20px',
+          flexWrap: 'wrap'
         }}>
           <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{
             color: '#f59e0b',
@@ -362,14 +363,14 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <div style={{
+        <div className="footer-copyright" style={{
           textAlign: 'center',
           fontSize: '14px',
           color: '#9ca3af',
           paddingTop: '20px',
           borderTop: '1px solid #333'
         }}>
-          © 2025 Futurenature.Powered by BugBrew.
+          © 2025 Futurenature. Powered by BugBrew.
         </div>
       </div>
     </footer>

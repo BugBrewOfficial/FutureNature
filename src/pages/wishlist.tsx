@@ -69,12 +69,12 @@ export default function WishlistPage() {
             <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
                 <Navbar />
 
-                <div style={{
+                <div className="wishlist-container" style={{
                     maxWidth: '1400px',
                     margin: '0 auto',
                     padding: '120px 24px 80px'
                 }}>
-                    <h1 style={{
+                    <h1 className="wishlist-title" style={{
                         fontSize: '36px',
                         fontWeight: '800',
                         color: '#111827',
@@ -119,7 +119,7 @@ export default function WishlistPage() {
                             </Link>
                         </div>
                     ) : (
-                        <div style={{
+                        <div className="wishlist-grid" style={{
                             display: 'grid',
                             gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
                             gap: '30px'
@@ -127,6 +127,7 @@ export default function WishlistPage() {
                             {wishlist.map((product) => (
                                 <div
                                     key={product.id}
+                                    className="wishlist-item-card"
                                     style={{
                                         backgroundColor: 'white',
                                         borderRadius: '20px',
@@ -162,7 +163,7 @@ export default function WishlistPage() {
                                     </button>
 
                                     <Link href={`/details/${product.id}`}>
-                                        <div style={{ height: '250px', position: 'relative', overflow: 'hidden' }}>
+                                        <div className="wishlist-item-image" style={{ height: '250px', position: 'relative', overflow: 'hidden' }}>
                                             <Image
                                                 src={product.imageUrl[0] || "/Assets/Products/15.png"}
                                                 alt={product.product_name}
@@ -172,7 +173,7 @@ export default function WishlistPage() {
                                         </div>
                                     </Link>
 
-                                    <div style={{ padding: '20px' }}>
+                                    <div className="wishlist-item-details" style={{ padding: '20px' }}>
                                         <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#111827', marginBottom: '4px' }}>
                                             {product.product_name}
                                         </h3>

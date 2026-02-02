@@ -257,7 +257,7 @@ export default function Contact() {
             alignItems: 'flex-start'
           }}>
             {/* Left Section - Form */}
-            <div>
+            <div className="contact-form-section">
               {/* Leave Reply Header */}
               <div style={{
                 display: 'inline-block',
@@ -267,7 +267,7 @@ export default function Contact() {
                 marginBottom: '30px',
                 marginLeft: '-24px'
               }}>
-                <h2 style={{
+                <h2 className="contact-form-title" style={{
                   fontSize: '18px',
                   fontWeight: '900',
                   color: '#000',
@@ -516,7 +516,7 @@ export default function Contact() {
             </div>
 
             {/* Vertical Divider */}
-            <div style={{
+            <div className="contact-divider" style={{
               width: '4px',
               backgroundColor: '#fbbf24',
               minHeight: '90%',
@@ -524,7 +524,7 @@ export default function Contact() {
             }}></div>
 
             {/* Right Section - Contact Info */}
-            <div>
+            <div className="contact-info-section">
               <div style={{
                 backgroundColor: '#fff',
                 border: '2px solid #e5e7eb',
@@ -535,7 +535,7 @@ export default function Contact() {
                 gap: '30px'
               }}>
                 {/* Address */}
-                <div>
+                <div className="contact-info-item">
                   <h3 style={{
                     fontSize: '18px',
                     fontWeight: '700',
@@ -555,7 +555,7 @@ export default function Contact() {
                 </div>
 
                 {/* Telephone */}
-                <div>
+                <div className="contact-info-item">
                   <h3 style={{
                     fontSize: '18px',
                     fontWeight: '700',
@@ -575,7 +575,7 @@ export default function Contact() {
                 </div>
 
                 {/* Email */}
-                <div>
+                <div className="contact-info-item">
                   <h3 style={{
                     fontSize: '18px',
                     fontWeight: '700',
@@ -595,7 +595,7 @@ export default function Contact() {
                 </div>
 
                 {/* Social Media */}
-                <div>
+                <div className="contact-info-item">
                   <h3 style={{
                     fontSize: '18px',
                     fontWeight: '700',
@@ -607,7 +607,8 @@ export default function Contact() {
                   <div style={{
                     display: 'flex',
                     gap: '20px',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    flexWrap: 'wrap'
                   }}>
                     <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" style={{
                       color: '#000',

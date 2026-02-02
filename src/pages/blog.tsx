@@ -154,6 +154,7 @@ export default function Blog() {
 
         {/* Hero Section */}
         <div
+          className="blog-hero-banner"
           style={{
             backgroundImage: "url(/Assets/blog.png)",
             backgroundSize: "cover",
@@ -178,8 +179,9 @@ export default function Blog() {
             }}
           >
             {/* Left Content */}
-            <div style={{ maxWidth: "600px" }}>
+            <div className="blog-hero-content" style={{ maxWidth: "600px" }}>
               <h1
+                className="blog-hero-title"
                 style={{
                   fontSize: "42px",
                   fontWeight: "900",
