@@ -4,14 +4,14 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ShippingScreen from "@/components/ShippingScreen";
-import Payment from "@/components/Payment";
 import { useCart, CartItem } from "@/components/CartContext";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
   const [showShipping, setShowShipping] = useState(false);
-  const [showPayment, setShowPayment] = useState(false);
+  const router = useRouter();
 
   console.log({ cart })
 
@@ -23,27 +23,11 @@ export default function Cart() {
   const salesTax = Math.round(subtotal * 0.09);
   const total = subtotal + salesTax;
 
-  if (showPayment) {
-    return (
-      <>
-        <Head>
-          <title>Payment - FutureNature</title>
-          <meta name="description" content="Select payment method" />
-          <meta name="viewport" content="width=device-width, initial-scale=1" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
-        <Navbar />
-        <Payment onClose={() => setShowPayment(false)} />
-        <Footer />
-      </>
-    );
-  }
-
   if (showShipping) {
     return (
       <>
         <Head>
-          <title>Shipping Details - FutureNature</title>
+          <title>Shipping & Payment - FutureNature</title>
           <meta name="description" content="Enter your shipping details" />
           <meta name="viewport" content="width=device-width, initial-scale=1" />
           <link rel="icon" href="/favicon.ico" />
@@ -53,7 +37,7 @@ export default function Cart() {
           onClose={() => setShowShipping(false)}
           onContinue={() => {
             setShowShipping(false);
-            setShowPayment(true);
+            router.push('/'); // Redirect to home or order success page
           }}
         />
         <Footer />
