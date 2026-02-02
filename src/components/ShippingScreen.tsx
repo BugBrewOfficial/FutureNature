@@ -7,6 +7,13 @@ import AddressForm from "./AddressForm";
 import axios from "axios";
 import { useCart } from "./CartContext";
 
+// Extend the Window interface to include Razorpay
+declare global {
+  interface Window {
+    Razorpay: any;
+  }
+}
+
 // Define the shape of data expected by the Payment component or parent
 export interface ShippingFormData {
   firstName: string; // Not in addressData, might need to extract or hardcode
