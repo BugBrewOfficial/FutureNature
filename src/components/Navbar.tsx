@@ -3,12 +3,14 @@ import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import AuthModal from "./AuthModal";
+import AdminPanel from "./AdminPanel";
 import { useCart } from "./CartContext";
 import Cookies from 'js-cookie';
 
 export default function Navbar() {
   const router = useRouter();
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { getTotalItems } = useCart();
   const cartItemCount = getTotalItems();
@@ -225,6 +227,40 @@ export default function Navbar() {
           alignItems: 'center',
           gap: '20px'
         }}>
+          <button
+            onClick={() => setIsAdminPanelOpen(true)}
+            className="navbar-admin-button"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              backgroundColor: 'transparent',
+              color: '#000',
+              border: 'none',
+              padding: '0',
+              fontSize: '18px',
+              fontWeight: '400',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              textDecoration: 'none'
+            }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Image
+                src="/Assets/Svg/profile.svg"
+                alt="Admin"
+                width={42}
+                height={42}
+              />
+            </div>
+            <span className="navbar-admin-text">Admin</span>
+          </button>
+
+          <span className="navbar-divider" style={{ color: '#d1d5db', fontSize: '24px', fontWeight: '300' }}>|</span>
+
           <Link href="/cart" className="navbar-cart-link" style={{
             display: 'flex',
             alignItems: 'center',
@@ -345,6 +381,9 @@ export default function Navbar() {
 
       {/* Auth Modal */}
       <AuthModal isOpen={isAuthModalOpen} onClose={() => setIsAuthModalOpen(false)} />
+
+      {/* Admin Panel */}
+      <AdminPanel isOpen={isAdminPanelOpen} onClose={() => setIsAdminPanelOpen(false)} />
     </nav>
   );
 }

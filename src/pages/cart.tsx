@@ -183,7 +183,7 @@ export default function Cart() {
                 </h2>
 
                 {/* Cart Table */}
-                <div style={{
+                <div className="cart-table-wrapper" style={{
                   backgroundColor: 'white',
                   borderRadius: '8px',
                   overflow: 'hidden'
@@ -243,7 +243,7 @@ export default function Cart() {
                         const itemTotal = (item.price || 0) * item.quantity;
 
                         return (
-                          <tr key={item.variantId || index} style={{
+                          <tr key={item.variantId || index} className="cart-table-row" style={{
                             borderBottom: '1px solid #e5e7eb'
                           }}>
                             <td style={{
@@ -254,13 +254,14 @@ export default function Cart() {
                                 alignItems: 'center',
                                 gap: '16px'
                               }}>
-                                <div style={{
+                                <div className="cart-item-mobile-image" style={{
                                   width: '60px',
                                   height: '60px',
                                   position: 'relative',
                                   borderRadius: '8px',
                                   overflow: 'hidden',
-                                  backgroundColor: '#f3f4f6'
+                                  backgroundColor: '#f3f4f6',
+                                  flexShrink: 0
                                 }}>
                                   <Image
                                     src={item.image || "/Assets/Products/15.png"}
@@ -272,12 +273,15 @@ export default function Cart() {
                                 <div style={{
                                   display: 'flex',
                                   flexDirection: 'column',
-                                  gap: '4px'
+                                  gap: '4px',
+                                  flex: 1,
+                                  minWidth: 0
                                 }}>
                                   <span style={{
                                     color: '#111827',
                                     fontWeight: '600',
-                                    fontSize: '16px'
+                                    fontSize: '16px',
+                                    wordBreak: 'break-word'
                                   }}>
                                     {item.name}
                                   </span>
@@ -298,6 +302,102 @@ export default function Cart() {
                                       padding: 0,
                                       cursor: 'pointer',
                                       textAlign: 'left',
+                                      marginTop: '4px'
+                                    }}
+                                  >
+                                    Remove
+                                  </button>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="cart-item-price" style={{
+                              padding: '16px',
+                              color: '#111827',
+                              fontWeight: '600',
+                              fontSize: '16px'
+                            }}>
+                              ₹{item.price}
+                            </td>
+                            <td className="cart-item-quantity" style={{
+                              padding: '16px'
+                            }}>
+                              <div style={{
+                                display: 'flex',
+                                alignItems: 'center',
+                                gap: '8px',
+                                width: 'fit-content'
+                              }}>
+                                <button
+                                  onClick={() => updateQuantity(item.id, item.variantId, item.quantity - 1)}
+                                  style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    border: '1px solid #d1d5db',
+                                    backgroundColor: 'white',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                    color: '#374151'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'white';
+                                  }}
+                                >
+                                  −
+                                </button>
+                                <span style={{
+                                  width: '30px',
+                                  textAlign: 'center',
+                                  backgroundColor: '#e5e7eb',
+                                  padding: '4px 8px',
+                                  borderRadius: '4px',
+                                  fontWeight: '600',
+                                  color: '#111827'
+                                }}>
+                                  {item.quantity}
+                                </span>
+                                <button
+                                  onClick={() => updateQuantity(item.id, item.variantId, item.quantity + 1)}
+                                  style={{
+                                    width: '24px',
+                                    height: '24px',
+                                    border: '1px solid #d1d5db',
+                                    backgroundColor: 'white',
+                                    borderRadius: '4px',
+                                    cursor: 'pointer',
+                                    fontSize: '14px',
+                                    fontWeight: 'bold',
+                                    color: '#374151'
+                                  }}
+                                  onMouseEnter={(e) => {
+                                    e.currentTarget.style.backgroundColor = '#f3f4f6';
+                                  }}
+                                  onMouseLeave={(e) => {
+                                    e.currentTarget.style.backgroundColor = 'white';
+                                  }}
+                                >
+                                  +
+                                </button>
+                              </div>
+                            </td>
+                            <td className="cart-item-total" style={{
+                              padding: '16px',
+                              textAlign: 'right',
+                              color: '#111827',
+                              fontWeight: '600'
+                            }}>
+                              ₹{itemTotal}
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
                                       marginTop: '4px'
                                     }}
                                   >
@@ -397,7 +497,7 @@ export default function Cart() {
               </div>
 
               {/* Cart Summary Section */}
-              <div style={{
+              <div className="cart-summary-wrapper" style={{
                 display: 'grid',
                 gridTemplateColumns: '1fr 350px',
                 gap: '30px',
@@ -409,7 +509,7 @@ export default function Cart() {
                 <div></div>
 
                 {/* Right side summary box */}
-                <div style={{
+                <div className="cart-summary-box" style={{
                   display: 'flex',
                   flexDirection: 'column',
                   gap: '12px',
