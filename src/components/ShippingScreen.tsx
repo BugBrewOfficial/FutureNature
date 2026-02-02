@@ -174,7 +174,7 @@ const ShippingScreen: React.FC<ShippingScreenProps> = ({ onContinue, onClose }) 
         description: "Test Transaction",
         image: "/Assets/futurenature-logo.png",
         order_id: order_id,
-        handler: async function (response: any) {
+        handler: async function (response) {
           const data = {
             razorpay_payment_id: response.razorpay_payment_id,
             razorpay_order_id: response.razorpay_order_id,
@@ -213,7 +213,7 @@ const ShippingScreen: React.FC<ShippingScreenProps> = ({ onContinue, onClose }) 
         },
       };
 
-      const paymentObject = new (window as any).Razorpay(options);
+      const paymentObject = new (window).Razorpay(options);
       paymentObject.open();
 
     } catch (error) {

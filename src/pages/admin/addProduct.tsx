@@ -1,20 +1,46 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import Cookies from "js-cookie";
+import toast, { Toaster } from "react-hot-toast";
+import { productApi } from "../../api/productApi";
+import { isAdminUser } from "../../utils/authUtils";
+
+interface ProductFormData {
+  productNameE: string;
+  productNameT: string;
+  descriptionE: string;
+  descriptionT: string;
+  price: string;
+  salePrice: string;
+  discountPercentage: string;
+  availableQuantity: string;
+}
 
 export default function AddProduct() {
   const router = useRouter();
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<ProductFormData>({
     productNameE: "",
     productNameT: "",
     descriptionE: "",
     descriptionT: "",
     price: "",
     salePrice: "",
-    discountPercentage: ""
+    discountPercentage: "",
+    availableQuantity: ""
   });
 
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+
+  // Admin Verification
+  useEffect(() => {
+    const token = Cookies.get('token');
+    if (!token || !isAdminUser(token)) {
+      toast.error("Unauthorized access");
+      router.push("/");
+    }
+  }, [router]);
 
   // Auto-calculate discount percentage
   useEffect(() => {
@@ -71,6 +97,57 @@ export default function AddProduct() {
     });
   };
 
+  const validateForm = () => {
+    if (!formData.productNameE.trim()) return "Product Name (English) is required";
+    if (!formData.productNameT.trim()) return "Product Name (Tamil) is required";
+    if (!formData.descriptionE.trim()) return "Description (English) is required";
+    if (!formData.descriptionT.trim()) return "Description (Tamil) is required";
+    if (!formData.price || parseFloat(formData.price) <= 0) return "Valid Price is required";
+    if (uploadedImages.length === 0) return "At least one product image is required";
+    if (!formData.availableQuantity || parseInt(formData.availableQuantity) < 0) return "Valid Quantity is required";
+    return null;
+  };
+
+  const handleSubmit = async () => {
+    const error = validateForm();
+    if (error) {
+      toast.error(error);
+      return;
+    }
+
+    setLoading(true);
+    try {
+      // Construct payload matching backend schema
+      const payload = {
+        productName: formData.productNameE,
+        productNameTamil: formData.productNameT,
+        description: formData.descriptionE,
+        descriptionTamil: formData.descriptionT,
+        price: formData.price,
+        discountedType: "percentage", // Defaulting to percentage based on UI logic
+        discountedAmount: formData.discountPercentage || "0",
+        imageUrl: uploadedImages,
+        availableQuantity: formData.availableQuantity,
+        variants: [] // Sending empty variants as per current UI
+      };
+
+      const response = await productApi.addProduct(payload);
+      if (response.data.status) {
+        toast.success("Product added successfully!");
+        setTimeout(() => {
+          router.push('/products'); // Or back to admin panel
+        }, 1000);
+      } else {
+        toast.error(response.data.message || "Failed to add product");
+      }
+    } catch (err) {
+      console.error(err);
+      toast.error(err.response?.data?.message || err.message || "Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const inputStyle = {
     width: "100%",
     padding: "10px 12px",
@@ -90,6 +167,7 @@ export default function AddProduct() {
 
   return (
     <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh", padding: "24px" }}>
+      <Toaster />
       <style jsx>{`
         input[type="number"]::-webkit-inner-spin-button,
         input[type="number"]::-webkit-outer-spin-button {
@@ -151,30 +229,36 @@ export default function AddProduct() {
               Cancel
             </button>
             <button
+              onClick={handleSubmit}
+              disabled={loading}
               style={{
                 padding: "12px 24px",
                 borderRadius: "12px",
-                backgroundColor: "#fbbf24",
+                backgroundColor: loading ? "#d1d5db" : "#fbbf24",
                 color: "#111827",
                 border: "none",
                 fontSize: "14px",
                 fontWeight: "700",
-                cursor: "pointer",
+                cursor: loading ? "not-allowed" : "pointer",
                 transition: "all 0.2s",
                 letterSpacing: "0.5px"
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#000";
-                e.currentTarget.style.color = "#fff";
-                e.currentTarget.style.transform = "translateY(-2px)";
+                if (!loading) {
+                  e.currentTarget.style.backgroundColor = "#000";
+                  e.currentTarget.style.color = "#fff";
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                }
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#fbbf24";
-                e.currentTarget.style.color = "#111827";
-                e.currentTarget.style.transform = "translateY(0)";
+                if (!loading) {
+                  e.currentTarget.style.backgroundColor = "#fbbf24";
+                  e.currentTarget.style.color = "#111827";
+                  e.currentTarget.style.transform = "translateY(0)";
+                }
               }}
             >
-              Save Product
+              {loading ? "Saving..." : "Save Product"}
             </button>
           </div>
         </div>
@@ -250,9 +334,9 @@ export default function AddProduct() {
             {/* Pricing Details */}
             <div style={{ backgroundColor: "white", padding: "24px", borderRadius: "8px", boxShadow: "0 1px 3px rgba(0,0,0,0.1)" }}>
               <h2 style={{ fontSize: "18px", fontWeight: "600", color: "#1f2937", marginBottom: "20px" }}>
-                Pricing Details
+                Pricing & Inventory
               </h2>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "16px" }}>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px", marginBottom: '16px' }}>
                 <div>
                   <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
                     Price
@@ -281,6 +365,8 @@ export default function AddProduct() {
                     style={noSpinnerStyle}
                   />
                 </div>
+              </div>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "16px" }}>
                 <div>
                   <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
                     Discount Percentage
@@ -292,6 +378,20 @@ export default function AddProduct() {
                     readOnly
                     placeholder="10.00%"
                     style={{ ...noSpinnerStyle, backgroundColor: "#f9fafb", cursor: "not-allowed" }}
+                  />
+                </div>
+                <div>
+                  <label style={{ display: "block", fontSize: "13px", fontWeight: "500", color: "#374151", marginBottom: "6px" }}>
+                    Available Quantity
+                  </label>
+                  <input
+                    type="number"
+                    name="availableQuantity"
+                    value={formData.availableQuantity}
+                    onChange={handleInputChange}
+                    placeholder="e.g 100"
+                    min="0"
+                    style={noSpinnerStyle}
                   />
                 </div>
               </div>

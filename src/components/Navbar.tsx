@@ -5,11 +5,13 @@ import { useRouter } from "next/router";
 import { useCart } from "./CartContext";
 import Cookies from 'js-cookie';
 import { useAuth } from "./AuthContext";
+import AdminPanel from "./AdminPanel";
 
 export default function Navbar() {
   const router = useRouter();
   const { openLoginModal } = useAuth();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isAdminPanelOpen, setIsAdminPanelOpen] = useState(false);
   const { getTotalItems } = useCart();
   const cartItemCount = getTotalItems();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -240,6 +242,37 @@ export default function Navbar() {
           alignItems: 'center',
           gap: '20px'
         }}>
+          <button
+            onClick={() => setIsAdminPanelOpen(true)}
+            className="navbar-admin-button"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '12px',
+              backgroundColor: 'transparent',
+              color: '#000',
+              border: 'none',
+              padding: '0',
+              fontSize: '18px',
+              fontWeight: '400',
+              cursor: 'pointer',
+              transition: 'all 0.2s',
+              textDecoration: 'none'
+            }}>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+              <Image
+                src="/Assets/Svg/profile.svg"
+                alt="Admin"
+                width={42}
+                height={42}
+              />
+            </div>
+            <span className="navbar-admin-text">Admin</span>
+          </button>
           <Link href="/cart" className="navbar-cart-link" style={{
             display: 'flex',
             alignItems: 'center',
@@ -413,6 +446,9 @@ export default function Navbar() {
           )}
         </div>
       </div >
+
+
+      <AdminPanel isOpen={isAdminPanelOpen} onClose={() => setIsAdminPanelOpen(false)} />
     </nav >
   );
 }
