@@ -4,324 +4,399 @@ export default function HoneyProcess() {
   const processes = [
     {
       id: 1,
-      title: "Gathering The Nectar Bee Producing Flowers Honey Hive",
-      subtitle: "பூக்களை உற்பத்தி செய்யும் தேன் தேனீவை சேகரித்தல் தேன் கூடு",
-      description:
-        "Bees gather nectar from flowers bright, working gently from morn to night. Within the hive, their sweetness grows, turning flowers pure honey – nature's golden prose",
-      descriptionSub:
-        "தேனீக்கள் காலை முதல் இரவு வரை மெதுவாக வேலை செய்து பிரகாசமான பூக்களிலிருந்து தேனைச் சேகரிக்கின்றன. கூட்டிற்குள், அவற்றின் இனிப்பு வளர்ந்து, பூக்களை தூய தேனாக மாற்றுகிறது - இயற்கையின் பொன்னான உரைநடை.",
+      title: "Foraging & Collection",
+      subtitle: "Nectar Gathering",
+      tamilTitle: "பூக்களை உற்பத்தி செய்யும் தேன்",
+      description: "Our bees tirelessly visit vibrant wildflowers from dawn until dusk. They gather the finest nectar, nature's sweet essence, beginning the journey from bloom to hive.",
+      tamilDesc: "தேனீக்கள் காலை முதல் இரவு வரை மெதுவாக வேலை செய்து பிரகாசமான பூக்களிலிருந்து தேனைச் சேகரிக்கின்றன.",
       image: "/Assets/Svg/1.svg",
-      position: "left",
     },
     {
       id: 2,
-      title: "Converting The Nectar Bee Test Inside The Flowers Beehive",
-      subtitle: "பூக்களின் தேன் கூட்டிற்குள் தேன் தேனீ சோதனையை மாற்றுதல்",
-      description:
-        "Bees test the nectar deep in bloom, Converting sweetness in nature's room. Within the hive they test her magic threads, Turning honey gold—nature's precious bounty spreads",
-      descriptionSub:
-        "தேனீக்கள் பூக்களின் ஆழத்தில் தேனைச் சோதிக்கின்றன, இயற்கையின் அறையில் இனிமையை மாற்றுகின்றன. கூட்டிற்குள் அவை அதன் மந்திர இழைகளைச் சோதிக்கின்றன, தேனை தங்கமாக மாற்றுகின்றன - இயற்கையின் விலைமதிப்பற்ற கொடை பரவுகிறது",
+      title: "The Hive Alchemy",
+      subtitle: "Enzymatic Transformation",
+      tamilTitle: "தேன் கூட்டிற்குள் மாற்றம்",
+      description: "Deep inside the honeycomb, enzymes are added and moisture is reduced. This natural alchemy transforms thin nectar into rich, golden honey.",
+      tamilDesc: "தேனீக்கள் பூக்களின் ஆழத்தில் தேனைச் சோதிக்கின்றன, இயற்கையின் அறையில் இனிமையை மாற்றுகின்றன.",
       image: "/Assets/Svg/2.svg",
-      position: "right",
     },
     {
       id: 3,
-      title: "Gathering The Nectar Completion Of The Process Of Making Honey.",
-      subtitle: "தேன் தயாரிக்கும் செயல்முறையின் தேன் நிறைவைச் சேகரித்தல்.",
-      description:
-        "Bees gather nectar from blooms so fine, Turning it golden, drop by drop line. When honey flows. The process complete – pure honey gold.",
-      descriptionSub:
-        "தேனீக்கள் பூக்களிலிருந்து அமிர்தத்தை மிக நுணுக்கமாகச் சேகரிக்கின்றன, அதைத் தங்க நிறமாக மாற்றுகின்றன, சொட்டு சொட்டாக. தேன் பாயும் போது. செயல்முறை முடிந்தது - தூய தேன் தங்கம்.",
+      title: "Harvesting Gold",
+      subtitle: "Pure Extraction",
+      tamilTitle: "தேன் நிறைவைச் சேகரித்தல்",
+      description: "Once the honey reaches perfection, the bees seal the cells with wax. We harvest this liquid gold with care, ensuring every drop retains its medicinal value.",
+      tamilDesc: "தேனீக்கள் பூக்களிலிருந்து அமிர்தத்தை மிக நுணுக்கமாகச் சேகரிக்கின்றன, அதைத் தங்க நிறமாக மாற்றுகின்றன.",
       image: "/Assets/Svg/3.svg",
-      position: "left",
     },
   ];
 
   return (
-    <div
-      style={{
-        padding: "80px 20px",
-        backgroundColor: "#ffffff",
-        maxWidth: "1400px",
-        margin: "0 auto",
-      }}
-    >
-      {/* Section Title */}
-      <div style={{ textAlign: "center", marginBottom: "80px" }}>
-        <h2
-          style={{
-            fontSize: "48px",
-            fontWeight: "700",
-            color: "#fbbf24",
-            margin: "0 0 16px 0",
-            letterSpacing: "0.5px",
-          }}
-        >
-          Honey Created In The Laps Of Nature
-        </h2>
-        <p
-          style={{
-            fontSize: "16px",
-            color: "#9ca3af",
-            margin: 0,
-            fontStyle: "italic",
-          }}
-        >
-          (From Beehive To Bottle)
-        </p>
+    <div className="process-section">
+      
+      {/* Header */}
+      <div className="section-header">
+        <span className="eyebrow">OUR PROCESS</span>
+        <h2 className="title">From <span className="highlight">Hive</span> to Home</h2>
+        <p className="sub-title">A journey of purity, patience, and passion.</p>
       </div>
 
-      {/* Timeline Container */}
-      <div
-        style={{
-          position: "relative",
-          maxWidth: "1000px",
-          margin: "0 auto",
-        }}
-      >
-        {/* Vertical Center Line */}
-        <div
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "0",
-            bottom: "0",
-            width: "4px",
-            backgroundColor: "#FFB400",
-            transform: "translateX(-50%)",
-            zIndex: 0,
-          }}
-        ></div>
+      <div className="timeline-container">
+        
+        {/* The Central Line */}
+        <div className="timeline-track"></div>
 
-        {/* Timeline Items */}
-        {processes.map((process, index) => (
-          <div
-            key={process.id}
-            style={{
-              display: "grid",
-              gridTemplateColumns: "1fr 1fr",
-              gap: "40px",
-              marginBottom: "80px",
-              alignItems: "center",
-              position: "relative",
-              zIndex: 1,
-            }}
-          >
-            {process.position === "left" ? (
-              <>
-                {/* Left Content */}
-                <div style={{ paddingRight: "40px", textAlign: "right" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                      gap: "12px",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                        backgroundColor: "#FFB400",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontWeight: "700",
-                        color: "white",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {process.id}
-                    </div>
+        {processes.map((item, index) => {
+          const isEven = index % 2 !== 0; 
+          
+          return (
+            <div key={item.id} className={`timeline-row ${isEven ? 'reverse' : ''}`}>
+              
+              {/* --- CONTENT SIDE --- */}
+              <div className="content-col">
+                <div className="process-card">
+                  <span className="step-count">Step 0{item.id}</span>
+                  <h3 className="card-title">{item.title}</h3>
+                  <span className="card-subtitle">{item.subtitle}</span>
+                  
+                  {/* Divider */}
+                  <div className="card-divider"></div>
+                  
+                  <p className="card-desc">{item.description}</p>
+                  
+                  <div className="tamil-block">
+                    <p className="tamil-title">{item.tamilTitle}</p>
+                    <p className="tamil-desc">{item.tamilDesc}</p>
                   </div>
-                  <h3
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "#1f2937",
-                      margin: "0 0 8px 0",
-                      lineHeight: "1.4",
-                    }}
-                  >
-                    {process.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#9ca3af",
-                      margin: "0 0 12px 0",
-                    }}
-                  >
-                    {process.subtitle}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#6b7280",
-                      margin: "0",
-                      lineHeight: "1.6",
-                    }}
-                  >
-                    {process.description}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#9ca3af",
-                      margin: "8px 0 0 0",
-                      fontStyle: "italic",
-                      lineHeight: "1.5",
-                    }}
-                  >
-                    {process.descriptionSub}
-                  </p>
                 </div>
+              </div>
 
-                {/* Right Image */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "280px",
-                      height: "280px",
-                      clipPath:
-                        "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-                      overflow: "hidden",
-                      backgroundColor: "#f3f4f6",
-                    }}
-                  >
-                    <Image
-                      src={process.image}
-                      alt={process.title}
-                      width={280}
-                      height={280}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      priority={index === 0}
-                    />
-                  </div>
+              {/* --- CENTER MARKER --- */}
+              <div className="marker-col">
+                <div className="honey-marker">
+                  <div className="marker-inner">{item.id}</div>
                 </div>
-              </>
-            ) : (
-              <>
-                {/* Left Image */}
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <div
-                    style={{
-                      width: "280px",
-                      height: "280px",
-                      clipPath:
-                        "polygon(30% 0%, 70% 0%, 100% 30%, 100% 70%, 70% 100%, 30% 100%, 0% 70%, 0% 30%)",
-                      overflow: "hidden",
-                      backgroundColor: "#f3f4f6",
-                    }}
-                  >
-                    <Image
-                      src={process.image}
-                      alt={process.title}
-                      width={280}
-                      height={280}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
-                      priority={index === 0}
-                    />
-                  </div>
-                </div>
+              </div>
 
-                {/* Right Content */}
-                <div style={{ paddingLeft: "40px", textAlign: "left" }}>
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: "12px",
-                      marginBottom: "12px",
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: "40px",
-                        height: "40px",
-                        borderRadius: "50%",
-                        backgroundColor: "#FFB400",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        fontWeight: "700",
-                        color: "white",
-                        fontSize: "18px",
-                      }}
-                    >
-                      {process.id}
-                    </div>
-                  </div>
-                  <h3
-                    style={{
-                      fontSize: "18px",
-                      fontWeight: "700",
-                      color: "#1f2937",
-                      margin: "0 0 8px 0",
-                      lineHeight: "1.4",
-                    }}
-                  >
-                    {process.title}
-                  </h3>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#9ca3af",
-                      margin: "0 0 12px 0",
-                    }}
-                  >
-                    {process.subtitle}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "14px",
-                      color: "#6b7280",
-                      margin: "0",
-                      lineHeight: "1.6",
-                    }}
-                  >
-                    {process.description}
-                  </p>
-                  <p
-                    style={{
-                      fontSize: "12px",
-                      color: "#9ca3af",
-                      margin: "8px 0 0 0",
-                      fontStyle: "italic",
-                      lineHeight: "1.5",
-                    }}
-                  >
-                    {process.descriptionSub}
-                  </p>
+              {/* --- IMAGE SIDE --- */}
+              <div className="image-col">
+                <div className="img-frame">
+                  <Image 
+                    src={item.image} 
+                    alt={item.title} 
+                    width={400} 
+                    height={400} 
+                    className="process-img"
+                  />
                 </div>
-              </>
-            )}
-          </div>
-        ))}
+              </div>
+
+            </div>
+          );
+        })}
+
       </div>
+
+      <style jsx>{`
+        /* --- VARIABLES --- */
+        .process-section {
+          --gold: #f59e0b;
+          --gold-light: #fcd34d;
+          --cream: #fffbeb;
+          --dark: #1c1917;
+          --gray: #57534e;
+          
+          padding: 80px 24px;
+          background-color: #fff;
+          overflow: hidden;
+        }
+
+        /* --- HEADER --- */
+        .section-header {
+          text-align: center;
+          max-width: 800px;
+          margin: 0 auto 80px;
+        }
+
+        .eyebrow {
+          font-size: 12px;
+          letter-spacing: 2px;
+          color: var(--gold);
+          font-weight: 700;
+          text-transform: uppercase;
+          display: block;
+          margin-bottom: 12px;
+        }
+
+        .title {
+          font-family: 'Playfair Display', serif;
+          font-size: 48px;
+          color: var(--dark);
+          margin: 0 0 16px;
+          line-height: 1.1;
+        }
+
+        .highlight {
+          color: var(--gold);
+          font-style: italic;
+        }
+
+        .sub-title {
+          font-size: 18px;
+          color: var(--gray);
+        }
+
+        /* --- TIMELINE CONTAINER --- */
+        .timeline-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          position: relative;
+        }
+
+        .timeline-track {
+          position: absolute;
+          left: 50%;
+          top: 0;
+          bottom: 0;
+          width: 2px;
+          background: linear-gradient(to bottom, var(--gold-light), var(--gold));
+          transform: translateX(-50%);
+          z-index: 0;
+        }
+
+        /* --- ROW LAYOUT (DESKTOP) --- */
+        .timeline-row {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          margin-bottom: 100px;
+          position: relative;
+          z-index: 1;
+        }
+
+        .timeline-row.reverse {
+          flex-direction: row-reverse;
+        }
+
+        .timeline-row:last-child {
+          margin-bottom: 0;
+        }
+
+        /* Columns */
+        .content-col, .image-col {
+          width: 45%; 
+        }
+
+        .marker-col {
+          width: 10%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        /* --- CARD STYLING --- */
+        .process-card {
+          background: #fff;
+          border: 1px solid #f3f4f6;
+          border-radius: 24px;
+          padding: 40px;
+          box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+          transition: transform 0.3s ease;
+          position: relative;
+        }
+
+        .timeline-row:hover .process-card {
+          transform: translateY(-5px);
+          border-color: var(--gold-light);
+        }
+
+        .step-count {
+          font-size: 12px;
+          font-weight: 700;
+          color: var(--gold);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+          margin-bottom: 8px;
+          display: block;
+        }
+
+        .card-title {
+          font-family: 'Playfair Display', serif;
+          font-size: 28px;
+          color: var(--dark);
+          margin: 0 0 4px;
+        }
+
+        .card-subtitle {
+          font-size: 14px;
+          font-weight: 500;
+          color: var(--gray);
+          text-transform: uppercase;
+          letter-spacing: 1px;
+        }
+
+        .card-divider {
+          width: 40px;
+          height: 2px;
+          background: var(--gold);
+          margin: 20px 0;
+        }
+
+        .card-desc {
+          font-size: 16px;
+          line-height: 1.6;
+          color: var(--dark);
+          margin-bottom: 24px;
+        }
+
+        .tamil-block {
+          background: var(--cream);
+          padding: 16px;
+          border-radius: 12px;
+          border-left: 3px solid var(--gold);
+        }
+
+        .tamil-title {
+          font-weight: 700;
+          color: var(--dark);
+          font-size: 14px;
+          margin: 0 0 4px;
+        }
+
+        .tamil-desc {
+          font-size: 13px;
+          color: var(--gray);
+          margin: 0;
+          line-height: 1.5;
+        }
+
+        /* --- MARKER STYLING --- */
+        .honey-marker {
+          width: 50px;
+          height: 50px;
+          background: #fff;
+          border: 2px solid var(--gold);
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 0 8px #ffffff; /* Fakes spacing from line */
+          z-index: 2;
+        }
+
+        .marker-inner {
+          width: 36px;
+          height: 36px;
+          background: var(--gold);
+          color: #fff;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-weight: 700;
+          font-size: 16px;
+        }
+
+        /* --- IMAGE STYLING --- */
+        .img-frame {
+          position: relative;
+          display: flex;
+          justify-content: center;
+        }
+
+        .process-img {
+          width: 100%;
+          max-width: 350px;
+          height: auto;
+          object-fit: contain;
+          filter: drop-shadow(0 20px 40px rgba(0,0,0,0.1));
+          transition: transform 0.5s ease;
+        }
+
+        .timeline-row:hover .process-img {
+          transform: scale(1.05) rotate(2deg);
+        }
+
+        /* ========================================= */
+        /* MOBILE RESPONSIVE OPTIMIZATIONS           */
+        /* ========================================= */
+        @media (max-width: 900px) {
+          .process-section {
+            padding: 60px 16px;
+          }
+
+          .title { 
+            font-size: 32px; 
+          }
+          
+          /* Move Track to Left */
+          .timeline-track {
+            left: 20px; 
+            transform: none;
+          }
+
+          /* Reset ZigZag to Stack */
+          .timeline-row, .timeline-row.reverse {
+            flex-direction: column; 
+            align-items: flex-start;
+            margin-bottom: 60px;
+            padding-left: 50px; /* Indent content to clear the line */
+            position: relative;
+          }
+
+          /* Position Marker Absolute Left */
+          .marker-col {
+            position: absolute;
+            left: -5px; /* Center 50px marker on 20px line */
+            top: 0;
+            width: auto;
+            height: auto;
+            justify-content: flex-start;
+          }
+
+          .honey-marker {
+            width: 50px;
+            height: 50px;
+            /* Enhance shadow to cover line cleanly */
+            box-shadow: 0 0 0 6px #fff; 
+          }
+
+          /* Image First */
+          .image-col {
+            width: 100%;
+            margin-bottom: 20px;
+            order: 1; 
+          }
+
+          .img-frame {
+            justify-content: flex-start;
+          }
+
+          .process-img {
+            max-width: 200px; /* Don't let huge images take over mobile */
+          }
+
+          /* Text Second */
+          .content-col {
+            width: 100%;
+            order: 2;
+          }
+
+          /* Compact Mobile Card */
+          .process-card {
+            padding: 24px 20px; 
+            border-radius: 16px;
+          }
+
+          .card-title {
+            font-size: 24px;
+          }
+
+          .card-desc {
+            font-size: 15px;
+          }
+        }
+      `}</style>
     </div>
   );
 }
