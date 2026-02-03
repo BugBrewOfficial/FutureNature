@@ -7,203 +7,163 @@ import { wishlistApi } from "@/api/wishlistApi";
 import Link from "next/link";
 import toast from "react-hot-toast";
 import { Rating } from "react-simple-star-rating";
+import styles from "@/styles/Wishlist.module.scss";
 
 interface Product {
-    id: string;
-    product_name: string;
-    product_name_tamil: string;
-    imageUrl: string[];
-    overall_rating: number;
-    review_count: number;
-    price: string;
-    selling_price: string;
-    variants: {
-        id: string;
-        attribute_name: string;
-        selling_price: string;
-        price: string;
-    }[];
+  id: string;
+  product_name: string;
+  product_name_tamil: string;
+  imageUrl: string[];
+  overall_rating: number;
+  review_count: number;
+  price: string;
+  selling_price: string;
+  variants: any[];
 }
 
 export default function WishlistPage() {
-    const [wishlist, setWishlist] = useState<Product[]>([]);
-    const [loading, setLoading] = useState(true);
+  const [wishlist, setWishlist] = useState<Product[]>([]);
+  const [loading, setLoading] = useState(true);
 
-    const fetchWishlist = async () => {
-        try {
-            const response = await wishlistApi.getWishlist();
-            if (response.data.status) {
-                setWishlist(response.data.data);
-            }
-        } catch (error) {
-            console.error("Error fetching wishlist:", error);
-            toast.error("Failed to load wishlist");
-        } finally {
-            setLoading(false);
-        }
-    };
+  const fetchWishlist = async () => {
+    try {
+      const response = await wishlistApi.getWishlist();
+      if (response.data.status) {
+        setWishlist(response.data.data);
+      }
+    } catch (error) {
+      console.error("Error fetching wishlist:", error);
+      toast.error("Failed to load wishlist");
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    useEffect(() => {
-        fetchWishlist();
-    }, []);
+  useEffect(() => {
+    fetchWishlist();
+  }, []);
 
-    const handleRemoveFromWishlist = async (productId: string) => {
-        try {
-            const response = await wishlistApi.toggleWishlist(productId);
-            if (response.data.status) {
-                toast.success("Removed from wishlist");
-                setWishlist((prev) => prev.filter((item) => item.id !== productId));
-            }
-        } catch (error) {
-            console.error("Error removing from wishlist:", error);
-            toast.error("Failed to remove from wishlist");
-        }
-    };
+  const handleRemove = async (e: React.MouseEvent, productId: string) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      const response = await wishlistApi.toggleWishlist(productId);
+      if (response.data.status) {
+        toast.success("Item removed");
+        setWishlist((prev) => prev.filter((item) => item.id !== productId));
+      }
+    } catch (error) {
+      toast.error("Could not remove item");
+    }
+  };
 
-    return (
-        <>
-            <Head>
-                <title>My Wishlist - FutureNature</title>
-            </Head>
+  return (
+    <>
+      <Head>
+        <title>My Wishlist - FutureNature</title>
+      </Head>
 
-            <div style={{ minHeight: '100vh', backgroundColor: '#f9fafb' }}>
-                <Navbar />
+      <div className={styles.pageLayout}>
+        <Navbar />
 
-                <div className="wishlist-container" style={{
-                    maxWidth: '1400px',
-                    margin: '0 auto',
-                    padding: '120px 24px 80px'
-                }}>
-                    <h1 className="wishlist-title" style={{
-                        fontSize: '36px',
-                        fontWeight: '800',
-                        color: '#111827',
-                        marginBottom: '40px',
-                        textAlign: 'center'
-                    }}>
-                        MY WISHLIST
-                    </h1>
+        <main className={styles.mainContent}>
+          <div className={styles.container}>
 
-                    {loading ? (
-                        <div style={{ textAlign: 'center', padding: '100px' }}>
-                            <div className="loader">Loading...</div>
-                        </div>
-                    ) : wishlist.length === 0 ? (
-                        <div style={{
-                            textAlign: 'center',
-                            padding: '100px 20px',
-                            backgroundColor: 'white',
-                            borderRadius: '20px',
-                            boxShadow: '0 4px 12px rgba(0,0,0,0.05)'
-                        }}>
-                            <div style={{ fontSize: '64px', marginBottom: '20px' }}>❤️</div>
-                            <h2 style={{ fontSize: '24px', color: '#374151', marginBottom: '16px' }}>
-                                Your wishlist is empty
-                            </h2>
-                            <p style={{ color: '#6b7280', marginBottom: '32px' }}>
-                                Save items you love to find them easily later.
-                            </p>
-                            <Link href="/products">
-                                <button style={{
-                                    backgroundColor: '#fbbf24',
-                                    color: '#111827',
-                                    border: 'none',
-                                    borderRadius: '12px',
-                                    padding: '16px 32px',
-                                    fontSize: '16px',
-                                    fontWeight: '700',
-                                    cursor: 'pointer'
-                                }}>
-                                    Browse Products
-                                </button>
-                            </Link>
-                        </div>
-                    ) : (
-                        <div className="wishlist-grid" style={{
-                            display: 'grid',
-                            gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
-                            gap: '30px'
-                        }}>
-                            {wishlist.map((product) => (
-                                <div
-                                    key={product.id}
-                                    className="wishlist-item-card"
-                                    style={{
-                                        backgroundColor: 'white',
-                                        borderRadius: '20px',
-                                        overflow: 'hidden',
-                                        boxShadow: '0 4px 12px rgba(0,0,0,0.08)',
-                                        position: 'relative',
-                                        transition: 'transform 0.3s'
-                                    }}
-                                >
-                                    <button
-                                        onClick={() => handleRemoveFromWishlist(product.id)}
-                                        style={{
-                                            position: 'absolute',
-                                            top: '15px',
-                                            right: '15px',
-                                            backgroundColor: 'white',
-                                            border: 'none',
-                                            borderRadius: '50%',
-                                            width: '40px',
-                                            height: '40px',
-                                            display: 'flex',
-                                            alignItems: 'center',
-                                            justifyContent: 'center',
-                                            cursor: 'pointer',
-                                            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-                                            zIndex: 2,
-                                            color: '#ef4444'
-                                        }}
-                                    >
-                                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z" />
-                                        </svg>
-                                    </button>
-
-                                    <Link href={`/details/${product.id}`}>
-                                        <div className="wishlist-item-image" style={{ height: '250px', position: 'relative', overflow: 'hidden' }}>
-                                            <Image
-                                                src={product.imageUrl[0] || "/Assets/Products/15.png"}
-                                                alt={product.product_name}
-                                                fill
-                                                style={{ objectFit: 'cover' }}
-                                            />
-                                        </div>
-                                    </Link>
-
-                                    <div className="wishlist-item-details" style={{ padding: '20px' }}>
-                                        <h3 style={{ fontSize: '18px', fontWeight: '700', color: '#111827', marginBottom: '4px' }}>
-                                            {product.product_name}
-                                        </h3>
-                                        <p style={{ fontSize: '14px', color: '#6b7280', marginBottom: '12px' }}>
-                                            {product.product_name_tamil}
-                                        </p>
-
-                                        <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '12px' }}>
-                                            <Rating initialValue={product.overall_rating} readonly size={16} allowFraction />
-                                            <span style={{ fontSize: '14px', color: '#6b7280' }}>
-                                                ({product.review_count})
-                                            </span>
-                                        </div>
-
-                                        <div style={{ display: 'flex', alignItems: 'baseline', gap: '8px' }}>
-                                            <span style={{ fontSize: '24px', fontWeight: '700', color: '#111827' }}>
-                                                ₹{product.selling_price}
-                                            </span>
-                                            <span style={{ fontSize: '16px', color: '#9ca3af', textDecoration: 'line-through' }}>
-                                                ₹{product.price}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
-                </div>
+            {/* --- PAGE HEADER --- */}
+            <div className={styles.headerSection}>
+              <h1 className={styles.pageTitle}>My Wishlist</h1>
+              <p className={styles.itemCount}>
+                You have <strong>{wishlist.length} {wishlist.length === 1 ? 'item' : 'items'}</strong> saved.
+              </p>
             </div>
-            <Footer />
-        </>
-    );
+
+            {loading ? (
+              <div className={styles.loaderContainer}>
+                <div className={styles.spinner}></div>
+              </div>
+            ) : wishlist.length === 0 ? (
+
+              /* --- EMPTY STATE --- */
+              <div className={styles.emptyState}>
+                <div className={styles.emptyIconCircle}>
+                  <span className={styles.heartBroken}>💔</span>
+                </div>
+                <h3>Your Wishlist is Empty</h3>
+                <p>Looks like you haven&apos;t found your favorites yet.</p>
+
+                {/* --- PROMINENT ACTION BUTTON --- */}
+                <Link href="/products" className={styles.browseBtn}>
+                  <span>Start Shopping Now</span>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" className={styles.arrowIcon}><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+                </Link>
+              </div>
+
+            ) : (
+
+              /* --- WISHLIST GRID --- */
+              <div className={styles.productGrid}>
+                {wishlist.map((product) => (
+                  <div key={product.id} className={styles.wishlistCard}>
+
+                    {/* 1. Image Area */}
+                    <Link href={`/details/${product.id}`} className={styles.cardMedia}>
+                      <div className={styles.imgWrapper}>
+                        <Image
+                          src={product.imageUrl[0] || "/Assets/Products/15.png"}
+                          alt={product.product_name}
+                          fill
+                          className={styles.productImg}
+                          sizes="(max-width: 768px) 100vw, 300px"
+                        />
+                      </div>
+
+                      {/* Remove Button */}
+                      <button
+                        className={styles.deleteBtn}
+                        onClick={(e) => handleRemove(e, product.id)}
+                        title="Remove from Wishlist"
+                      >
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                      </button>
+                    </Link>
+
+                    {/* 2. Content Area */}
+                    <div className={styles.cardInfo}>
+                      <div className={styles.infoTop}>
+                        <h3 className={styles.name}>
+                          <Link href={`/details/${product.id}`}>{product.product_name}</Link>
+                        </h3>
+                        <p className={styles.tamilName}>{product.product_name_tamil}</p>
+
+                        <div className={styles.ratingBox}>
+                          <Rating initialValue={product.overall_rating} readonly size={18} fillColor="#f59e0b" emptyColor="#d1d5db" allowFraction />
+                          <span className={styles.reviewCount}>({product.review_count})</span>
+                        </div>
+                      </div>
+
+                      <div className={styles.infoBottom}>
+                        <div className={styles.priceBlock}>
+                          <span className={styles.currentPrice}>₹{product.selling_price}</span>
+                          {product.price && product.price !== product.selling_price && (
+                            <span className={styles.originalPrice}>₹{product.price}</span>
+                          )}
+                        </div>
+
+                        <Link href={`/details/${product.id}`} className={styles.viewBtn}>
+                          View Product
+                        </Link>
+                      </div>
+                    </div>
+
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </main>
+
+        <Footer />
+      </div>
+    </>
+  );
 }

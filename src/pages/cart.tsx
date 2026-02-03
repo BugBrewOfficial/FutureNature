@@ -7,6 +7,7 @@ import ShippingScreen from "@/components/ShippingScreen";
 import { useCart, CartItem } from "@/components/CartContext";
 import { useState } from "react";
 import { useRouter } from "next/router";
+import styles from "@/styles/Cart.module.scss";
 
 export default function Cart() {
   const { cart, removeFromCart, updateQuantity } = useCart();
@@ -54,172 +55,58 @@ export default function Cart() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div style={{ minHeight: '100vh', backgroundColor: '#fff' }}>
+      <div className={styles.cartLayout}>
         <Navbar />
 
         {/* Cart Container */}
-        <div className="cart-container" style={{
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '60px 24px',
-          minHeight: 'calc(100vh - 80px - 200px)'
-        }}>
+        <div className={styles.cartContainer}>
           {cart.length === 0 ? (
             /* Empty Cart State */
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'center',
-              justifyContent: 'center',
-              minHeight: '600px',
-              gap: '40px'
-            }}>
+            <div className={styles.emptyCartState}>
               {/* Empty Cart Illustration */}
-              <div style={{
-                width: '100%',
-                maxWidth: '400px',
-                height: 'auto',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center'
-              }}>
+              <div className={styles.emptyCartIllustration}>
                 <Image
                   src="/Assets/cart.png"
                   alt="Empty Cart"
                   width={400}
                   height={400}
-                  style={{
-                    width: '100%',
-                    height: 'auto',
-                    objectFit: 'contain'
-                  }}
+                  className={styles.illustrationImg}
                 />
               </div>
 
               {/* Empty Cart Message */}
-              <div style={{
-                textAlign: 'center',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: '20px'
-              }}>
-                <h2 style={{
-                  fontSize: 'clamp(24px, 6vw, 36px)',
-                  fontWeight: '700',
-                  color: '#1f2937',
-                  margin: 0
-                }}>
+              <div className={styles.emptyCartMessage}>
+                <h2 className={styles.emptyTitle}>
                   Your cart is empty
                 </h2>
-                <p style={{
-                  fontSize: 'clamp(14px, 4vw, 16px)',
-                  color: '#6b7280',
-                  margin: 0,
-                  lineHeight: '1.6'
-                }}>
+                <p className={styles.emptyDesc}>
                   Looks like you haven&apos;t added any honey products yet. Start shopping and add your favorite items!
                 </p>
 
                 {/* Continue Shopping Button */}
-                <Link href="/products" style={{
-                  display: 'inline-block',
-                  backgroundColor: '#fbbf24',
-                  color: '#000',
-                  padding: '12px 32px',
-                  borderRadius: '8px',
-                  fontSize: '16px',
-                  fontWeight: '700',
-                  textDecoration: 'none',
-                  transition: 'all 0.3s ease',
-                  border: 'none',
-                  cursor: 'pointer',
-                  marginTop: '20px'
-                }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = '#000';
-                    e.currentTarget.style.color = '#fff';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = '#fbbf24';
-                    e.currentTarget.style.color = '#000';
-                  }}>
+                <Link href="/products" className={styles.continueShoppingBtn}>
                   Continue Shopping
                 </Link>
               </div>
             </div>
           ) : (
             /* Cart with Items */
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: '40px'
-            }}>
+            <div className={styles.cartContent}>
               {/* Cart Items Section */}
               <div>
-                <h2 style={{
-                  fontSize: '28px',
-                  fontWeight: '700',
-                  color: '#f59e0b',
-                  marginBottom: '30px',
-                  textTransform: 'uppercase'
-                }}>
+                <h2 className={styles.sectionTitle}>
                   Your Cart Items ({cart.length})
                 </h2>
 
                 {/* Cart Table */}
-                <div style={{
-                  backgroundColor: 'white',
-                  borderRadius: '8px',
-                  overflow: 'hidden'
-                }}>
-                  <table style={{
-                    width: '100%',
-                    borderCollapse: 'collapse'
-                  }}>
+                <div className={styles.cartTableWrapper}>
+                  <table className={styles.cartTable}>
                     <thead>
-                      <tr style={{
-                        borderBottom: '2px solid #e5e7eb',
-                        backgroundColor: '#f9fafb'
-                      }}>
-                        <th style={{
-                          padding: '16px',
-                          textAlign: 'left',
-                          fontWeight: '700',
-                          color: '#111827',
-                          fontSize: '14px'
-                        }}>
-                          Item
-                        </th>
-                        <th style={{
-                          padding: '16px',
-                          textAlign: 'left',
-                          fontWeight: '700',
-                          color: '#111827',
-                          fontSize: '14px',
-                          width: '120px'
-                        }}>
-                          Price
-                        </th>
-                        <th style={{
-                          padding: '16px',
-                          textAlign: 'left',
-                          fontWeight: '700',
-                          color: '#111827',
-                          fontSize: '14px',
-                          width: '150px'
-                        }}>
-                          Quantity
-                        </th>
-                        <th style={{
-                          padding: '16px',
-                          textAlign: 'right',
-                          fontWeight: '700',
-                          color: '#111827',
-                          fontSize: '14px',
-                          width: '100px'
-                        }}>
-                          Total
-                        </th>
+                      <tr>
+                        <th>Item</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th style={{ textAlign: 'right' }}>Total</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -227,25 +114,10 @@ export default function Cart() {
                         const itemTotal = (item.price || 0) * item.quantity;
 
                         return (
-                          <tr key={item.variantId || index} style={{
-                            borderBottom: '1px solid #e5e7eb'
-                          }}>
-                            <td style={{
-                              padding: '16px'
-                            }}>
-                              <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '16px'
-                              }}>
-                                <div style={{
-                                  width: '60px',
-                                  height: '60px',
-                                  position: 'relative',
-                                  borderRadius: '8px',
-                                  overflow: 'hidden',
-                                  backgroundColor: '#f3f4f6'
-                                }}>
+                          <tr key={item.variantId || index}>
+                            <td data-label="Item">
+                              <div className={styles.itemInfo}>
+                                <div className={styles.itemImageWrapper}>
                                   <Image
                                     src={item.image || "/Assets/Products/15.png"}
                                     alt={item.name || "Product"}
@@ -253,123 +125,45 @@ export default function Cart() {
                                     style={{ objectFit: 'cover' }}
                                   />
                                 </div>
-                                <div style={{
-                                  display: 'flex',
-                                  flexDirection: 'column',
-                                  gap: '4px'
-                                }}>
-                                  <span style={{
-                                    color: '#111827',
-                                    fontWeight: '600',
-                                    fontSize: '16px'
-                                  }}>
+                                <div className={styles.itemDetails}>
+                                  <span className={styles.itemName}>
                                     {item.name}
                                   </span>
-                                  <span style={{
-                                    color: '#6b7280',
-                                    fontSize: '14px'
-                                  }}>
+                                  <span className={styles.itemWeight}>
                                     {item.weight}
                                   </span>
                                   <button
                                     onClick={() => removeFromCart(item.id, item.variantId, item.cartItemId)}
-                                    style={{
-                                      color: '#ef4444',
-                                      fontSize: '12px',
-                                      fontWeight: '600',
-                                      background: 'none',
-                                      border: 'none',
-                                      padding: 0,
-                                      cursor: 'pointer',
-                                      textAlign: 'left',
-                                      marginTop: '4px'
-                                    }}
+                                    className={styles.removeBtn}
                                   >
                                     Remove
                                   </button>
                                 </div>
                               </div>
                             </td>
-                            <td style={{
-                              padding: '16px',
-                              color: '#111827',
-                              fontWeight: '600',
-                              fontSize: '16px'
-                            }}>
+                            <td data-label="Price" className={styles.priceCell}>
                               ₹{item.price}
                             </td>
-                            <td style={{
-                              padding: '16px'
-                            }}>
-                              <div style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '8px',
-                                width: 'fit-content'
-                              }}>
+                            <td data-label="Quantity">
+                              <div className={styles.quantityControl}>
                                 <button
                                   onClick={() => updateQuantity(item.id, item.variantId, item.quantity - 1)}
-                                  style={{
-                                    width: '24px',
-                                    height: '24px',
-                                    border: '1px solid #d1d5db',
-                                    backgroundColor: 'white',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                    fontSize: '14px',
-                                    fontWeight: 'bold',
-                                    color: '#374151'
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = '#f3f4f6';
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'white';
-                                  }}
+                                  className={styles.qtyBtn}
                                 >
                                   −
                                 </button>
-                                <span style={{
-                                  width: '30px',
-                                  textAlign: 'center',
-                                  backgroundColor: '#e5e7eb',
-                                  padding: '4px 8px',
-                                  borderRadius: '4px',
-                                  fontWeight: '600',
-                                  color: '#111827'
-                                }}>
+                                <span className={styles.qtyValue}>
                                   {item.quantity}
                                 </span>
                                 <button
                                   onClick={() => updateQuantity(item.id, item.variantId, item.quantity + 1)}
-                                  style={{
-                                    width: '24px',
-                                    height: '24px',
-                                    border: '1px solid #d1d5db',
-                                    backgroundColor: 'white',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                    fontSize: '14px',
-                                    fontWeight: 'bold',
-                                    color: '#374151'
-                                  }}
-                                  onMouseEnter={(e) => {
-                                    e.currentTarget.style.backgroundColor = '#f3f4f6';
-                                  }}
-                                  onMouseLeave={(e) => {
-                                    e.currentTarget.style.backgroundColor = 'white';
-                                  }}
+                                  className={styles.qtyBtn}
                                 >
                                   +
                                 </button>
                               </div>
                             </td>
-                            <td style={{
-                              padding: '16px',
-                              textAlign: 'right',
-                              color: '#111827',
-                              fontWeight: '600'
-                            }}>
+                            <td data-label="Total" className={styles.totalCell}>
                               ₹{itemTotal}
                             </td>
                           </tr>
@@ -381,92 +175,38 @@ export default function Cart() {
               </div>
 
               {/* Cart Summary Section */}
-              <div style={{
-                display: 'grid',
-                gridTemplateColumns: '1fr 350px',
-                gap: '30px',
-                width: '100%'
-              }}>
-
-
+              <div className={styles.cartSummary}>
                 {/* Empty left column */}
                 <div></div>
 
                 {/* Right side summary box */}
-                <div style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                  backgroundColor: 'white',
-                  padding: '20px',
-                  borderRadius: '8px',
-                  border: '1px solid #e5e7eb'
-                }}>
+                <div className={styles.summaryBox}>
                   {/* Subtotal */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingBottom: '10px',
-                    borderBottom: '1px solid #e5e7eb'
-                  }}>
-                    <span style={{
-                      color: '#6b7280',
-                      fontSize: '14px'
-                    }}>
+                  <div className={styles.summaryRow}>
+                    <span className={styles.summaryLabel}>
                       Subtotal
                     </span>
-                    <span style={{
-                      fontWeight: '700',
-                      color: '#111827',
-                      fontSize: '14px'
-                    }}>
+                    <span className={styles.summaryValue}>
                       ₹{subtotal}
                     </span>
                   </div>
 
                   {/* Sales Tax */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingBottom: '10px',
-                    borderBottom: '1px solid #e5e7eb'
-                  }}>
-                    <span style={{
-                      color: '#6b7280',
-                      fontSize: '14px'
-                    }}>
+                  <div className={styles.summaryRow}>
+                    <span className={styles.summaryLabel}>
                       Sales Tax
                     </span>
-                    <span style={{
-                      fontWeight: '700',
-                      color: '#111827',
-                      fontSize: '14px'
-                    }}>
+                    <span className={styles.summaryValue}>
                       ₹{salesTax}
                     </span>
                   </div>
 
                   {/* Grand Total */}
-                  <div style={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    paddingTop: '10px'
-                  }}>
-                    <span style={{
-                      color: '#f59e0b',
-                      fontSize: '16px',
-                      fontWeight: '700'
-                    }}>
+                  <div className={styles.grandTotalRow}>
+                    <span className={styles.grandTotalLabel}>
                       Grand total
                     </span>
-                    <span style={{
-                      fontWeight: '700',
-                      color: '#f59e0b',
-                      fontSize: '16px'
-                    }}>
+                    <span className={styles.grandTotalValue}>
                       ₹{total}
                     </span>
                   </div>
@@ -477,25 +217,7 @@ export default function Cart() {
                       console.log('Order now clicked');
                       setShowShipping(true);
                     }}
-                    style={{
-                      width: '100%',
-                      backgroundColor: '#f59e0b',
-                      color: '#000',
-                      border: 'none',
-                      padding: '12px 16px',
-                      borderRadius: '8px',
-                      fontSize: '14px',
-                      fontWeight: '700',
-                      cursor: 'pointer',
-                      transition: 'all 0.2s',
-                      marginTop: '8px'
-                    }}
-                    onMouseEnter={(e) => {
-                      e.currentTarget.style.backgroundColor = '#d97706';
-                    }}
-                    onMouseLeave={(e) => {
-                      e.currentTarget.style.backgroundColor = '#f59e0b';
-                    }}
+                    className={styles.orderBtn}
                   >
                     Order now
                   </button>

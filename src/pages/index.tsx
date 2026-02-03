@@ -7,6 +7,7 @@ import WhatsAppBanner from "@/components/WhatsAppBanner";
 import HoneyProcess from "@/components/HoneyProcess";
 import Footer from "@/components/Footer";
 import Tile from "@/components/Tile";
+import styles from "@/styles/Home.module.scss";
 
 export default function Home() {
   const [showBackToTop, setShowBackToTop] = useState(false);
@@ -38,34 +39,17 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <div style={{ minHeight: "100vh", backgroundColor: "#f9fafb" }}>
+      <div className={styles.homeWrapper}>
         <Navbar />
         <Banner />
         <DailyDeals />
         <WhatsAppBanner />
 
         {/* Honey Products Showcase Section */}
-        <div
-          className="honey-showcase-section"
-          style={{
-            padding: "80px 20px",
-            backgroundColor: "#f9fafb",
-            maxWidth: "1400px",
-            margin: "0 auto",
-          }}
-        >
+        <div className={styles.honeyShowcaseSection}>
           {/* Section Title */}
-          <div style={{ textAlign: "center", marginBottom: "60px" }}>
-            <h2
-              className="section-title"
-              style={{
-                fontSize: "42px",
-                fontWeight: "700",
-                color: "#fbbf24",
-                margin: "0 0 12px 0",
-                letterSpacing: "0.5px",
-              }}
-            >
+          <div className={styles.sectionHeader}>
+            <h2 className={styles.sectionTitle}>
               Honey Gallery
             </h2>
           </div>
@@ -83,34 +67,8 @@ export default function Home() {
       {/* Back to Top Button */}
       {showBackToTop && (
         <button
-          className="back-to-top-button"
+          className={styles.backToTopButton}
           onClick={scrollToTop}
-          style={{
-            position: "fixed",
-            bottom: "30px",
-            right: "30px",
-            width: "70px",
-            height: "70px",
-            clipPath:
-              "polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%)",
-            backgroundColor: "#FFB400",
-            color: "white",
-            border: "none",
-            cursor: "pointer",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            boxShadow: "0 6px 20px rgba(255, 180, 0, 0.4)",
-            transition: "background-color 0.3s ease",
-            zIndex: 1000,
-            transform: "rotate(90deg)",
-          }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.backgroundColor = "#000";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.backgroundColor = "#FFB400";
-          }}
         >
           <svg
             width="28"
@@ -121,7 +79,6 @@ export default function Home() {
             strokeWidth="3"
             strokeLinecap="round"
             strokeLinejoin="round"
-            style={{ transform: "rotate(-90deg)" }}
           >
             <polyline points="18 15 12 9 6 15"></polyline>
           </svg>

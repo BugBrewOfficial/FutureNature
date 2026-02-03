@@ -7,17 +7,49 @@ interface AdminPanelProps {
   onClose: () => void;
 }
 
+// --- MOCK DATA FOR SELECTION (Replace with API data later) ---
+const ALL_PRODUCTS = [
+  { id: 1, name: "Naming Ceremony Honey", price: 2500, image: "/Assets/Products/1.png" },
+  { id: 2, name: "Forest Honey", price: 1800, image: "/Assets/Products/15.png" },
+  { id: 3, name: "Moringa Atta", price: 80, image: "/Assets/Products/9.png" },
+  { id: 4, name: "Saffron Honey", price: 3200, image: "/Assets/Products/1.png" },
+  { id: 5, name: "Gulkand", price: 450, image: "/Assets/Products/15.png" },
+];
+
 const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
+
+  // --- STATE MANAGEMENT ---
+  const [showDailyDealsModal, setShowDailyDealsModal] = useState(false);
+  const [selectedDealIds, setSelectedDealIds] = useState<number[]>([1, 2, 3]); // Default active deals
 
   const handleOptionClick = (optionId: string) => {
     if (optionId === "add-product") {
       onClose();
       router.push("/admin/addProduct");
+    } else if (optionId === "edit-product") {
+      onClose();
+      router.push("/admin/manageProducts");
+    } else if (optionId === "daily-deals") {
+      setShowDailyDealsModal(true); // Open the sub-modal
     } else {
-      setSelectedOption(optionId);
+      // Handle 'banners' or other future options
+      console.log("Selected:", optionId);
     }
+  };
+
+  const toggleProductSelection = (id: number) => {
+    if (selectedDealIds.includes(id)) {
+      setSelectedDealIds(prev => prev.filter(pid => pid !== id));
+    } else {
+      setSelectedDealIds(prev => [...prev, id]);
+    }
+  };
+
+  const handleSaveDeals = () => {
+    console.log("Saving Daily Deals IDs:", selectedDealIds);
+    // TODO: Call your API here to save selectedDealIds to the backend
+    setShowDailyDealsModal(false);
   };
 
   const adminOptions = [
@@ -31,34 +63,10 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
             <path d="M37.3319 0H0V37.3312H37.3319V0Z" fill="white" />
           </mask>
           <g mask="url(#mask0_8_433)">
-            <path
-              d="M14.048 1.4375H3.59375C2.40289 1.4375 1.4375 2.40289 1.4375 3.59375V16.4817C1.4375 17.6726 2.40289 18.6379 3.59375 18.6379H14.048C15.2389 18.6379 16.2042 17.6726 16.2042 16.4817V3.59375C16.2042 2.40289 15.2389 1.4375 14.048 1.4375Z"
-              stroke="#373737"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M33.7382 1.4375H23.2839C22.0931 1.4375 21.1277 2.40289 21.1277 3.59375V6.66425C21.1277 7.85515 22.0931 8.8205 23.2839 8.8205H33.7382C34.929 8.8205 35.8944 7.85515 35.8944 6.66425V3.59375C35.8944 2.40289 34.929 1.4375 33.7382 1.4375Z"
-              stroke="#FBBF24"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M33.7382 13.7432H23.2839C22.0931 13.7432 21.1277 14.7086 21.1277 15.8995V33.7381C21.1277 34.929 22.0931 35.8944 23.2839 35.8944H33.7382C34.929 35.8944 35.8944 34.929 35.8944 33.7381V15.8995C35.8944 14.7086 34.929 13.7432 33.7382 13.7432Z"
-              stroke="#373737"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-            <path
-              d="M14.048 23.588H3.59375C2.40289 23.588 1.4375 24.5533 1.4375 25.7442V33.7374C1.4375 34.9282 2.40289 35.8937 3.59375 35.8937H14.048C15.2389 35.8937 16.2042 34.9282 16.2042 33.7374V25.7442C16.2042 24.5533 15.2389 23.588 14.048 23.588Z"
-              stroke="#FBBF24"
-              strokeWidth="4"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
+            <path d="M14.048 1.4375H3.59375C2.40289 1.4375 1.4375 2.40289 1.4375 3.59375V16.4817C1.4375 17.6726 2.40289 18.6379 3.59375 18.6379H14.048C15.2389 18.6379 16.2042 17.6726 16.2042 16.4817V3.59375C16.2042 2.40289 15.2389 1.4375 14.048 1.4375Z" stroke="#373737" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M33.7382 1.4375H23.2839C22.0931 1.4375 21.1277 2.40289 21.1277 3.59375V6.66425C21.1277 7.85515 22.0931 8.8205 23.2839 8.8205H33.7382C34.929 8.8205 35.8944 7.85515 35.8944 6.66425V3.59375C35.8944 2.40289 34.929 1.4375 33.7382 1.4375Z" stroke="#FBBF24" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M33.7382 13.7432H23.2839C22.0931 13.7432 21.1277 14.7086 21.1277 15.8995V33.7381C21.1277 34.929 22.0931 35.8944 23.2839 35.8944H33.7382C34.929 35.8944 35.8944 34.929 35.8944 33.7381V15.8995C35.8944 14.7086 34.929 13.7432 33.7382 13.7432Z" stroke="#373737" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
+            <path d="M14.048 23.588H3.59375C2.40289 23.588 1.4375 24.5533 1.4375 25.7442V33.7374C1.4375 34.9282 2.40289 35.8937 3.59375 35.8937H14.048C15.2389 35.8937 16.2042 34.9282 16.2042 33.7374V25.7442C16.2042 24.5533 15.2389 23.588 14.048 23.588Z" stroke="#FBBF24" strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
           </g>
         </svg>
       )
@@ -125,164 +133,216 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        backgroundColor: "rgba(0, 0, 0, 0.5)",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        zIndex: 2000
-      }}
-      onClick={onClose}
-    >
+    <>
       <div
         style={{
-          backgroundColor: "white",
-          borderRadius: "12px",
-          boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
-          width: "90%",
-          maxWidth: "900px",
-          padding: "30px"
+          position: "fixed",
+          inset: 0,
+          backgroundColor: "rgba(0, 0, 0, 0.5)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          zIndex: 2000
         }}
-        onClick={(e) => e.stopPropagation()}
+        onClick={onClose}
       >
-        {/* Header with Logo */}
-        <div style={{ marginBottom: "20px" }}>
-          <Image
-            src="/Assets/logo.png"
-            alt="FutureNature Logo"
-            width={120}
-            height={50}
-            style={{ objectFit: "contain" }}
-          />
-        </div>
-
-        {/* Welcome Message */}
-        <h1
-          style={{
-            fontSize: "24px",
-            fontWeight: "700",
-            color: "#1f2937",
-            marginBottom: "8px"
-          }}
-        >
-          Welcome Back, Admin!
-        </h1>
-        <p
-          style={{
-            fontSize: "14px",
-            color: "#6b7280",
-            marginBottom: "28px"
-          }}
-        >
-          Manage your store settings and configurations
-        </p>
-
-        {/* Options Grid */}
         <div
           style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "16px",
-            marginBottom: "24px"
+            backgroundColor: "white",
+            borderRadius: "12px",
+            boxShadow: "0 20px 25px -5px rgba(0, 0, 0, 0.1)",
+            width: "90%",
+            maxWidth: "900px",
+            padding: "30px",
+            maxHeight: "90vh",
+            overflowY: "auto"
           }}
+          onClick={(e) => e.stopPropagation()}
         >
-          {adminOptions.map((option) => (
-            <div
-              key={option.id}
-              onClick={() => handleOptionClick(option.id)}
-              style={{
-                padding: "20px",
-                borderRadius: "8px",
-                border: "none",
-                backgroundColor: "#f9fafb",
-                cursor: "pointer",
-                transition: "all 0.3s ease",
-                boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-                borderLeft: "4px solid #f59e0b",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "flex-start",
-                gap: "16px"
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget;
-                el.style.transform = "translateY(-2px)";
-                el.style.boxShadow = "0 4px 6px rgba(245, 158, 11, 0.1)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget;
-                el.style.transform = "translateY(0)";
-                el.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.1)";
-              }}
-            >
-              <div>
-                <h3
-                  style={{
-                    fontSize: "16px",
-                    fontWeight: "600",
-                    color: "#1f2937",
-                    marginBottom: "6px"
-                  }}
-                >
-                  {option.title}
-                </h3>
-                <p
-                  style={{
-                    fontSize: "13px",
-                    color: "#6b7280",
-                    lineHeight: "1.4"
-                  }}
-                >
-                  {option.description}
-                </p>
-              </div>
+          {/* Header with Logo */}
+          <div style={{ marginBottom: "20px" }}>
+            <Image
+              src="/Assets/logo.png"
+              alt="FutureNature Logo"
+              width={120}
+              height={50}
+              style={{ objectFit: "contain" }}
+            />
+          </div>
+
+          <h1 style={{ fontSize: "24px", fontWeight: "700", color: "#1f2937", marginBottom: "8px" }}>
+            Welcome Back, Admin!
+          </h1>
+          <p style={{ fontSize: "14px", color: "#6b7280", marginBottom: "28px" }}>
+            Manage your store settings and configurations
+          </p>
+
+          {/* Options Grid */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "16px", marginBottom: "24px" }}>
+            {adminOptions.map((option) => (
               <div
+                key={option.id}
+                onClick={() => handleOptionClick(option.id)}
                 style={{
-                  fontSize: "32px",
-                  flexShrink: 0
+                  padding: "20px",
+                  borderRadius: "8px",
+                  backgroundColor: "#f9fafb",
+                  cursor: "pointer",
+                  transition: "all 0.3s ease",
+                  boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+                  borderLeft: "4px solid #f59e0b",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "flex-start",
+                  gap: "16px"
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-2px)";
+                  e.currentTarget.style.boxShadow = "0 4px 6px rgba(245, 158, 11, 0.1)";
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "0 1px 3px rgba(0, 0, 0, 0.1)";
                 }}
               >
-                {option.icon}
+                <div>
+                  <h3 style={{ fontSize: "16px", fontWeight: "600", color: "#1f2937", marginBottom: "6px" }}>{option.title}</h3>
+                  <p style={{ fontSize: "13px", color: "#6b7280", lineHeight: "1.4" }}>{option.description}</p>
+                </div>
+                <div style={{ fontSize: "32px", flexShrink: 0 }}>{option.icon}</div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
 
-        {/* Close Button */}
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "flex-end"
-          }}
-        >
-          <button
-            onClick={onClose}
-            style={{
-              padding: "8px 20px",
-              borderRadius: "8px",
-              backgroundColor: "#e5e7eb",
-              color: "#1f2937",
-              border: "none",
-              fontSize: "14px",
-              fontWeight: "500",
-              cursor: "pointer",
-              transition: "all 0.2s"
-            }}
-            onMouseEnter={(e) => {
-              e.currentTarget.style.backgroundColor = "#d1d5db";
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.backgroundColor = "#e5e7eb";
-            }}
-          >
-            Close
-          </button>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <button
+              onClick={onClose}
+              style={{
+                padding: "8px 20px",
+                borderRadius: "8px",
+                backgroundColor: "#e5e7eb",
+                color: "#1f2937",
+                border: "none",
+                fontSize: "14px",
+                fontWeight: "500",
+                cursor: "pointer",
+                transition: "all 0.2s"
+              }}
+              onMouseEnter={(e) => { e.currentTarget.style.backgroundColor = "#d1d5db"; }}
+              onMouseLeave={(e) => { e.currentTarget.style.backgroundColor = "#e5e7eb"; }}
+            >
+              Close
+            </button>
+          </div>
         </div>
       </div>
-    </div>
+
+      {/* --- DAILY DEALS MODAL (On Top of Admin Panel) --- */}
+      {showDailyDealsModal && (
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          backgroundColor: 'rgba(0, 0, 0, 0.6)',
+          zIndex: 2100, // Higher than AdminPanel (2000)
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          backdropFilter: 'blur(5px)'
+        }}>
+          <div style={{
+            backgroundColor: 'white',
+            padding: '30px',
+            borderRadius: '20px',
+            width: '90%',
+            maxWidth: '500px',
+            boxShadow: '0 20px 50px rgba(0,0,0,0.2)',
+            animation: 'fadeIn 0.3s ease-out'
+          }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '24px', fontWeight: '700', margin: 0, color: '#111827' }}>Select Daily Deals</h3>
+              <button
+                onClick={() => setShowDailyDealsModal(false)}
+                style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#6b7280' }}
+              >
+                ×
+              </button>
+            </div>
+
+            <div style={{ maxHeight: '400px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
+              {ALL_PRODUCTS.map(deal => (
+                <label
+                  key={deal.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '15px',
+                    padding: '12px',
+                    borderRadius: '10px',
+                    backgroundColor: selectedDealIds.includes(deal.id) ? '#fffbeb' : '#f9fafb',
+                    border: selectedDealIds.includes(deal.id) ? '2px solid #fbbf24' : '1px solid #e5e7eb',
+                    cursor: 'pointer',
+                    transition: 'all 0.2s'
+                  }}
+                >
+                  <input
+                    type="checkbox"
+                    checked={selectedDealIds.includes(deal.id)}
+                    onChange={() => toggleProductSelection(deal.id)}
+                    style={{ width: '20px', height: '20px', accentColor: '#fbbf24', cursor: 'pointer' }}
+                  />
+                  <div style={{ width: '50px', height: '50px', position: 'relative', borderRadius: '8px', overflow: 'hidden' }}>
+                    <Image src={deal.image} alt={deal.name} fill style={{ objectFit: 'cover' }} />
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <div style={{ fontWeight: '600', color: '#374151' }}>{deal.name}</div>
+                    <div style={{ fontSize: '12px', color: '#6b7280' }}>₹{deal.price}</div>
+                  </div>
+                </label>
+              ))}
+            </div>
+
+            <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
+              <button
+                onClick={() => setShowDailyDealsModal(false)}
+                style={{
+                  flex: 1,
+                  backgroundColor: '#f3f4f6',
+                  color: '#374151',
+                  border: 'none',
+                  padding: '15px',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleSaveDeals}
+                style={{
+                  flex: 2,
+                  backgroundColor: '#fbbf24',
+                  color: 'black',
+                  border: 'none',
+                  padding: '15px',
+                  borderRadius: '12px',
+                  fontSize: '16px',
+                  fontWeight: '700',
+                  cursor: 'pointer',
+                  boxShadow: '0 4px 6px rgba(251, 191, 36, 0.2)'
+                }}
+              >
+                Save Selection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 

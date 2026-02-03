@@ -17,7 +17,8 @@
     "react-dom": "19.2.0",
     "react-hot-toast": "^2.6.0",
     "react-otp-input": "^3.1.1",
-    "react-simple-star-rating": "^5.1.7"
+    "react-simple-star-rating": "^5.1.7",
+    "sass": "^1.97.3"
   },
   "devDependencies": {
     "@types/node": "^20",

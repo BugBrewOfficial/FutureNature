@@ -1,0 +1,435 @@
+/* --- VARIABLES --- */
+.pageWrapper {
+  --gold: #b45309;
+  --gold-light: #f59e0b;
+  --gold-pale: #fffbeb;
+  --dark: #1c1917;
+  --cream: #fdfbf7;
+  --white: #ffffff;
+  --gray: #57534e;
+
+  font-family: "Inter", sans-serif;
+  background-color: var(--cream);
+  color: var(--dark);
+  overflow-x: hidden;
+}
+
+.pageWrapper h1,
+.pageWrapper h2,
+.pageWrapper h3 {
+  font-family: "Playfair Display", serif;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- HERO SECTION --- */
+.heroSection {
+  padding: 180px 0 140px;
+  text-align: center;
+  position: relative;
+  background-color: var(--white);
+}
+
+.heroBgPattern {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: radial-gradient(#fcd34d 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.15;
+  z-index: 0;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+}
+
+.heroSubtitle {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  letter-spacing: 4px;
+  color: var(--gold);
+  font-weight: 700;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 24px;
+}
+
+.heroTitle {
+  font-size: clamp(50px, 8vw, 100px);
+  line-height: 0.95;
+  color: var(--dark);
+  margin-bottom: 32px;
+  font-weight: 400;
+}
+
+.goldText {
+  font-family: "Cinzel", serif;
+  color: var(--gold);
+  font-style: italic;
+}
+
+.heroLine {
+  width: 2px;
+  height: 60px;
+  background: var(--gold);
+  margin: 0 auto 32px;
+}
+
+.heroDesc {
+  font-size: 18px;
+  color: var(--gray);
+  max-width: 500px;
+  margin: 0 auto;
+  line-height: 1.6;
+  font-style: italic;
+}
+
+/* --- STORY SECTION --- */
+.storySection {
+  padding: 60px 0 140px;
+}
+
+.storyWrapper {
+  position: relative;
+  height: 600px;
+  display: flex;
+  align-items: center;
+}
+
+.storyBgImg {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 65%;
+  height: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.bgImg {
+  object-fit: cover;
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.storyCard {
+  position: relative;
+  margin-left: auto;
+  width: 45%;
+  background: #fff;
+  padding: 60px;
+  box-shadow: -20px 20px 60px rgba(0, 0, 0, 0.1);
+  border-top: 4px solid var(--gold);
+}
+
+.cardTag {
+  font-size: 11px;
+  letter-spacing: 2px;
+  font-weight: 700;
+  color: var(--gold);
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.cardTitle {
+  font-size: 42px;
+  margin: 0 0 8px;
+  color: var(--dark);
+}
+
+.cardRole {
+  font-size: 14px;
+  color: var(--gray);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid #e7e5e4;
+  padding-bottom: 24px;
+  margin-bottom: 24px;
+  display: inline-block;
+}
+
+.cardBody p {
+  font-size: 16px;
+  line-height: 1.7;
+  color: var(--gray);
+  margin-bottom: 20px;
+}
+
+.dropCap {
+  font-size: 40px;
+  float: left;
+  line-height: 0.8;
+  padding-right: 8px;
+  font-family: "Playfair Display", serif;
+  color: var(--gold);
+}
+
+.signature {
+  font-family: "Playfair Display", serif;
+  font-style: italic;
+  font-size: 24px;
+  color: var(--gold);
+  text-align: right;
+  margin-top: 20px;
+}
+
+/* --- TRUST ANCHOR (FSSAI) --- */
+.trustAnchor {
+  margin-bottom: 40px; /* Space between FSSAI and Standards */
+  position: relative;
+  z-index: 10;
+}
+
+.fssaiBanner {
+  background: #1c1917;
+  border: 1px solid #44403c;
+  border-radius: 20px;
+  padding: 40px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: #fff;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  position: relative;
+  overflow: hidden;
+}
+
+.fssaiBanner::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #b45309, #fbbf24, #b45309);
+}
+
+.sealRing {
+  width: 100px;
+  height: 100px;
+  border: 2px solid #fbbf24;
+  border-radius: 50%;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sealInner {
+  width: 100%;
+  height: 100%;
+  background: #fbbf24;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #1c1917;
+}
+
+.fssaiLogoText {
+  font-family: serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 28px;
+  letter-spacing: -1px;
+}
+
+.certDetails {
+  flex: 1;
+  padding: 0 40px;
+  border-right: 1px solid #44403c;
+}
+
+.certHead {
+  font-family: "Cinzel", serif;
+  font-size: 20px;
+  color: #fbbf24;
+  margin: 0 0 4px;
+  letter-spacing: 1px;
+}
+
+.certSub {
+  font-size: 14px;
+  color: #a8a29e;
+  margin-bottom: 16px;
+}
+
+.licenceBox {
+  display: inline-block;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 8px 16px;
+  border-radius: 4px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.licLabel {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: #a8a29e;
+  margin-bottom: 2px;
+}
+
+.licNo {
+  font-family: monospace;
+  font-size: 18px;
+  letter-spacing: 2px;
+  color: #fff;
+}
+
+.purityPromise {
+  padding-left: 40px;
+}
+
+.checkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.checkList li {
+  font-size: 15px;
+  color: #e5e5e5;
+  margin-bottom: 8px;
+  font-family: "Inter", sans-serif;
+}
+
+/* --- PILLARS SECTION --- */
+.pillarsSection {
+  padding: 60px 0 120px;
+  background-color: var(--cream);
+}
+
+.pillarsHeader {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.pillarsHeader h2 {
+  font-size: 42px;
+  color: var(--dark);
+  margin-bottom: 12px;
+}
+
+.pillarsSub {
+  color: var(--gray);
+  font-size: 16px;
+  font-style: italic;
+}
+
+.pillarsGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0;
+}
+
+.pillarCard {
+  padding: 40px;
+  border-top: 1px solid #e7e5e4;
+  border-bottom: 1px solid #e7e5e4;
+  text-align: center;
+  transition: background 0.3s;
+}
+
+.pillarCard:hover {
+  background: #fff;
+}
+
+.middleCard {
+  border-left: 1px solid #e7e5e4;
+  border-right: 1px solid #e7e5e4;
+}
+
+.pillarNum {
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--gold);
+  margin-bottom: 16px;
+  display: block;
+}
+
+.pillarCard h3 {
+  font-size: 22px;
+  margin-bottom: 12px;
+  color: var(--dark);
+}
+
+.pillarCard p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--gray);
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 900px) {
+  .storyWrapper {
+    flex-direction: column;
+    height: auto;
+  }
+
+  .storyBgImg {
+    position: relative;
+    width: 100%;
+    height: 400px;
+  }
+
+  .storyCard {
+    width: 90%;
+    margin: -60px auto 0;
+    padding: 40px 24px;
+  }
+
+  .fssaiBanner {
+    flex-direction: column;
+    text-align: center;
+    padding: 40px 24px;
+    gap: 32px;
+  }
+
+  .certDetails {
+    border-right: none;
+    border-top: 1px solid #44403c;
+    border-bottom: 1px solid #44403c;
+    padding: 24px 0;
+    margin: 0;
+  }
+
+  .purityPromise {
+    padding-left: 0;
+  }
+
+  .pillarsGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .middleCard {
+    border-left: none;
+    border-right: none;
+  }
+
+  .heroTitle {
+    font-size: 36px;
+  }
+
+  .heroSection {
+    padding: 80px 0 60px;
+  }
+
+  .heroDesc {
+    font-size: 15px;
+    padding: 0 20px;
+  }
+}

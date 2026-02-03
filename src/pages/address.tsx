@@ -7,6 +7,7 @@ import Navbar from "../components/Navbar";
 import { addressApi, AddressData } from "../api/addressApi";
 import AddressList from "../components/AddressList";
 import AddressForm from "../components/AddressForm";
+import styles from "@/styles/Address.module.scss";
 
 export default function AddressPage() {
     const router = useRouter();
@@ -107,37 +108,25 @@ export default function AddressPage() {
     };
 
     return (
-        <div style={{ backgroundColor: "#f9fafb", minHeight: "100vh" }}>
+        <div className={styles.pageWrapper}>
             <Head>
                 <title>My Addresses | FutureNature</title>
             </Head>
             <Navbar />
             <Toaster />
 
-            <main style={{ maxWidth: "1200px", margin: "0 auto", padding: "40px 20px" }}>
-                <div style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    marginBottom: "30px"
-                }}>
-                    <h1 style={{ fontSize: "28px", fontWeight: 700, color: "#1f2937" }}>
+            <main className={styles.mainContent}>
+                <div className={styles.headerRow}>
+                    <h1 className={styles.pageTitle}>
                         My Addresses
                     </h1>
                 </div>
 
                 {loading ? (
-                    <div style={{ textAlign: "center", padding: "40px" }}>Loading...</div>
+                    <div className={styles.loadingState}>Loading...</div>
                 ) : showForm ? (
-                    <div style={{
-                        backgroundColor: "white",
-                        padding: "30px",
-                        borderRadius: "16px",
-                        maxWidth: "600px",
-                        margin: "0 auto",
-                        boxShadow: "0 4px 6px -1px rgba(0, 0, 0, 0.1)"
-                    }}>
-                        <h2 style={{ fontSize: "20px", fontWeight: 600, marginBottom: "20px", color: "#111827" }}>
+                    <div className={styles.formWrapper}>
+                        <h2 className={styles.formTitle}>
                             {editingAddress ? "Edit Address" : "Add New Address"}
                         </h2>
                         <AddressForm

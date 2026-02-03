@@ -19,4 +19,7 @@ export const productApi = {
     apiClient.get(`/product/getProductInfo/${id}`),
   addProduct: (data: IAddProductPayload) =>
     apiClient.post("/product/add", data),
+  updateProduct: (id: string, data: Partial<IAddProductPayload>) =>
+    apiClient.put(`/product/update/${id}`, data),
+  deleteProduct: (id: string) => apiClient.delete(`/product/delete/${id}`),
 };

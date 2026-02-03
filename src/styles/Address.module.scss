@@ -1,0 +1,56 @@
+.pageWrapper {
+    background-color: #f9fafb;
+    min-height: 100vh;
+}
+
+.mainContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 40px 20px;
+}
+
+.headerRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.pageTitle {
+    font-size: 28px;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.loadingState {
+    text-align: center;
+    padding: 40px;
+}
+
+.formWrapper {
+    background-color: white;
+    padding: 30px;
+    border-radius: 16px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.formTitle {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #111827;
+}
+
+@media (max-width: 768px) {
+    .headerRow {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 16px;
+    }
+
+    .formWrapper {
+        padding: 20px;
+    }
+}
