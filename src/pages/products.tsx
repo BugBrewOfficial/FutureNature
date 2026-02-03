@@ -10,6 +10,7 @@ import { Rating } from "react-simple-star-rating";
 import { wishlistApi } from "@/api/wishlistApi";
 import Cookies from "js-cookie";
 import toast from "react-hot-toast";
+import styles from "@/styles/Products.module.scss";
 
 interface Product {
     id: string;
@@ -145,49 +146,48 @@ export default function Products({ products = [] }: { products: Product[] }) {
                 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
             </Head>
 
-            <div className="page-wrapper">
+            <div className={styles.pageWrapper}>
                 <Navbar />
 
                 {/* Hero / Header Section */}
-                <header className="page-header">
-                    <div className="header-content">
-                        <span className="eyebrow">THE HARVEST</span>
-                        <h1 className="page-title">
-                            Pure, Raw & <br/><em>Unfiltered.</em>
+                <header className={styles.pageHeader}>
+                    <div className={styles.headerContent}>
+                        <span className={styles.eyebrow}>THE HARVEST</span>
+                        <h1 className={styles.pageTitle}>
+                            Pure, Raw & <br /><em>Unfiltered.</em>
                         </h1>
-                        <p className="page-desc">
-                            Direct from our hives to your home. No processing, no additives—just nature's liquid gold.
+                        <p className={styles.pageDesc}>
+                            Direct from our hives to your home. No processing, no additives—just nature&apos;s liquid gold.
                         </p>
                     </div>
-                    <div className="header-decoration"></div>
                 </header>
 
                 {/* Products Grid Section */}
-                <section className="catalog-section">
-                    <div className="container">
-                        
+                <section className={styles.catalogSection}>
+                    <div className={styles.container}>
+
                         {/* Products Grid */}
-                        <div className="products-grid">
+                        <div className={styles.productsGrid}>
                             {products?.map((product, index) => (
                                 <Link
                                     href={`/details/${product.id}`}
                                     key={product.id || index}
-                                    className="product-card"
+                                    className={styles.productCard}
                                 >
                                     {/* Image Area */}
-                                    <div className="card-image-wrap">
+                                    <div className={styles.cardImageWrap}>
                                         <Image
                                             src={product.image || '/Assets/Products/15.png'}
                                             alt={product.name}
                                             width={400}
                                             height={320}
-                                            className="product-img"
+                                            className={styles.productImg}
                                         />
-                                        
+
                                         {/* Wishlist Fab */}
                                         <button
                                             onClick={(e) => handleToggleWishlist(product.id.toString(), e)}
-                                            className={`wishlist-fab ${wishlistIds.includes(product.id.toString()) ? 'active' : ''}`}
+                                            className={`${styles.wishlistFab} ${wishlistIds.includes(product.id.toString()) ? styles.active : ''}`}
                                             aria-label="Add to wishlist"
                                         >
                                             <svg width="20" height="20" viewBox="0 0 24 24" fill={wishlistIds.includes(product.id.toString()) ? "currentColor" : "none"} stroke="currentColor" strokeWidth="2">
@@ -197,32 +197,32 @@ export default function Products({ products = [] }: { products: Product[] }) {
 
                                         {/* Discount Tag */}
                                         {product.discount && product.discount > 0 && (
-                                            <div className="discount-tag">
+                                            <div className={styles.discountTag}>
                                                 -{Math.round(product.discount)}%
                                             </div>
                                         )}
                                     </div>
 
                                     {/* Content Area */}
-                                    <div className="card-content">
-                                        <div className="content-top">
-                                            <h3 className="card-title">{product.name}</h3>
-                                            {product.nameTamil && <span className="card-subtitle">{product.nameTamil}</span>}
+                                    <div className={styles.cardContent}>
+                                        <div className={styles.contentTop}>
+                                            <h3 className={styles.cardTitle}>{product.name}</h3>
+                                            {product.nameTamil && <span className={styles.cardSubtitle}>{product.nameTamil}</span>}
                                         </div>
 
-                                        <div className="card-meta">
-                                            <div className="rating-box">
+                                        <div className={styles.cardMeta}>
+                                            <div className={styles.ratingBox}>
                                                 <Rating initialValue={product.rating} readonly size={14} allowFraction fillColor="#d97706" />
-                                                <span className="rating-num">({product.reviewCount || 0})</span>
+                                                <span className={styles.ratingNum}>({product.reviewCount || 0})</span>
                                             </div>
-                                            <span className="weight-badge">{product.weight}</span>
+                                            <span className={styles.weightBadge}>{product.weight}</span>
                                         </div>
 
-                                        <div className="card-footer">
-                                            <div className="price-box">
-                                                <span className="price-curr">₹{product.price}</span>
+                                        <div className={styles.cardFooter}>
+                                            <div className={styles.priceBox}>
+                                                <span className={styles.priceCurr}>₹{product.price}</span>
                                                 {product.originalPrice > product.price && (
-                                                    <span className="price-old">₹{product.originalPrice}</span>
+                                                    <span className={styles.priceOld}>₹{product.originalPrice}</span>
                                                 )}
                                             </div>
 
@@ -234,7 +234,7 @@ export default function Products({ products = [] }: { products: Product[] }) {
                                                         e.stopPropagation();
                                                         handleAddToCart(product);
                                                     }}
-                                                    className="btn-primary"
+                                                    className={styles.btnPrimary}
                                                 >
                                                     Add
                                                 </button>
@@ -244,7 +244,7 @@ export default function Products({ products = [] }: { products: Product[] }) {
                                                         e.preventDefault();
                                                         e.stopPropagation();
                                                     }}
-                                                    className="qty-selector"
+                                                    className={styles.qtySelector}
                                                 >
                                                     <button
                                                         onClick={(e) => {
@@ -252,9 +252,9 @@ export default function Products({ products = [] }: { products: Product[] }) {
                                                             e.stopPropagation();
                                                             handleQuantityChange(product.id, product.variantId, -1);
                                                         }}
-                                                        className="qty-btn"
+                                                        className={styles.qtyBtn}
                                                     >−</button>
-                                                    <span className="qty-val">
+                                                    <span className={styles.qtyVal}>
                                                         {cart.find(item => item.variantId === product.variantId)?.quantity || 1}
                                                     </span>
                                                     <button
@@ -263,7 +263,7 @@ export default function Products({ products = [] }: { products: Product[] }) {
                                                             e.stopPropagation();
                                                             handleQuantityChange(product.id, product.variantId, 1);
                                                         }}
-                                                        className="qty-btn"
+                                                        className={styles.qtyBtn}
                                                     >+</button>
                                                 </div>
                                             )}
@@ -276,319 +276,6 @@ export default function Products({ products = [] }: { products: Product[] }) {
                 </section>
             </div>
             <Footer />
-
-            <style jsx>{`
-                /* --- VARIABLES --- */
-                .page-wrapper {
-                    --gold: #d97706;
-                    --gold-light: #fbbf24;
-                    --cream: #fffbeb;
-                    --dark: #1c1917;
-                    --gray: #6b7280;
-                    --border: #e5e7eb;
-                    
-                    font-family: 'Inter', sans-serif;
-                    background: #ffffff;
-                    min-height: 100vh;
-                }
-
-                h1, h2, h3, em {
-                    font-family: 'Playfair Display', serif;
-                }
-
-                .container {
-                    max-width: 1200px;
-                    margin: 0 auto;
-                    padding: 0 24px;
-                }
-
-                /* --- HEADER --- */
-                .page-header {
-                    background-color: var(--cream);
-                    padding: 80px 24px 60px;
-                    text-align: center;
-                    position: relative;
-                    overflow: hidden;
-                }
-
-                .header-content {
-                    position: relative;
-                    z-index: 2;
-                    max-width: 800px;
-                    margin: 0 auto;
-                }
-
-                .eyebrow {
-                    font-size: 11px;
-                    font-weight: 700;
-                    letter-spacing: 2px;
-                    color: var(--gold);
-                    text-transform: uppercase;
-                    display: block;
-                    margin-bottom: 16px;
-                }
-
-                .page-title {
-                    font-size: 56px;
-                    color: var(--dark);
-                    line-height: 1.1;
-                    margin-bottom: 20px;
-                }
-
-                .page-title em {
-                    color: var(--gold);
-                    font-style: italic;
-                }
-
-                .page-desc {
-                    font-size: 18px;
-                    color: var(--gray);
-                    line-height: 1.6;
-                    max-width: 500px;
-                    margin: 0 auto;
-                }
-
-                /* --- CATALOG GRID --- */
-                .catalog-section {
-                    padding: 60px 0 100px;
-                }
-
-                .products-grid {
-                    display: grid;
-                    grid-template-columns: repeat(3, 1fr);
-                    gap: 32px;
-                }
-
-                /* --- PRODUCT CARD --- */
-                .product-card {
-                    background: #fff;
-                    border: 1px solid var(--border);
-                    border-radius: 16px;
-                    overflow: hidden;
-                    text-decoration: none;
-                    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .product-card:hover {
-                    transform: translateY(-8px);
-                    box-shadow: 0 20px 40px rgba(0,0,0,0.08);
-                    border-color: var(--gold-light);
-                }
-
-                .card-image-wrap {
-                    position: relative;
-                    background: #fdfbf7;
-                    height: 300px;
-                    overflow: hidden;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                }
-
-                .product-img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: cover;
-                    transition: transform 0.6s ease;
-                }
-
-                .product-card:hover .product-img {
-                    transform: scale(1.05);
-                }
-
-                /* Wishlist FAB */
-                .wishlist-fab {
-                    position: absolute;
-                    top: 16px;
-                    right: 16px;
-                    width: 36px;
-                    height: 36px;
-                    border-radius: 50%;
-                    background: rgba(255,255,255,0.9);
-                    backdrop-filter: blur(4px);
-                    border: none;
-                    display: flex;
-                    align-items: center;
-                    justify-content: center;
-                    cursor: pointer;
-                    color: #9ca3af;
-                    transition: all 0.2s;
-                    z-index: 5;
-                    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-                }
-
-                .wishlist-fab:hover {
-                    transform: scale(1.1);
-                    color: #ef4444;
-                }
-
-                .wishlist-fab.active {
-                    color: #ef4444;
-                    background: #fee2e2;
-                }
-
-                /* Discount Tag */
-                .discount-tag {
-                    position: absolute;
-                    top: 16px;
-                    left: 16px;
-                    background: var(--dark);
-                    color: #fff;
-                    font-size: 11px;
-                    font-weight: 700;
-                    padding: 4px 10px;
-                    border-radius: 4px;
-                    z-index: 5;
-                }
-
-                /* Content */
-                .card-content {
-                    padding: 24px;
-                    flex: 1;
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .content-top {
-                    margin-bottom: 12px;
-                }
-
-                .card-title {
-                    font-size: 20px;
-                    font-weight: 600;
-                    color: var(--dark);
-                    margin: 0 0 4px;
-                }
-
-                .card-subtitle {
-                    font-size: 13px;
-                    color: var(--gray);
-                }
-
-                .card-meta {
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    margin-bottom: 20px;
-                }
-
-                .rating-box {
-                    display: flex;
-                    align-items: center;
-                    gap: 6px;
-                }
-
-                .rating-num {
-                    font-size: 12px;
-                    color: var(--gray);
-                }
-
-                .weight-badge {
-                    font-size: 11px;
-                    font-weight: 600;
-                    background: var(--cream);
-                    color: var(--gold);
-                    padding: 4px 10px;
-                    border-radius: 20px;
-                    text-transform: uppercase;
-                }
-
-                /* Footer & Price */
-                .card-footer {
-                    margin-top: auto;
-                    display: flex;
-                    align-items: center;
-                    justify-content: space-between;
-                    gap: 12px;
-                    border-top: 1px solid #f3f4f6;
-                    padding-top: 16px;
-                }
-
-                .price-box {
-                    display: flex;
-                    flex-direction: column;
-                }
-
-                .price-curr {
-                    font-size: 20px;
-                    font-weight: 700;
-                    color: var(--dark);
-                }
-
-                .price-old {
-                    font-size: 13px;
-                    color: #9ca3af;
-                    text-decoration: line-through;
-                }
-
-                /* Buttons */
-                .btn-primary {
-                    background: var(--dark);
-                    color: #fff;
-                    border: none;
-                    padding: 10px 24px;
-                    border-radius: 8px;
-                    font-weight: 600;
-                    font-size: 14px;
-                    cursor: pointer;
-                    transition: all 0.2s;
-                }
-
-                .btn-primary:hover {
-                    background: var(--gold);
-                }
-
-                .qty-selector {
-                    display: flex;
-                    align-items: center;
-                    border: 1px solid var(--border);
-                    border-radius: 8px;
-                    overflow: hidden;
-                }
-
-                .qty-btn {
-                    background: transparent;
-                    border: none;
-                    width: 32px;
-                    height: 36px;
-                    font-size: 16px;
-                    cursor: pointer;
-                    color: var(--dark);
-                    transition: background 0.2s;
-                }
-
-                .qty-btn:hover {
-                    background: #f3f4f6;
-                }
-
-                .qty-val {
-                    width: 32px;
-                    text-align: center;
-                    font-size: 14px;
-                    font-weight: 600;
-                }
-
-                /* Responsive */
-                @media (max-width: 1024px) {
-                    .products-grid {
-                        grid-template-columns: repeat(2, 1fr);
-                    }
-                }
-
-                @media (max-width: 768px) {
-                    .products-grid {
-                        grid-template-columns: 1fr;
-                        max-width: 400px;
-                        margin: 0 auto;
-                    }
-
-                    .page-title {
-                        font-size: 42px;
-                    }
-                }
-            `}</style>
         </>
     );
 }
@@ -599,7 +286,7 @@ export const getServerSideProps = async () => {
         const response = await productApi.getAllProducts();
         const data = response.data;
         let products: Product[] = [];
-        
+
         if (data && data.status && Array.isArray(data.data)) {
             const safeParseFloat = (val: any) => {
                 const parsed = parseFloat(val);
@@ -607,19 +294,19 @@ export const getServerSideProps = async () => {
             };
 
             products = data.data.map((item: BackendProduct) => ({
-                id: item.id?.toString() || "", 
+                id: item.id?.toString() || "",
                 name: item.product_name || "Unknown Product",
                 nameTamil: item.product_name_tamil || "",
-                image: Array.isArray(item.imageUrl) && item.imageUrl.length > 0 
-                    ? item.imageUrl[0] 
+                image: Array.isArray(item.imageUrl) && item.imageUrl.length > 0
+                    ? item.imageUrl[0]
                     : "/Assets/Products/15.png",
                 rating: item.overall_rating || 0,
                 reviewCount: item.review_count || 0,
-                weight: Array.isArray(item.variants) && item.variants.length > 0 
-                    ? item.variants[0].attribute_name 
+                weight: Array.isArray(item.variants) && item.variants.length > 0
+                    ? item.variants[0].attribute_name
                     : "Standard",
-                variantId: Array.isArray(item.variants) && item.variants.length > 0 
-                    ? item.variants[0].id 
+                variantId: Array.isArray(item.variants) && item.variants.length > 0
+                    ? item.variants[0].id
                     : `fallback-${item.id}`,
                 price: safeParseFloat(item.selling_price),
                 originalPrice: safeParseFloat(item.price),

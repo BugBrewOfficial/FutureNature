@@ -5,6 +5,7 @@ import toast, { Toaster } from "react-hot-toast";
 import Cookies from "js-cookie";
 import CustomInputError from "./CustomInputError";
 import { userApi } from "../api/userApi";
+import styles from "../styles/AuthModal.module.scss";
 
 interface AuthModalProps {
     isOpen: boolean;
@@ -179,78 +180,21 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
             {/* Overlay */}
             <div
                 onClick={onClose}
-                style={{
-                    position: "fixed",
-                    top: 0,
-                    left: 0,
-                    right: 0,
-                    bottom: 0,
-                    backgroundColor: "rgba(0, 0, 0, 0.6)",
-                    zIndex: 9998,
-                    animation: "fadeIn 0.3s ease-in-out",
-                }}
+                className={styles.overlay}
             />
 
             {/* Modal */}
-            <div
-                style={{
-                    position: "fixed",
-                    top: "50%",
-                    left: "50%",
-                    transform: "translate(-50%, -50%)",
-                    backgroundColor: "#ffffff",
-                    borderRadius: "24px",
-                    padding: "30px 40px 35px",
-                    width: "90%",
-                    maxWidth: "460px",
-                    maxHeight: "90vh",
-                    overflowY: "auto",
-                    zIndex: 9999,
-                    boxShadow: "0 20px 60px rgba(0, 0, 0, 0.3)",
-                    animation: "slideUp 0.3s ease-in-out",
-                    transition: "max-width 0.3s ease",
-                }}
-            >
+            <div className={styles.modal}>
                 {/* Close Button */}
                 <button
                     onClick={onClose}
-                    style={{
-                        position: "absolute",
-                        top: "20px",
-                        right: "20px",
-                        backgroundColor: "transparent",
-                        border: "none",
-                        fontSize: "28px",
-                        cursor: "pointer",
-                        color: "#999",
-                        width: "36px",
-                        height: "36px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderRadius: "50%",
-                        transition: "all 0.2s",
-                    }}
-                    onMouseOver={(e) => {
-                        e.currentTarget.style.backgroundColor = "#f3f4f6";
-                        e.currentTarget.style.color = "#000";
-                    }}
-                    onMouseOut={(e) => {
-                        e.currentTarget.style.backgroundColor = "transparent";
-                        e.currentTarget.style.color = "#999";
-                    }}
+                    className={styles.closeButton}
                 >
-                    ×
+                    &times;
                 </button>
 
                 {/* Logo */}
-                <div
-                    style={{
-                        display: "flex",
-                        justifyContent: "flex-start",
-                        marginBottom: "20px",
-                    }}
-                >
+                <div className={styles.logoContainer}>
                     <Image
                         src="/Assets/logo.png"
                         alt="FutureNature Logo"
@@ -261,29 +205,13 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 </div>
 
                 {/* Title */}
-                <h2
-                    style={{
-                        fontSize: "28px",
-                        fontWeight: "700",
-                        color: "#1f2937",
-                        marginBottom: "20px",
-                        textAlign: "center",
-                    }}
-                >
+                <h2 className={styles.title}>
                     {step === "REGISTER" ? "Complete Profile" : "Login / Sign up"}
                 </h2>
 
                 {step === "PHONE" && (
-                    <div style={{ marginBottom: "25px" }}>
-                        <label
-                            style={{
-                                display: "block",
-                                fontSize: "13px",
-                                fontWeight: "500",
-                                color: "#1f2937",
-                                marginBottom: "5px",
-                            }}
-                        >
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>
                             Phone Number
                         </label>
                         <input
@@ -292,56 +220,12 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                             onChange={handlePhoneChange}
                             placeholder="XXXXX XXXXX"
                             maxLength={11} // 10 digits + 1 space
-                            style={{
-                                width: "100%",
-                                padding: "14px 18px",
-                                fontSize: "15px",
-                                border: `2px solid ${errors.phoneNumber ? "#ef4444" : "#e5e7eb"
-                                    }`,
-                                borderRadius: "12px",
-                                backgroundColor: "white",
-                                color: "#1f2937",
-                                outline: "none",
-                                transition: "border-color 0.2s",
-                                fontFamily: "inherit",
-                                boxSizing: "border-box",
-                            }}
-                            onFocus={(e) =>
-                            (e.currentTarget.style.borderColor = errors.phoneNumber
-                                ? "#ef4444"
-                                : "#FFB400")
-                            }
-                            onBlur={(e) =>
-                            (e.currentTarget.style.borderColor = errors.phoneNumber
-                                ? "#ef4444"
-                                : "#e5e7eb")
-                            }
+                            className={`${styles.input} ${errors.phoneNumber ? styles.error : ""}`}
                         />
                         <CustomInputError message={errors.phoneNumber} />
                         <button
                             onClick={triggerOtp}
-                            style={{
-                                width: "100%",
-                                padding: "16px",
-                                fontSize: "17px",
-                                fontWeight: "700",
-                                color: "#1f2937",
-                                backgroundColor: "#FFB400",
-                                border: "none",
-                                borderRadius: "12px",
-                                cursor: "pointer",
-                                marginTop: "20px",
-                                transition: "all 0.2s",
-                                boxShadow: "0 4px 12px rgba(255, 180, 0, 0.3)",
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = "#000000";
-                                e.currentTarget.style.color = "#ffffff";
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = "#FFB400";
-                                e.currentTarget.style.color = "#1f2937";
-                            }}
+                            className={styles.submitButton}
                         >
                             Send OTP
                         </button>
@@ -349,93 +233,35 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                 )}
 
                 {step === "OTP" && (
-                    <div style={{ marginBottom: "30px" }}>
-                        <label
-                            style={{
-                                display: "block",
-                                fontSize: "13px",
-                                fontWeight: "500",
-                                color: "#1f2937",
-                                marginBottom: "5px",
-                            }}
-                        >
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>
                             Enter OTP sent to <b>{phoneNumber}</b>
                         </label>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                alignItems: "flex-start",
-                                margin: "20px 0",
-                            }}
-                        >
+                        <div className={styles.otpContainer}>
                             <OtpInput
                                 value={otp}
                                 onChange={handleOtpChange}
                                 numInputs={6}
                                 renderSeparator={<span style={{ width: "8px" }}></span>}
-                                renderInput={(props) => <input {...props} />}
-                                inputStyle={{
-                                    width: "45px",
-                                    height: "55px",
-                                    fontSize: "20px",
-                                    fontWeight: "600",
-                                    textAlign: "center",
-                                    border: `2px solid ${errors.otp ? "#ef4444" : "#e5e7eb"}`,
-                                    borderRadius: "12px",
-                                    backgroundColor: "white",
-                                    color: "#1f2937",
-                                    outline: "none",
-                                    transition: "border-color 0.2s",
-                                    fontFamily: "inherit",
-                                }}
+                                renderInput={(props) => (
+                                    <input
+                                        {...props}
+                                        className={`${styles.otpInput} ${errors.otp ? styles.error : ""}`}
+                                    />
+                                )}
                             />
                             <CustomInputError message={errors.otp} />
                         </div>
                         <button
                             onClick={verifyOtp}
-                            style={{
-                                width: "100%",
-                                padding: "16px",
-                                fontSize: "17px",
-                                fontWeight: "700",
-                                color: "#1f2937",
-                                backgroundColor: "#FFB400",
-                                border: "none",
-                                borderRadius: "12px",
-                                cursor: "pointer",
-                                transition: "all 0.2s",
-                                boxShadow: "0 4px 12px rgba(255, 180, 0, 0.3)",
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = "#000000";
-                                e.currentTarget.style.color = "#ffffff";
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = "#FFB400";
-                                e.currentTarget.style.color = "#1f2937";
-                            }}
+                            className={styles.submitButton}
                         >
                             Verify & Login
                         </button>
-                        <p
-                            style={{
-                                textAlign: "center",
-                                marginTop: "15px",
-                                fontSize: "14px",
-                                color: "#6b7280",
-                            }}
-                        >
+                        <p className={styles.changeNumberText}>
                             <button
                                 onClick={() => setStep("PHONE")}
-                                style={{
-                                    background: "none",
-                                    border: "none",
-                                    color: "#FFB400",
-                                    fontWeight: "600",
-                                    cursor: "pointer",
-                                    textDecoration: "underline",
-                                }}
+                                className={styles.changeNumberButton}
                             >
                                 Change Number
                             </button>
@@ -445,23 +271,9 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
 
                 {step === "REGISTER" && (
                     <form onSubmit={registerUser}>
-                        <div
-                            style={{
-                                display: "flex",
-                                flexDirection: "column",
-                                gap: "15px",
-                                marginBottom: "20px",
-                            }}
-                        >
+                        <div className={styles.registerForm}>
                             <div>
-                                <label
-                                    style={{
-                                        display: "block",
-                                        fontSize: "13px",
-                                        fontWeight: "500",
-                                        marginBottom: "5px",
-                                    }}
-                                >
+                                <label className={styles.label}>
                                     First Name
                                 </label>
                                 <input
@@ -469,25 +281,12 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                                     name="firstName"
                                     value={signupData.firstName}
                                     onChange={handleSignupChange}
-                                    style={{
-                                        width: "100%",
-                                        padding: "10px",
-                                        borderRadius: "8px",
-                                        border: `1px solid ${errors.firstName ? "#ef4444" : "#e5e7eb"
-                                            }`,
-                                    }}
+                                    className={`${styles.registerInput} ${errors.firstName ? styles.error : ""}`}
                                 />
                                 <CustomInputError message={errors.firstName} />
                             </div>
                             <div>
-                                <label
-                                    style={{
-                                        display: "block",
-                                        fontSize: "13px",
-                                        fontWeight: "500",
-                                        marginBottom: "5px",
-                                    }}
-                                >
+                                <label className={styles.label}>
                                     Last Name
                                 </label>
                                 <input
@@ -495,25 +294,12 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                                     name="lastName"
                                     value={signupData.lastName}
                                     onChange={handleSignupChange}
-                                    style={{
-                                        width: "100%",
-                                        padding: "10px",
-                                        borderRadius: "8px",
-                                        border: `1px solid ${errors.lastName ? "#ef4444" : "#e5e7eb"
-                                            }`,
-                                    }}
+                                    className={`${styles.registerInput} ${errors.lastName ? styles.error : ""}`}
                                 />
                                 <CustomInputError message={errors.lastName} />
                             </div>
                             <div>
-                                <label
-                                    style={{
-                                        display: "block",
-                                        fontSize: "13px",
-                                        fontWeight: "500",
-                                        marginBottom: "5px",
-                                    }}
-                                >
+                                <label className={styles.label}>
                                     Password
                                 </label>
                                 <input
@@ -521,66 +307,20 @@ export default function AuthModal({ isOpen, onClose, onLoginSuccess }: AuthModal
                                     name="password"
                                     value={signupData.password}
                                     onChange={handleSignupChange}
-                                    style={{
-                                        width: "100%",
-                                        padding: "10px",
-                                        borderRadius: "8px",
-                                        border: `1px solid ${errors.password ? "#ef4444" : "#e5e7eb"
-                                            }`,
-                                    }}
+                                    className={`${styles.registerInput} ${errors.password ? styles.error : ""}`}
                                 />
                                 <CustomInputError message={errors.password} />
                             </div>
                         </div>
                         <button
                             type="submit"
-                            style={{
-                                width: "100%",
-                                padding: "16px",
-                                fontSize: "17px",
-                                fontWeight: "700",
-                                color: "#1f2937",
-                                backgroundColor: "#FFB400",
-                                border: "none",
-                                borderRadius: "12px",
-                                cursor: "pointer",
-                                transition: "all 0.2s",
-                                boxShadow: "0 4px 12px rgba(255, 180, 0, 0.3)",
-                            }}
-                            onMouseOver={(e) => {
-                                e.currentTarget.style.backgroundColor = "#000000";
-                                e.currentTarget.style.color = "#ffffff";
-                            }}
-                            onMouseOut={(e) => {
-                                e.currentTarget.style.backgroundColor = "#FFB400";
-                                e.currentTarget.style.color = "#1f2937";
-                            }}
+                            className={styles.submitButton}
                         >
                             Complete Registration
                         </button>
                     </form>
                 )}
             </div>
-            <style jsx>{`
-        @keyframes fadeIn {
-          from {
-            opacity: 0;
-          }
-          to {
-            opacity: 1;
-          }
-        }
-        @keyframes slideUp {
-          from {
-            opacity: 0;
-            transform: translate(-50%, -45%);
-          }
-          to {
-            opacity: 1;
-            transform: translate(-50%, -50%);
-          }
-        }
-      `}</style>
         </>
     );
 }

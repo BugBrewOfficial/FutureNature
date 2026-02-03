@@ -4,6 +4,7 @@ import toast, { Toaster } from "react-hot-toast";
 import { productApi } from "@/api/productApi";
 import { isAdminUser } from "@/utils/authUtils";
 import Cookies from "js-cookie";
+import styles from "@/styles/AddProduct.module.scss";
 
 export default function AddProduct() {
   const router = useRouter();
@@ -21,6 +22,8 @@ export default function AddProduct() {
   const [uploadedImages, setUploadedImages] = useState<string[]>([]);
   const [mainImage, setMainImage] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [isEditMode, setIsEditMode] = useState(false);
+  const { id } = router.query;
 
   // Admin Verification
   useEffect(() => {
@@ -30,6 +33,45 @@ export default function AddProduct() {
       router.push("/");
     }
   }, [router]);
+
+  // Fetch product if in edit mode
+  useEffect(() => {
+    if (id) {
+      setIsEditMode(true);
+      fetchProductData(id as string);
+    }
+  }, [id]);
+
+  const fetchProductData = async (productId: string) => {
+    setLoading(true);
+    try {
+      const response = await productApi.getProductById(productId);
+      if (response.data.status) {
+        const product = response.data.data;
+        const variants = product.variants || [];
+
+        setFormData({
+          productNameE: product.product_name || "",
+          productNameT: product.product_name_tamil || "",
+          descriptionE: product.description || "",
+          descriptionT: product.description_tamil || "",
+          price: product.price || "",
+          salePrice: product.selling_price || "",
+          discountPercentage: product.discounted_amount || "",
+          availableQuantity: product.available_quantity || "",
+        });
+        setUploadedImages(product.imageUrl || []);
+        if (product.imageUrl && product.imageUrl.length > 0) {
+          setMainImage(product.imageUrl[0]);
+        }
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+      toast.error("Failed to load product data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   // Auto-calculate discount percentage
   useEffect(() => {
@@ -130,14 +172,24 @@ export default function AddProduct() {
         variants: [], // Sending empty variants as per current UI
       };
 
-      const response = await productApi.addProduct(payload);
+      const response = isEditMode
+        ? await productApi.updateProduct(id as string, payload)
+        : await productApi.addProduct(payload);
+
       if (response.data.status) {
-        toast.success("Product added successfully!");
+        toast.success(
+          isEditMode
+            ? "Product updated successfully!"
+            : "Product added successfully!",
+        );
         setTimeout(() => {
-          router.push("/products"); // Or back to admin panel
+          router.push("/admin/manageProducts");
         }, 1000);
       } else {
-        toast.error(response.data.message || "Failed to add product");
+        toast.error(
+          response.data.message ||
+          `Failed to ${isEditMode ? "update" : "add"} product`,
+        );
       }
     } catch (err: any) {
       console.error(err);
@@ -149,184 +201,59 @@ export default function AddProduct() {
     }
   };
 
-  const inputStyle = {
-    width: "100%",
-    padding: "10px 12px",
-    borderRadius: "6px",
-    border: "1px solid #d1d5db",
-    fontSize: "14px",
-    color: "#374151",
-    backgroundColor: "white",
-  };
-
-  const noSpinnerStyle = {
-    ...inputStyle,
-    MozAppearance: "textfield" as const,
-    WebkitAppearance: "none" as const,
-    appearance: "none" as const,
-  };
-
   return (
-    <div
-      style={{
-        backgroundColor: "#f9fafb",
-        minHeight: "100vh",
-        padding: "24px",
-      }}
-    >
+    <div className={styles.pageWrapper}>
       <Toaster />
-      <style jsx>{`
-        input[type="number"]::-webkit-inner-spin-button,
-        input[type="number"]::-webkit-outer-spin-button {
-          -webkit-appearance: none;
-          margin: 0;
-        }
-        input[type="number"] {
-          -moz-appearance: textfield;
-        }
-      `}</style>
+
       {/* Header */}
-      <div style={{ maxWidth: "1400px", margin: "0 auto" }}>
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            marginBottom: "24px",
-          }}
-        >
+      <div className={styles.container}>
+        <div className={styles.header}>
           <div>
             <button
-              onClick={() => router.back()}
-              style={{
-                display: "flex",
-                alignItems: "center",
-                gap: "8px",
-                backgroundColor: "transparent",
-                border: "none",
-                fontSize: "18px",
-                fontWeight: "600",
-                color: "#1f2937",
-                cursor: "pointer",
-                padding: "0",
-              }}
+              onClick={() => router.push("/admin/manageProducts")}
+              className={styles.backBtn}
             >
-              <span style={{ fontSize: "20px" }}>←</span> Products
+              <span>&larr;</span> Products
             </button>
-            <p
-              style={{
-                color: "#6b7280",
-                fontSize: "14px",
-                marginTop: "4px",
-                marginLeft: "28px",
-              }}
-            >
-              Add a New Product
+            <p className={styles.subHeader}>
+              {isEditMode ? "Edit Product Details" : "Add a New Product"}
             </p>
           </div>
-          <div style={{ display: "flex", gap: "12px" }}>
+          <div className={styles.btnGroup}>
             <button
-              onClick={() => router.back()}
-              style={{
-                padding: "12px 24px",
-                borderRadius: "12px",
-                backgroundColor: "white",
-                color: "#374151",
-                border: "2px solid #e5e7eb",
-                fontSize: "14px",
-                fontWeight: "600",
-                cursor: "pointer",
-                transition: "all 0.2s",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.borderColor = "#d1d5db";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.borderColor = "#e5e7eb";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
+              onClick={() => router.push("/admin/manageProducts")}
+              className={styles.cancelBtn}
             >
               Cancel
             </button>
             <button
-              style={{
-                padding: "12px 24px",
-                borderRadius: "12px",
-                backgroundColor: "#fbbf24",
-                color: "#111827",
-                border: "none",
-                fontSize: "14px",
-                fontWeight: "700",
-                cursor: "pointer",
-                transition: "all 0.2s",
-                letterSpacing: "0.5px",
-              }}
-              onMouseEnter={(e) => {
-                e.currentTarget.style.backgroundColor = "#000";
-                e.currentTarget.style.color = "#fff";
-                e.currentTarget.style.transform = "translateY(-2px)";
-              }}
-              onMouseLeave={(e) => {
-                e.currentTarget.style.backgroundColor = "#fbbf24";
-                e.currentTarget.style.color = "#111827";
-                e.currentTarget.style.transform = "translateY(0)";
-              }}
+              onClick={handleSubmit}
+              disabled={loading}
+              className={styles.saveBtn}
             >
-              Save Product
+              {loading
+                ? isEditMode
+                  ? "Updating..."
+                  : "Saving..."
+                : isEditMode
+                  ? "Update Product"
+                  : "Save Product"}
             </button>
           </div>
         </div>
 
         {/* Main Content */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "2fr 1fr",
-            gap: "24px",
-          }}
-        >
+        <div className={styles.mainGrid}>
           {/* Left Column - Form */}
-          <div
-            style={{ display: "flex", flexDirection: "column", gap: "24px" }}
-          >
+          <div className={styles.formColumn}>
             {/* General Information */}
-            <div
-              style={{
-                backgroundColor: "white",
-                padding: "24px",
-                borderRadius: "8px",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "600",
-                  color: "#1f2937",
-                  marginBottom: "20px",
-                }}
-              >
+            <div className={styles.card}>
+              <h2 className={styles.cardTitle}>
                 General Information
               </h2>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "16px",
-                  marginBottom: "16px",
-                }}
-              >
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+              <div className={styles.row}>
+                <div className={styles.fieldGroup}>
+                  <label>
                     Product Name (E)
                   </label>
                   <input
@@ -335,19 +262,11 @@ export default function AddProduct() {
                     value={formData.productNameE}
                     onChange={handleInputChange}
                     placeholder="Product name in English"
-                    style={inputStyle}
+                    className={styles.input}
                   />
                 </div>
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+                <div className={styles.fieldGroup}>
+                  <label>
                     Product Name (T)
                   </label>
                   <input
@@ -356,28 +275,14 @@ export default function AddProduct() {
                     value={formData.productNameT}
                     onChange={handleInputChange}
                     placeholder="Product name in Tamil"
-                    style={inputStyle}
+                    className={styles.input}
                   />
                 </div>
               </div>
 
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "16px",
-                }}
-              >
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+              <div className={styles.row}>
+                <div className={styles.fieldGroup}>
+                  <label>
                     Description (E)
                   </label>
                   <textarea
@@ -386,23 +291,11 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="Description in English"
                     rows={4}
-                    style={{
-                      ...inputStyle,
-                      resize: "vertical",
-                      fontFamily: "inherit",
-                    }}
+                    className={styles.textarea}
                   />
                 </div>
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+                <div className={styles.fieldGroup}>
+                  <label>
                     Description (T)
                   </label>
                   <textarea
@@ -411,53 +304,20 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="Description in Tamil"
                     rows={4}
-                    style={{
-                      ...inputStyle,
-                      resize: "vertical",
-                      fontFamily: "inherit",
-                    }}
+                    className={styles.textarea}
                   />
                 </div>
               </div>
             </div>
 
             {/* Pricing Details */}
-            <div
-              style={{
-                backgroundColor: "white",
-                padding: "24px",
-                borderRadius: "8px",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "600",
-                  color: "#1f2937",
-                  marginBottom: "20px",
-                }}
-              >
+            <div className={styles.card}>
+              <h2 className={styles.cardTitle}>
                 Pricing & Inventory
               </h2>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "16px",
-                  marginBottom: "16px",
-                }}
-              >
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+              <div className={styles.row}>
+                <div className={styles.fieldGroup}>
+                  <label>
                     Price
                   </label>
                   <input
@@ -467,19 +327,11 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="100"
                     step="0.01"
-                    style={noSpinnerStyle}
+                    className={`${styles.input} ${styles.noSpinner}`}
                   />
                 </div>
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+                <div className={styles.fieldGroup}>
+                  <label>
                     Sale Price
                   </label>
                   <input
@@ -489,27 +341,13 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="90"
                     step="0.01"
-                    style={noSpinnerStyle}
+                    className={`${styles.input} ${styles.noSpinner}`}
                   />
                 </div>
               </div>
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "1fr 1fr",
-                  gap: "16px",
-                }}
-              >
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+              <div className={styles.row}>
+                <div className={styles.fieldGroup}>
+                  <label>
                     Discount Percentage
                   </label>
                   <input
@@ -522,23 +360,11 @@ export default function AddProduct() {
                     }
                     readOnly
                     placeholder="10.00%"
-                    style={{
-                      ...noSpinnerStyle,
-                      backgroundColor: "#f9fafb",
-                      cursor: "not-allowed",
-                    }}
+                    className={`${styles.input} ${styles.readOnlyInput}`}
                   />
                 </div>
-                <div>
-                  <label
-                    style={{
-                      display: "block",
-                      fontSize: "13px",
-                      fontWeight: "500",
-                      color: "#374151",
-                      marginBottom: "6px",
-                    }}
-                  >
+                <div className={styles.fieldGroup}>
+                  <label>
                     Available Quantity
                   </label>
                   <input
@@ -548,7 +374,7 @@ export default function AddProduct() {
                     onChange={handleInputChange}
                     placeholder="e.g 100"
                     min="0"
-                    style={noSpinnerStyle}
+                    className={`${styles.input} ${styles.noSpinner}`}
                   />
                 </div>
               </div>
@@ -557,115 +383,44 @@ export default function AddProduct() {
 
           {/* Right Column - Image Upload */}
           <div>
-            <div
-              style={{
-                backgroundColor: "white",
-                padding: "24px",
-                borderRadius: "8px",
-                boxShadow: "0 1px 3px rgba(0,0,0,0.1)",
-              }}
-            >
-              <h2
-                style={{
-                  fontSize: "18px",
-                  fontWeight: "600",
-                  color: "#1f2937",
-                  marginBottom: "20px",
-                }}
-              >
+            <div className={styles.imageUpdateCard}>
+              <h2 className={styles.cardTitle}>
                 Upload Product Images (0-3)
               </h2>
 
               {/* Main Image Display */}
-              <div
-                style={{
-                  width: "100%",
-                  height: "300px",
-                  backgroundColor: "#f3f4f6",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginBottom: "16px",
-                  position: "relative",
-                  overflow: "hidden",
-                }}
-              >
+              <div className={styles.mainImageDisplay}>
                 {mainImage ? (
                   <img
                     src={mainImage}
                     alt="Product"
-                    style={{
-                      width: "100%",
-                      height: "100%",
-                      objectFit: "contain",
-                    }}
                   />
                 ) : (
-                  <div style={{ textAlign: "center", color: "#9ca3af" }}>
-                    <div style={{ fontSize: "48px", marginBottom: "8px" }}>
-                      📷
-                    </div>
-                    <p style={{ fontSize: "14px" }}>Upload main image</p>
+                  <div className={styles.placeholderImage}>
+                    <div>📷</div>
+                    <p>Upload main image</p>
                   </div>
                 )}
               </div>
 
               {/* Thumbnail Images */}
-              <div
-                style={{
-                  display: "grid",
-                  gridTemplateColumns: "repeat(3, 1fr)",
-                  gap: "12px",
-                  marginBottom: "16px",
-                }}
-              >
+              <div className={styles.thumbnailGrid}>
                 {uploadedImages.map((img, index) => (
                   <div
                     key={index}
-                    style={{
-                      width: "100%",
-                      height: "80px",
-                      backgroundColor: "#f3f4f6",
-                      borderRadius: "6px",
-                      position: "relative",
-                      overflow: "hidden",
-                      cursor: "pointer",
-                      border: mainImage === img ? "2px solid #fbbf24" : "none",
-                    }}
+                    className={`${styles.thumbnailWrapper} ${mainImage === img ? styles.active : ""}`}
                     onClick={() => setMainImage(img)}
                   >
                     <img
                       src={img}
                       alt={`Thumbnail ${index + 1}`}
-                      style={{
-                        width: "100%",
-                        height: "100%",
-                        objectFit: "cover",
-                      }}
                     />
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
                         removeImage(index);
                       }}
-                      style={{
-                        position: "absolute",
-                        top: "4px",
-                        right: "4px",
-                        width: "20px",
-                        height: "20px",
-                        borderRadius: "50%",
-                        backgroundColor: "#ef4444",
-                        color: "white",
-                        border: "none",
-                        fontSize: "12px",
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        padding: "0",
-                      }}
+                      className={styles.removeImageBtn}
                     >
                       ×
                     </button>
@@ -676,44 +431,13 @@ export default function AddProduct() {
                 }).map((_, index) => (
                   <div
                     key={`empty-${index}`}
-                    style={{
-                      width: "100%",
-                      height: "80px",
-                      backgroundColor: "#f3f4f6",
-                      borderRadius: "6px",
-                      border: "2px dashed #d1d5db",
-                    }}
+                    className={styles.emptyThumbnail}
                   />
                 ))}
               </div>
 
               {/* Upload Button */}
-              <label
-                style={{
-                  display: "block",
-                  width: "100%",
-                  padding: "14px",
-                  backgroundColor: "#fbbf24",
-                  color: "#111827",
-                  textAlign: "center",
-                  borderRadius: "12px",
-                  cursor: "pointer",
-                  fontSize: "14px",
-                  fontWeight: "700",
-                  transition: "all 0.2s",
-                  letterSpacing: "0.5px",
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = "#000";
-                  e.currentTarget.style.color = "#fff";
-                  e.currentTarget.style.transform = "translateY(-2px)";
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = "#fbbf24";
-                  e.currentTarget.style.color = "#111827";
-                  e.currentTarget.style.transform = "translateY(0)";
-                }}
-              >
+              <label className={styles.uploadLabel}>
                 Choose Images
                 <input
                   type="file"
@@ -723,14 +447,7 @@ export default function AddProduct() {
                   style={{ display: "none" }}
                 />
               </label>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: "#6b7280",
-                  marginTop: "8px",
-                  textAlign: "center",
-                }}
-              >
+              <p className={styles.uploadNote}>
                 You can upload up to 3 images (Click on thumbnail to set as
                 main)
               </p>

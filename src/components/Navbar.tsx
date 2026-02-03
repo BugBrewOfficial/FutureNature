@@ -222,6 +222,7 @@ export default function Navbar() {
             href="/blog"
             className="navbar-link"
             onClick={() => setIsMobileMenuOpen(false)}
+            prefetch
             style={{
               color: router.pathname === "/blog" ? "#f59e0b" : "#374151",
               fontSize: "16px",

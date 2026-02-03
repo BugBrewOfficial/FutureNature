@@ -18,7 +18,7 @@ const ALL_PRODUCTS = [
 
 const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
   const router = useRouter();
-  
+
   // --- STATE MANAGEMENT ---
   const [showDailyDealsModal, setShowDailyDealsModal] = useState(false);
   const [selectedDealIds, setSelectedDealIds] = useState<number[]>([1, 2, 3]); // Default active deals
@@ -27,6 +27,9 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     if (optionId === "add-product") {
       onClose();
       router.push("/admin/addProduct");
+    } else if (optionId === "edit-product") {
+      onClose();
+      router.push("/admin/manageProducts");
     } else if (optionId === "daily-deals") {
       setShowDailyDealsModal(true); // Open the sub-modal
     } else {
@@ -260,7 +263,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
           }}>
             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
               <h3 style={{ fontSize: '24px', fontWeight: '700', margin: 0, color: '#111827' }}>Select Daily Deals</h3>
-              <button 
+              <button
                 onClick={() => setShowDailyDealsModal(false)}
                 style={{ background: 'none', border: 'none', fontSize: '24px', cursor: 'pointer', color: '#6b7280' }}
               >
@@ -270,13 +273,13 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
             <div style={{ maxHeight: '400px', overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px' }}>
               {ALL_PRODUCTS.map(deal => (
-                <label 
-                  key={deal.id} 
-                  style={{ 
-                    display: 'flex', 
-                    alignItems: 'center', 
-                    gap: '15px', 
-                    padding: '12px', 
+                <label
+                  key={deal.id}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '15px',
+                    padding: '12px',
                     borderRadius: '10px',
                     backgroundColor: selectedDealIds.includes(deal.id) ? '#fffbeb' : '#f9fafb',
                     border: selectedDealIds.includes(deal.id) ? '2px solid #fbbf24' : '1px solid #e5e7eb',
@@ -284,8 +287,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                     transition: 'all 0.2s'
                   }}
                 >
-                  <input 
-                    type="checkbox" 
+                  <input
+                    type="checkbox"
                     checked={selectedDealIds.includes(deal.id)}
                     onChange={() => toggleProductSelection(deal.id)}
                     style={{ width: '20px', height: '20px', accentColor: '#fbbf24', cursor: 'pointer' }}
@@ -302,7 +305,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
             </div>
 
             <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-              <button 
+              <button
                 onClick={() => setShowDailyDealsModal(false)}
                 style={{
                   flex: 1,
@@ -318,7 +321,7 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
               >
                 Cancel
               </button>
-              <button 
+              <button
                 onClick={handleSaveDeals}
                 style={{
                   flex: 2,
