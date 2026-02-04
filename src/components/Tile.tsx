@@ -3,16 +3,19 @@ import React from "react";
 import styles from "../styles/Tile.module.scss";
 
 const Tile = () => {
+  const HoverOverlay = () => <div className={styles.overlay}></div>;
+
   return (
     <div className={styles.tileSection}>
-
       <div className={styles.tileHeader}>
-        <h2 className={styles.sectionTitle}>Our <span className={styles.highlight}>Gallery</span></h2>
+        <h2 className={styles.sectionTitle}>
+          Our <span className={styles.highlight}>Gallery</span>
+        </h2>
       </div>
 
       <div className={styles.tileGrid}>
-
-        {/* --- 1. TALL LEFT IMAGE (Spans 2 Rows) --- */}
+        
+        {/* Item 1: Tall (Row Span 2) */}
         <div className={`${styles.tileItem} ${styles.tallItem}`}>
           <Image
             src="/Assets/Tile/T1.jpg"
@@ -20,12 +23,12 @@ const Tile = () => {
             width={400}
             height={800}
             className={styles.tileImg}
-            sizes="(max-width: 768px) 100vw, 25vw"
+            sizes="(max-width: 600px) 50vw, (max-width: 1024px) 50vw, 25vw"
           />
-          <div className={styles.overlay}><span className={styles.plus}>+</span></div>
+          <HoverOverlay />
         </div>
 
-        {/* --- 2. SMALL MID TOP LEFT --- */}
+        {/* Item 2: Standard */}
         <div className={styles.tileItem}>
           <Image
             src="/Assets/Tile/T2.jpg"
@@ -33,12 +36,12 @@ const Tile = () => {
             width={300}
             height={300}
             className={styles.tileImg}
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 600px) 50vw, 25vw"
           />
-          <div className={styles.overlay}><span className={styles.plus}>+</span></div>
+          <HoverOverlay />
         </div>
 
-        {/* --- 3. SMALL MID TOP RIGHT --- */}
+        {/* Item 3: Standard */}
         <div className={styles.tileItem}>
           <Image
             src="/Assets/Tile/T3.jpg"
@@ -46,12 +49,12 @@ const Tile = () => {
             width={300}
             height={300}
             className={styles.tileImg}
-            sizes="(max-width: 768px) 50vw, 25vw"
+            sizes="(max-width: 600px) 50vw, 25vw"
           />
-          <div className={styles.overlay}><span className={styles.plus}>+</span></div>
+          <HoverOverlay />
         </div>
 
-        {/* --- 4. TOP RIGHT IMAGE --- */}
+        {/* Item 4: Standard */}
         <div className={styles.tileItem}>
           <Image
             src="/Assets/Tile/T6.jpg"
@@ -59,12 +62,12 @@ const Tile = () => {
             width={300}
             height={300}
             className={styles.tileImg}
-            sizes="(max-width: 768px) 100vw, 25vw"
+            sizes="(max-width: 600px) 50vw, 25vw"
           />
-          <div className={styles.overlay}><span className={styles.plus}>+</span></div>
+          <HoverOverlay />
         </div>
 
-        {/* --- 5. WIDE MIDDLE BOTTOM (Spans 2 Columns) --- */}
+        {/* Item 5: Wide (Col Span 2) */}
         <div className={`${styles.tileItem} ${styles.wideItem}`}>
           <Image
             src="/Assets/Tile/T5.jpg"
@@ -72,12 +75,12 @@ const Tile = () => {
             width={600}
             height={300}
             className={styles.tileImg}
-            sizes="(max-width: 768px) 100vw, 50vw"
+            sizes="(max-width: 600px) 100vw, 50vw"
           />
-          <div className={styles.overlay}><span className={styles.plus}>+</span></div>
+          <HoverOverlay />
         </div>
 
-        {/* --- 6. BOTTOM RIGHT IMAGE --- */}
+        {/* Item 6: Standard (Will fill the gap created by the Wide item) */}
         <div className={styles.tileItem}>
           <Image
             src="/Assets/Tile/T4.jpg"
@@ -85,9 +88,9 @@ const Tile = () => {
             width={300}
             height={300}
             className={styles.tileImg}
-            sizes="(max-width: 768px) 100vw, 25vw"
+            sizes="(max-width: 600px) 50vw, 25vw"
           />
-          <div className={styles.overlay}><span className={styles.plus}>+</span></div>
+          <HoverOverlay />
         </div>
 
       </div>
