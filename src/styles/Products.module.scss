@@ -1,0 +1,465 @@
+/* Products.module.scss - Refined Card Design matching Reference Image */
+
+/* Core Variables */
+$bg-color: #f4f5f7;
+$card-bg: #ffffff;
+$primary: #FFB800; /* Signature Yellow */
+$text-main: #111827;
+$text-muted: #6b7280;
+$border-color: #e5e7eb;
+$radius-lg: 16px;
+
+.pageWrapper {
+  background-color: $bg-color;
+  min-height: 100vh;
+  /* Updated font-family to exactly what you requested */
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+  color: $text-main;
+}
+
+/* --- FULL-WIDTH RESPONSIVE BANNER --- */
+.bannerWrapper {
+  width: 100%;
+  display: flex;
+  background-color: transparent; /* Changed from #000 to transparent */
+  margin-bottom: 20px;
+}
+
+.bannerImage {
+  width: 100%;
+  height: auto; /* Lets the image scale naturally without ANY cropping */
+  display: block;
+  background-color: transparent;
+}
+
+.container {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+/* --- HEADER (With Honeycomb SVG) --- */
+.headerSection {
+  text-align: left;
+  padding: 30px 0 40px; 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  z-index: 2; 
+}
+
+.titleContainer {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.honeyComb {
+  position: absolute;
+  left: -20px; 
+  top: 50%;
+  transform: translateY(-50%);
+  width: 75px;
+  height: 75px;
+  z-index: 0;
+}
+
+.mainTitle {
+  font-size: 42px;
+  font-weight: 900;
+  color: $text-main;
+  margin: 0;
+  letter-spacing: -0.02em;
+  position: relative;
+  z-index: 1; 
+  padding-left: 12px;
+  text-transform: uppercase;
+}
+
+.subtitle {
+  font-size: 18px;
+  color: $text-muted;
+  margin: 0;
+  max-width: 600px;
+  font-weight: 500;
+}
+
+/* --- CATALOG GRID --- */
+.catalogSection {
+  padding-bottom: 100px;
+}
+
+.productsGrid {
+  display: grid;
+  /* Enforces exactly 4 uniform columns on desktop */
+  grid-template-columns: repeat(4, 1fr); 
+  gap: 24px;
+}
+
+/* --- PRODUCT CARD --- */
+.productCard {
+  background: $card-bg;
+  border: 1px solid $border-color;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+  
+  /* Very soft, smooth hover transition */
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              box-shadow 0.5s cubic-bezier(0.25, 0.8, 0.25, 1), 
+              border-color 0.4s ease;
+
+  &:hover {
+    transform: translateY(-3px); /* Subtle, smooth lift */
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05); /* Soft, dispersed shadow */
+    border-color: #d1d5db; /* Slight border darkening */
+  }
+}
+
+/* --- TOP IMAGE AREA --- */
+.cardImageWrap {
+  position: relative;
+  height: 250px;
+  overflow: hidden;
+  padding: 0; 
+  background: #fdfaf3; 
+}
+
+.productImg {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; 
+  /* Very soft zoom transition */
+  transition: transform 0.7s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+.productCard:hover .productImg {
+  transform: scale(1.03); 
+}
+
+/* Black Discount Badge Top Left */
+.discountBadgeImg {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: #1f1f1f; 
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 10px;
+  border-radius: 6px;
+  z-index: 5;
+}
+
+/* Wishlist FAB Top Right */
+.wishlistFab {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.95); 
+  backdrop-filter: blur(4px);
+  border: 1px solid #f3f4f6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 5;
+  color: #9ca3af; /* Gray outline for transparent heart */
+
+  &:hover {
+    transform: scale(1.05);
+    background: #ffffff;
+    color: #ef4444; /* Heart turns red on hover */
+  }
+
+  &.activeWishlist {
+    background: #fee2e2; /* Pink background when active */
+    border-color: #fecaca;
+    color: #ef4444; /* Filled red heart */
+  }
+}
+
+.outOfStockBadge {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: rgba(17, 24, 39, 0.85); 
+  color: white;
+  padding: 10px 20px;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  z-index: 2;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* --- BOTTOM CONTENT AREA --- */
+.cardContent {
+  padding: 20px 20px 24px 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.titleSection {
+  margin-bottom: 8px;
+}
+
+.cardTitle {
+  font-size: 20px;
+  font-weight: 700;
+  color: $text-main;
+  margin: 0 0 4px 0;
+  line-height: 1.3;
+}
+
+.cardSubtitle {
+  display: block;
+  font-size: 14px;
+  color: $text-muted;
+  font-weight: 500;
+}
+
+.ratingRowCard {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 16px;
+
+  .ratingNum {
+    font-size: 14px;
+    color: #9ca3af;
+    font-weight: 500;
+    margin-top: 2px;
+  }
+}
+
+.cardDivider {
+  height: 1px;
+  background-color: #f3f4f6;
+  margin-bottom: 16px;
+}
+
+/* Footer row containing price and add button */
+.cardFooter {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  margin-top: auto;
+}
+
+.priceCol {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+
+  .sellingPrice {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827; 
+    line-height: 1;
+  }
+
+  .originalPrice {
+    font-size: 14px;
+    color: #9ca3af;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+}
+
+/* VICE VERSA Add Button - Yellow Default, Black Hover */
+.btnAdd {
+  background: $primary; 
+  color: #111827; 
+  border: none;
+  padding: 12px 32px; 
+  min-width: 140px; 
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: #111827; 
+    color: #ffffff; 
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btnAddDisabled {
+  @extend .btnAdd;
+  background: #e5e7eb;
+  color: #9ca3af;
+  cursor: not-allowed;
+
+  &:hover {
+    background: #e5e7eb;
+    color: #9ca3af;
+    transform: none;
+    box-shadow: none;
+  }
+}
+
+/* Quantity Selector */
+.qtySelector {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 1px solid $border-color;
+  border-radius: 8px;
+  overflow: hidden;
+  height: 44px; 
+  min-width: 140px; 
+  background: $card-bg;
+}
+
+.qtyBtn {
+  background: transparent;
+  border: none;
+  width: 40px;
+  height: 100%;
+  font-size: 18px;
+  font-weight: 600;
+  cursor: pointer;
+  color: $text-main;
+  transition: background 0.2s;
+  
+  &:hover {
+    background: #f9fafb;
+  }
+}
+
+.qtyVal {
+  flex: 1;
+  text-align: center;
+  font-size: 15px;
+  font-weight: 600;
+  color: $text-main;
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 1100px) {
+  .productsGrid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (max-width: 850px) {
+  .headerSection {
+    padding: 30px 0 30px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .mainTitle {
+    font-size: 32px;
+  }
+
+  .honeyComb {
+    width: 60px;
+    height: 60px;
+    left: -15px;
+  }
+
+  .subtitle {
+    font-size: 15px;
+  }
+
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  
+  .btnAdd, .qtySelector {
+    min-width: 120px;
+    padding: 10px 24px;
+  }
+}
+
+/* --- MOBILE SPECIFIC 2-COLUMN LAYOUT --- */
+@media (max-width: 480px) {
+  .productsGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px; 
+  }
+  
+  .productCard {
+    min-width: 0; 
+  }
+
+  .cardImageWrap {
+    height: 160px;
+  }
+
+  .cardContent {
+    padding: 12px;
+  }
+
+  .cardTitle {
+    font-size: 16px; 
+  }
+
+  .cardSubtitle {
+    font-size: 12px;
+  }
+
+  .ratingRowCard {
+    margin-bottom: 12px;
+    gap: 4px;
+  }
+
+  .ratingNum {
+    font-size: 12px;
+  }
+
+  .priceCol .sellingPrice {
+    font-size: 16px;
+  }
+
+  .cardFooter {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
+  }
+
+  .btnAdd, .btnAddDisabled, .qtySelector {
+    min-width: unset;
+    width: 100%;
+    padding: 8px;
+    height: 36px;
+    font-size: 12px;
+  }
+
+  .wishlistFab {
+    width: 32px;
+    height: 32px;
+    top: 8px;
+    right: 8px;
+    
+    svg {
+      width: 16px;
+      height: 16px;
+    }
+  }
+
+  .discountBadgeImg {
+    top: 8px;
+    left: 8px;
+    font-size: 10px;
+    padding: 4px 8px;
+  }
+}

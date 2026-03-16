@@ -1,0 +1,752 @@
+/* Details.module.scss - Rich Modern E-commerce Redesign */
+
+/* Core Variables */
+$bg-color: #f4f5f7;       /* Very light grey background for the page */
+$card-bg: #ffffff;        /* Crisp white for cards */
+$primary: #FFB800;        /* Signature Yellow */
+$primary-hover: #e6a600;
+$text-main: #111827;      /* Near Black */
+$text-muted: #6b7280;     /* Grey */
+$border-color: #e5e7eb;
+$shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.04);
+$shadow-md: 0 8px 24px -8px rgba(0, 0, 0, 0.08);
+$radius-md: 16px;
+$radius-lg: 24px;
+
+.pageWrapper {
+  min-height: 100vh;
+  background-color: $bg-color;
+  /* Updated font-family to match your global style */
+  font-family: 'Noto Sans', Arial, Helvetica, sans-serif;
+  color: $text-main;
+}
+
+.modernContainer {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 2rem 24px 6rem;
+}
+
+.notFoundCard {
+  background: $card-bg;
+  max-width: 400px;
+  margin: 100px auto;
+  padding: 40px;
+  border-radius: $radius-md;
+  text-align: center;
+  box-shadow: $shadow-md;
+  
+  h2 { margin-bottom: 20px; }
+}
+
+/* --- Breadcrumbs --- */
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: $text-muted;
+  margin-bottom: 24px;
+  font-weight: 500;
+
+  span {
+    cursor: pointer;
+    transition: color 0.2s;
+    &:hover { color: $primary; }
+  }
+  
+  svg { opacity: 0.5; }
+
+  .current {
+    color: $text-main;
+    cursor: default;
+    &:hover { color: $text-main; }
+  }
+}
+
+/* --- Main Layout Grid --- */
+.productGrid {
+  display: grid;
+  grid-template-columns: 1fr 1.1fr; /* Image gets slightly less space */
+  gap: 40px;
+  align-items: start;
+}
+
+/* --- Left Column: Images --- */
+.galleryColumn {
+  position: sticky;
+  top: 100px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.imageCard {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  padding: 40px;
+  aspect-ratio: 1/1;
+  position: relative;
+  box-shadow: $shadow-sm;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .badge {
+    position: absolute;
+    top: 24px;
+    left: 24px;
+    background: $text-main;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    z-index: 2;
+  }
+
+  .mainImage {
+    object-fit: contain;
+    padding: 20px;
+    transition: transform 0.4s ease;
+    &:hover { transform: scale(1.05); }
+  }
+}
+
+.thumbnailTrack {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  padding-bottom: 8px;
+  
+  &::-webkit-scrollbar { height: 4px; }
+  &::-webkit-scrollbar-track { background: transparent; }
+  &::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 4px; }
+}
+
+.thumbBtn {
+  flex: 0 0 90px;
+  height: 90px;
+  background: $card-bg;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  position: relative;
+  cursor: pointer;
+  box-shadow: $shadow-sm;
+  transition: all 0.2s;
+
+  &:hover { transform: translateY(-2px); }
+  
+  &.thumbActive {
+    border-color: $primary;
+  }
+
+  .thumbImg {
+    object-fit: contain;
+    padding: 8px;
+    border-radius: 10px;
+  }
+}
+
+/* --- Right Column: Details as Cards --- */
+.detailsColumn {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* Reusable Card Style */
+.infoCard, .contentCard, .actionCard {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  padding: 32px;
+  box-shadow: $shadow-sm;
+}
+
+/* --- Header & Meta Styling (Matching Ref Image) --- */
+.topMetaRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  font-size: 15px;
+  color: $text-muted;
+  font-weight: 500;
+
+  .starIcon {
+    width: 18px;
+    height: 18px;
+    fill: #ff8c42; /* Orange star */
+  }
+
+  .dot {
+    color: #d1d5db;
+    font-size: 18px;
+  }
+}
+
+.titleSection {
+  margin-bottom: 32px;
+  
+  .title {
+    font-size: 36px;
+    font-weight: 800;
+    color: $text-main;
+    margin: 0 0 8px 0;
+    line-height: 1.2;
+    letter-spacing: -0.5px;
+  }
+  .subtitle {
+    font-size: 20px;
+    color: $text-muted;
+    font-weight: 400;
+    margin: 0;
+  }
+}
+
+.priceRow {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 24px;
+  
+  .sellingPrice {
+    font-size: 44px;
+    font-weight: 700;
+    color: #ff8c42; /* Matching the orange from the image */
+  }
+  
+  .originalPrice {
+    font-size: 22px;
+    color: #9ca3af;
+    text-decoration: line-through;
+    font-weight: 500;
+  }
+  
+  .discountText {
+    color: #10b981; /* Clean green text */
+    font-weight: 600;
+    font-size: 18px;
+  }
+}
+
+.bottomRatingRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  .ratingCount {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4b5563;
+    padding-top: 2px;
+  }
+}
+
+/* --- Content Cards (Description & Benefits) --- */
+.cardHeader {
+  font-size: 18px;
+  font-weight: 700;
+  margin: 0 0 16px 0;
+}
+
+.cardBody {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  
+  .textPrimary {
+    font-size: 16px;
+    line-height: 1.6;
+    color: $text-main;
+    margin: 0;
+  }
+  .textSecondary {
+    font-size: 15px;
+    line-height: 1.6;
+    color: $text-muted;
+    margin: 0;
+  }
+}
+
+.benefitsGrid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  
+  .benefitItem {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 16px;
+    color: $text-main;
+    
+    .checkIcon {
+      background: #ecfdf5;
+      color: #10b981;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+  }
+}
+
+/* Text Toggle Button (Read More) */
+.textBtn {
+  background: transparent;
+  border: none;
+  color: $primary;
+  font-weight: 600;
+  font-size: 15px;
+  padding: 0;
+  margin-top: 16px;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: opacity 0.2s;
+  
+  &:hover { opacity: 0.8; }
+  svg { transition: transform 0.3s ease; }
+}
+
+/* --- Action Center Card --- */
+.actionCard {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.quantityWrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: $bg-color;
+  padding: 12px 20px;
+  border-radius: 12px;
+  
+  label { font-weight: 600; font-size: 15px; }
+}
+
+.quantityControl {
+  display: flex;
+  align-items: center;
+  background: $card-bg;
+  border-radius: 8px;
+  border: 1px solid $border-color;
+  overflow: hidden;
+
+  button {
+    background: transparent;
+    border: none;
+    padding: 8px 16px;
+    font-size: 18px;
+    cursor: pointer;
+    font-weight: 500;
+    &:hover { background: #f9fafb; }
+  }
+  span {
+    padding: 0 16px;
+    font-weight: 600;
+    min-width: 40px;
+    text-align: center;
+  }
+}
+
+.actionButtons {
+  display: flex;
+  gap: 16px;
+}
+
+/* --- BUTTONS (Yellow Default -> Black Hover) --- */
+.btnPrimary {
+  flex: 1;
+  background: $primary;
+  color: $text-main;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  font-weight: 700;
+  padding: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(255, 184, 0, 0.2);
+
+  &:hover {
+    background: $text-main; /* Vice versa black hover */
+    color: #ffffff; /* White text on hover */
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+.btnPrimaryFull {
+  @extend .btnPrimary;
+  width: 100%;
+}
+
+.btnDisabled {
+  @extend .btnPrimary;
+  background: #e5e7eb;
+  color: #9ca3af;
+  box-shadow: none;
+  cursor: not-allowed;
+  
+  &:hover { 
+    transform: none; 
+    background: #e5e7eb; 
+    color: #9ca3af;
+    box-shadow: none;
+  }
+}
+
+.btnOutline {
+  background: transparent;
+  border: 2px solid $text-main;
+  color: $text-main;
+  border-radius: 12px;
+  font-weight: 600;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: $text-main;
+    color: white;
+  }
+}
+
+.iconButtons {
+  display: flex;
+  gap: 12px;
+}
+
+.iconBtn {
+  width: 56px;
+  height: 56px;
+  background: $bg-color;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-main;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $card-bg;
+    border-color: $border-color;
+    transform: translateY(-2px);
+  }
+  &.activeWishlist {
+    color: #ef4444;
+    background: #fef2f2;
+    border-color: #fecaca;
+  }
+}
+
+/* Updated Share Text Button */
+.shareTextBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  height: 56px;
+  padding: 0 20px;
+  background: $bg-color;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  color: $text-main;
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &:hover {
+    background: $card-bg;
+    border-color: $border-color;
+    transform: translateY(-2px);
+  }
+}
+
+/* --- Review Dashboard Section --- */
+.reviewDashboard {
+  margin-top: 80px;
+}
+
+.dashboardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 32px;
+  
+  h2 {
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0;
+  }
+}
+
+.dashboardContent {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 40px;
+  align-items: start;
+}
+
+/* Review Sidebar */
+.reviewSidebar {
+  position: sticky;
+  top: 100px;
+}
+
+.statsCard {
+  background: $card-bg;
+  border-radius: $radius-lg;
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: $shadow-sm;
+
+  .bigScore {
+    font-size: 64px;
+    font-weight: 900;
+    line-height: 1;
+    margin-bottom: 12px;
+    color: $text-main;
+  }
+  .starsWrapper { margin-bottom: 12px; }
+  .reviewCount { color: $text-muted; font-weight: 500; margin: 0; }
+}
+
+/* Review List Grid */
+.reviewList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+
+.reviewCard {
+  background: $card-bg;
+  border-radius: $radius-md;
+  padding: 24px;
+  box-shadow: $shadow-sm;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border: 1px solid transparent;
+  transition: border-color 0.2s;
+
+  &:hover { border-color: $border-color; }
+
+  .reviewerInfo {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .avatar {
+    width: 40px;
+    height: 40px;
+    background: #fef3c7;
+    color: #d97706;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+  }
+  .rName {
+    margin: 0 0 4px 0;
+    font-weight: 700;
+    font-size: 15px;
+  }
+  .rComment {
+    margin: 0;
+    color: $text-muted;
+    line-height: 1.6;
+    font-size: 15px;
+  }
+}
+
+.emptyState {
+  grid-column: 1 / -1;
+  background: $card-bg;
+  border-radius: $radius-lg;
+  padding: 60px 20px;
+  text-align: center;
+  color: $text-muted;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  
+  p { font-size: 16px; font-weight: 500; margin: 0; }
+}
+
+/* --- POPUP MODAL STYLES --- */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(17, 24, 39, 0.7); /* Dark semi-transparent overlay */
+  backdrop-filter: blur(4px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modalContent {
+  background: $card-bg;
+  width: 100%;
+  max-width: 500px;
+  border-radius: $radius-lg;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 24px 48px rgba(0, 0, 0, 0.2);
+  animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.closeModalBtn {
+  position: absolute;
+  top: 24px;
+  right: 24px;
+  background: #f3f4f6;
+  border: none;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-muted;
+  cursor: pointer;
+  transition: all 0.2s;
+  
+  &:hover {
+    background: #e5e7eb;
+    color: $text-main;
+    transform: rotate(90deg);
+  }
+}
+
+.modalTitle {
+  font-size: 24px;
+  font-weight: 800;
+  margin: 0 0 8px 0;
+  text-align: center;
+}
+
+.modalSubtitle {
+  font-size: 15px;
+  color: $text-muted;
+  text-align: center;
+  margin: 0 0 24px 0;
+}
+
+.ratingInputCenter {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 24px;
+}
+
+.modalTextarea {
+  width: 100%;
+  background: $bg-color;
+  border: 1px solid transparent;
+  border-radius: 12px;
+  padding: 16px;
+  min-height: 120px;
+  resize: vertical;
+  font-family: inherit;
+  font-size: 15px;
+  color: $text-main; /* <--- Forces the typed text to be dark/visible */
+  margin-bottom: 24px;
+  transition: all 0.2s;
+  box-sizing: border-box;
+  
+  /* Makes the placeholder text a nice visible gray */
+  &::placeholder {
+    color: $text-muted;
+  }
+  
+  &:focus {
+    background: $card-bg;
+    border-color: $primary;
+    outline: none;
+    color: $text-main; /* <--- Ensures it stays dark when clicking into it */
+    box-shadow: 0 0 0 3px rgba(255, 184, 0, 0.1);
+  }
+}
+
+/* --- Responsive Layout --- */
+@media (max-width: 1024px) {
+  .productGrid { gap: 24px; }
+  .dashboardContent {
+    grid-template-columns: 1fr;
+    .reviewSidebar { position: static; }
+  }
+}
+
+@media (max-width: 800px) {
+  .productGrid { grid-template-columns: 1fr; }
+  .galleryColumn { position: static; }
+  
+  .imageCard { aspect-ratio: auto; height: 400px; }
+  
+  .reviewList { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 480px) {
+  .modernContainer { padding: 1rem 16px 4rem; }
+  
+  .infoCard, .contentCard, .actionCard, .statsCard, .reviewCard {
+    padding: 20px;
+  }
+  
+  .modalContent {
+    padding: 32px 20px;
+  }
+
+  .titleSection .title { font-size: 26px; }
+  .priceRow { flex-direction: column; align-items: flex-start; gap: 12px; }
+  
+  .actionButtons { flex-direction: column; }
+  .iconButtons { display: flex; width: 100%; gap: 12px; }
+  .iconBtn { width: auto; flex: 1; }
+  .shareTextBtn { flex: 2; }
+  
+  .dashboardHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+}

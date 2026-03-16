@@ -1,0 +1,38 @@
+{
+  "name": "futurenature",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --webpack",
+    "build": "next build --webpack",
+    "start": "next start",
+    "lint": "eslint"
+  },
+  "dependencies": {
+    "@types/js-cookie": "^3.0.6",
+    "@types/react-datepicker": "^6.2.0",
+    "axios": "^1.13.2",
+    "js-cookie": "^3.0.5",
+    "next": "^16.0.7",
+    "react": "19.2.0",
+    "react-datepicker": "^9.1.0",
+    "react-dom": "19.2.0",
+    "react-hot-toast": "^2.6.0",
+    "react-otp-input": "^3.1.1",
+    "react-simple-star-rating": "^5.1.7",
+    "react-slick": "^0.31.0",
+    "sass": "^1.97.3",
+    "slick-carousel": "^1.8.1"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "@types/react-slick": "^0.23.13",
+    "babel-plugin-react-compiler": "1.0.0",
+    "baseline-browser-mapping": "^2.10.8",
+    "eslint": "^9",
+    "eslint-config-next": "16.0.1",
+    "typescript": "^5"
+  }
+}
