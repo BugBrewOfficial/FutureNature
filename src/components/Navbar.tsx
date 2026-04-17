@@ -414,9 +414,11 @@ export default function Navbar() {
                     transition: "all 0.2s",
                   }}
                 >
-                  <span className="navbar-login-text">Profile</span>
+                  <span className="navbar-login-text">
+                    {profileData?.firstName}
+                  </span>
                   <div className="profileWrapper">
-                    {profileData?.firstName?.[0]}
+                    {profileData?.firstName?.[0]?.toUpperCase()}
                   </div>
                 </button>
 
