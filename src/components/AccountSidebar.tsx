@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import Cookies from "js-cookie";
@@ -81,14 +81,19 @@ export default function AccountSidebar({
     router.push("/");
     window.location.reload();
   };
+  const [profileName, setProfileName] = useState("");
+
+  useEffect(() => {
+    if (localStorage.getItem("firstName")) {
+      setProfileName(localStorage?.getItem("firstName") || "");
+    }
+  }, []);
 
   return (
     <>
       <aside className={`${styles.sidebar}`}>
         <div className={styles.sidebarHeader}>
-          <h2 className={styles.headerTitle}>
-            Hey, {localStorage?.getItem("firstName")}
-          </h2>
+          <h2 className={styles.headerTitle}>Hey, {profileName}</h2>
           <p className={styles.headerSubtitle}>Manage your account</p>
         </div>
         <nav>
