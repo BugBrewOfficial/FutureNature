@@ -43,6 +43,7 @@ export default function Navbar() {
 
       if (response.data.status) {
         setProfileData(response.data.data.user);
+        localStorage.setItem("firstName", response.data.data.user.firstName);
       }
     } catch (err) {
       console.log({ err });
@@ -414,9 +415,7 @@ export default function Navbar() {
                     transition: "all 0.2s",
                   }}
                 >
-                  <span className="navbar-login-text">
-                    {profileData?.firstName}
-                  </span>
+                  <span className="navbar-login-text">Profile</span>
                   <div className="profileWrapper">
                     {profileData?.firstName?.[0]?.toUpperCase()}
                   </div>
