@@ -87,7 +87,7 @@ export default function AccountSidebar({
       <aside className={`${styles.sidebar}`}>
         <div className={styles.sidebarHeader}>
           <h2 className={styles.headerTitle}>
-            Hey, {localStorage?.getItem("firstName") || ""}
+            Hey, {localStorage?.getItem("firstName")}
           </h2>
           <p className={styles.headerSubtitle}>Manage your account</p>
         </div>
