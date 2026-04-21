@@ -435,10 +435,11 @@ export default function Cart() {
                     </span>
                   </div>
 
-                  <div className={styles.offerText}>
-                    Hurray!, You got a free delivery
-                  </div>
-
+                  {shippingPrice && +shippingPrice > 0 ? (
+                    <div className={styles.offerText}>
+                      Hurray!, You got a free delivery
+                    </div>
+                  ) : null}
                   <button
                     disabled={!selectedAddress}
                     style={{
