@@ -9,7 +9,6 @@ import { useCart, CartItem } from "@/components/CartContext";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import styles from "@/styles/Cart.module.scss";
-import AddressList from "@/components/AddressList";
 import axios from "axios";
 import toast from "react-hot-toast";
 import { AddressData } from "@/api/addressApi";
@@ -418,7 +417,11 @@ export default function Cart() {
                     <div className={styles.summaryRow}>
                       <span>Shipping</span>
                       <span>
-                        {shippingPrice ? `₹${shippingPrice}` : "FREE"}
+                        {shippingPrice
+                          ? +shippingPrice > 0
+                            ? `₹${shippingPrice}`
+                            : "FREE"
+                          : "FREE"}
                       </span>
                     </div>
                   </div>
@@ -430,6 +433,10 @@ export default function Cart() {
                     <span>
                       {totalPrice ? `₹${Math.round(+totalPrice)}` : "FREE"}
                     </span>
+                  </div>
+
+                  <div className={styles.offerText}>
+                    Hurray!, You got a free delivery
                   </div>
 
                   <button

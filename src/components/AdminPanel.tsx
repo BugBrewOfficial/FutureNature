@@ -1,6 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import Input from "./Input";
+import { constantsApi } from "@/api/constantsApi";
 
 interface AdminPanelProps {
   isOpen: boolean;
@@ -36,7 +38,18 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
 
   // --- STATE MANAGEMENT ---
   const [showDailyDealsModal, setShowDailyDealsModal] = useState(false);
-  const [selectedDealIds, setSelectedDealIds] = useState<number[]>([1, 2, 3]); // Default active deals
+  const [showConstantsModal, setShowConstantModal] = useState(false);
+  const [selectedDealIds, setSelectedDealIds] = useState<number[]>([1, 2, 3]);
+  const [constantsData, setConstantsData] = useState({
+    freeDelivery: "FALSE",
+    deliveryChargeTamilNadu: "0",
+    deliveryChargeOutsideTamilNadu: "0",
+  });
+  const [constants, setConstants] = useState({
+    freeDelivery: "FALSE",
+    deliveryChargeTamilNadu: "0",
+    deliveryChargeOutsideTamilNadu: "0",
+  });
 
   const handleOptionClick = (optionId: string) => {
     if (optionId === "banners") {
@@ -50,6 +63,8 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       router.push("/admin/manageProducts");
     } else if (optionId === "daily-deals") {
       setShowDailyDealsModal(true); // Open the sub-modal
+    } else if (optionId === "constants") {
+      setShowConstantModal(true);
     } else {
       // Handle 'banners' or other future options
       console.log("Selected:", optionId);
@@ -69,6 +84,81 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
     // TODO: Call your API here to save selectedDealIds to the backend
     setShowDailyDealsModal(false);
   };
+
+  const getConstants = async () => {
+    try {
+      const data = await constantsApi.getConstants();
+
+      if (data?.data?.status) {
+        const freeDelivery =
+          data?.data?.data?.find(
+            (consta: any) => consta.name === "FREE_DELIVERY",
+          )?.boolean || "FALSE";
+        const deliveryChargeTamilNadu =
+          data?.data?.data?.find(
+            (consta: any) => consta.name === "DELIVERY_CHARGE_TAMILNADU",
+          )?.boolean || "0";
+
+        const deliveryChargeOutsideTamilNadu =
+          data?.data?.data?.find(
+            (consta: any) =>
+              consta.name === "DELIVERY_CHARGE_OUTSIDE_TAMILNADU",
+          )?.boolean || "0";
+
+        setConstantsData({
+          deliveryChargeOutsideTamilNadu,
+          deliveryChargeTamilNadu,
+          freeDelivery,
+        });
+
+        setConstants((prev) => ({
+          ...prev,
+          deliveryChargeOutsideTamilNadu,
+          deliveryChargeTamilNadu,
+          freeDelivery,
+        }));
+      }
+    } catch (err) {
+      console.log({ err });
+    }
+  };
+
+  const saveConstants = async (data: any) => {
+    const payload: any = {};
+
+    if (constantsData.freeDelivery !== data.freeDelivery) {
+      payload.freeDelivery = String(data.freeDelivery);
+    }
+    if (
+      constantsData.deliveryChargeTamilNadu !== data.deliveryChargeTamilNadu
+    ) {
+      payload.deliveryChargeTamilNadu = String(data.deliveryChargeTamilNadu);
+    }
+    if (
+      constantsData.deliveryChargeOutsideTamilNadu !==
+      data.deliveryChargeOutsideTamilNadu
+    ) {
+      payload.deliveryChargeOutsideTamilNadu = String(
+        data.deliveryChargeOutsideTamilNadu,
+      );
+    }
+
+    try {
+      const data = await constantsApi.editConstants(payload);
+
+      if (data?.data?.status) {
+        setShowConstantModal(false);
+      }
+    } catch (er) {
+      console.log({ er });
+    }
+  };
+
+  useEffect(() => {
+    if (showConstantsModal) {
+      getConstants();
+    }
+  }, [showConstantsModal]);
 
   const adminOptions = [
     {
@@ -121,6 +211,37 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
       id: "edit-product",
       title: "Edit Product",
       description: "Update existing product details",
+      icon: (
+        <svg
+          width="40"
+          height="40"
+          viewBox="0 0 46 45"
+          fill="none"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path
+            d="M12.0687 23.9536L21.2338 33.1156L40.5027 13.8452L31.3417 4.68259L12.0687 23.9536ZM33.5148 11.6716C34.1512 12.3095 34.1512 13.3427 33.5148 13.9796L22.356 25.1354C22.038 25.4554 21.6205 25.6136 21.2045 25.6136C20.7844 25.6136 20.3679 25.4554 20.0499 25.1354C19.4125 24.4975 19.4125 23.4647 20.0499 22.8278L31.2072 11.6716C31.8436 11.0341 32.8773 11.0341 33.5148 11.6716Z"
+            fill="#FBBF24"
+          />
+          <path
+            d="M7.87408 37.1788L18.0563 34.5578L10.5992 27.1008L7.87408 37.1788Z"
+            fill="#FBBF24"
+          />
+          <path
+            d="M44.2196 5.3099L39.8759 0.964673C38.5879 -0.322316 36.3415 -0.320799 35.0586 0.964673L33.6472 2.37652L42.8113 11.5381L44.2196 10.1288C45.5455 8.79933 45.5455 6.63733 44.2196 5.3099Z"
+            fill="#FBBF24"
+          />
+          <path
+            d="M40.1575 44.2436H1.67723C0.750659 44.2436 0 43.4924 0 42.5659V1.76083C0 0.834255 0.750154 0.0835953 1.67723 0.0835953H27.5146C28.4422 0.0835953 29.1913 0.834255 29.1913 1.76083C29.1913 2.68689 28.4422 3.43806 27.5146 3.43806H3.35446V40.8881H40.1575C41.4677 40.8881 42.5338 39.8225 42.5338 38.5118V17.4696C42.5338 16.543 43.284 15.7923 44.2105 15.7923C45.1366 15.7923 45.8878 16.543 45.8878 17.4696V38.5118C45.8883 41.6721 43.3173 44.2436 40.1575 44.2436Z"
+            fill="#373737"
+          />
+        </svg>
+      ),
+    },
+    {
+      id: "constants",
+      title: "Add/ Edit Constants",
+      description: "Add and edit your constants",
       icon: (
         <svg
           width="40"
@@ -459,6 +580,189 @@ const AdminPanel: React.FC<AdminPanelProps> = ({ isOpen, onClose }) => {
                 }}
               >
                 Save Selection
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showConstantsModal && (
+        <div
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            backgroundColor: "rgba(0, 0, 0, 0.6)",
+            zIndex: 2100, // Higher than AdminPanel (2000)
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            backdropFilter: "blur(5px)",
+          }}
+        >
+          <div
+            style={{
+              backgroundColor: "white",
+              padding: "30px",
+              borderRadius: "20px",
+              width: "90%",
+              maxWidth: "500px",
+              boxShadow: "0 20px 50px rgba(0,0,0,0.2)",
+              animation: "fadeIn 0.3s ease-out",
+            }}
+          >
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                marginBottom: "20px",
+              }}
+            >
+              <h3
+                style={{
+                  fontSize: "24px",
+                  fontWeight: "700",
+                  margin: 0,
+                  color: "#111827",
+                }}
+              >
+                Edit Constants
+              </h3>
+              <button
+                onClick={() => setShowConstantModal(false)}
+                style={{
+                  background: "none",
+                  border: "none",
+                  fontSize: "24px",
+                  cursor: "pointer",
+                  color: "#6b7280",
+                }}
+              >
+                ×
+              </button>
+            </div>
+
+            <div
+              style={{
+                maxHeight: "400px",
+                overflowY: "auto",
+                display: "flex",
+                flexDirection: "column",
+                gap: "15px",
+              }}
+            >
+              <label
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "15px",
+                  padding: "12px",
+                  borderRadius: "10px",
+                  backgroundColor:
+                    constants.freeDelivery === "TRUE" ? "#fffbeb" : "#f9fafb",
+                  border:
+                    constants.freeDelivery === "TRUE"
+                      ? "2px solid #fbbf24"
+                      : "1px solid #e5e7eb",
+                  cursor: "pointer",
+                  transition: "all 0.2s",
+                }}
+              >
+                <input
+                  type="checkbox"
+                  checked={constants.freeDelivery === "TRUE"}
+                  onChange={() =>
+                    setConstants((prev) => ({
+                      ...prev,
+                      freeDelivery:
+                        prev.freeDelivery === "TRUE" ? "FALSE" : "TRUE",
+                    }))
+                  }
+                  style={{
+                    width: "20px",
+                    height: "20px",
+                    accentColor: "#fbbf24",
+                    cursor: "pointer",
+                  }}
+                />
+                <div
+                  style={{
+                    position: "relative",
+                    borderRadius: "8px",
+                    overflow: "hidden",
+                  }}
+                >
+                  Free Delivery
+                </div>
+              </label>
+
+              <Input
+                label="Delivery Charge In TamilNadu"
+                name="Delivery Charge In TamilNadu"
+                value={constants.deliveryChargeTamilNadu}
+                type="number"
+                onChange={(e) =>
+                  setConstants((prev) => ({
+                    ...prev,
+                    deliveryChargeTamilNadu: e.target.value,
+                  }))
+                }
+                placeholder="Delivery Charge In TamilNadu"
+                required
+              />
+
+              <Input
+                label="Delivery Charge Outside TamilNadu"
+                name="Delivery Charge Outside TamilNadu"
+                value={constants.deliveryChargeOutsideTamilNadu}
+                type="number"
+                onChange={(e) =>
+                  setConstants((prev) => ({
+                    ...prev,
+                    deliveryChargeOutsideTamilNadu: e.target.value,
+                  }))
+                }
+                placeholder="Delivery Charge Outside TamilNadu"
+                required
+              />
+            </div>
+
+            <div style={{ display: "flex", gap: "10px", marginTop: "20px" }}>
+              <button
+                onClick={() => setShowDailyDealsModal(false)}
+                style={{
+                  flex: 1,
+                  backgroundColor: "#f3f4f6",
+                  color: "#374151",
+                  border: "none",
+                  padding: "15px",
+                  borderRadius: "12px",
+                  fontSize: "16px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                }}
+              >
+                Cancel
+              </button>
+              <button
+                onClick={() => saveConstants(constants)}
+                style={{
+                  flex: 2,
+                  backgroundColor: "#fbbf24",
+                  color: "black",
+                  border: "none",
+                  padding: "15px",
+                  borderRadius: "12px",
+                  fontSize: "16px",
+                  fontWeight: "700",
+                  cursor: "pointer",
+                  boxShadow: "0 4px 6px rgba(251, 191, 36, 0.2)",
+                }}
+              >
+                Save
               </button>
             </div>
           </div>
