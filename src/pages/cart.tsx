@@ -435,7 +435,7 @@ export default function Cart() {
                     </span>
                   </div>
 
-                  {shippingPrice && +shippingPrice > 0 ? (
+                  {shippingPrice && +shippingPrice === 0 ? (
                     <div className={styles.offerText}>
                       Hurray!, You got a free delivery
                     </div>
