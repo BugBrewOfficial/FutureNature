@@ -5,6 +5,7 @@ import { Rating } from "react-simple-star-rating";
 import { productApi } from "@/api/productApi";
 import styles from "@/styles/DailyDeals.module.scss";
 import SkeletonDeals from "./SkeletonDeals";
+import Link from "next/link";
 
 interface Product {
   id: string;
@@ -19,13 +20,31 @@ interface Product {
 
 // --- HEXAGONAL ARROW ICONS ---
 const HexChevronLeft = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polyline points="15 18 9 12 15 6"></polyline>
   </svg>
 );
 
 const HexChevronRight = () => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+  <svg
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2.5"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+  >
     <polyline points="9 18 15 12 9 6"></polyline>
   </svg>
 );
@@ -33,7 +52,9 @@ const HexChevronRight = () => (
 export default function DailyDeals() {
   const { addToCart, updateQuantity } = useCart();
   const [quantities, setQuantities] = useState<{ [key: string]: number }>({});
-  const [showQuantityControls, setShowQuantityControls] = useState<{ [key: string]: boolean }>({});
+  const [showQuantityControls, setShowQuantityControls] = useState<{
+    [key: string]: boolean;
+  }>({});
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -64,7 +85,7 @@ export default function DailyDeals() {
     if (sliderRef.current) {
       const { scrollLeft, scrollWidth, clientWidth } = sliderRef.current;
       // Added a 5px buffer so it strictly hides at the very start
-      setCanScrollLeft(scrollLeft > 5); 
+      setCanScrollLeft(scrollLeft > 5);
       // Give a buffer for rounding errors on the right side
       setCanScrollRight(Math.ceil(scrollLeft + clientWidth) < scrollWidth - 5);
     }
@@ -73,8 +94,8 @@ export default function DailyDeals() {
   useEffect(() => {
     // Check initially when products load
     checkScrollPosition();
-    window.addEventListener('resize', checkScrollPosition);
-    return () => window.removeEventListener('resize', checkScrollPosition);
+    window.addEventListener("resize", checkScrollPosition);
+    return () => window.removeEventListener("resize", checkScrollPosition);
   }, [products]);
 
   const scrollByAmount = (amount: number) => {
@@ -88,14 +109,38 @@ export default function DailyDeals() {
 
   return (
     <div className={styles.sectionWrapper}>
-      <h2 className={styles.sectionTitle}>DAILY DEALS</h2>
+      <div
+        style={{
+          width: "100%",
+          display: "flex",
+          flexDirection: "row",
+          justifyContent: "space-between",
+          marginBottom: "30px",
+          alignItems: "center",
+        }}
+      >
+        <h2 className={styles.sectionTitle}>DAILY DEALS</h2>
+
+        <Link href={"/products"} className={styles.seeAllOption}>
+          See all
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7"></path>
+          </svg>
+        </Link>
+      </div>
 
       <div className={styles.sliderContainer}>
-        
         {/* Left Arrow - Now perfectly hidden at start */}
         {canScrollLeft && (
-          <button 
-            className={`${styles.navBtn} ${styles.navBtnLeft}`} 
+          <button
+            className={`${styles.navBtn} ${styles.navBtnLeft}`}
             onClick={() => scrollByAmount(-350)}
             aria-label="Scroll Left"
           >
@@ -106,8 +151,8 @@ export default function DailyDeals() {
         )}
 
         {/* Scrollable Track */}
-        <div 
-          className={styles.productsTrack} 
+        <div
+          className={styles.productsTrack}
           ref={sliderRef}
           onScroll={checkScrollPosition}
         >
@@ -123,12 +168,14 @@ export default function DailyDeals() {
                   unoptimized
                   height={350}
                   className={styles.productImg}
-                  style={product.available_quantity <= 0 ? { filter: 'grayscale(1) opacity(0.6)' } : {}}
+                  style={
+                    product.available_quantity <= 0
+                      ? { filter: "grayscale(1) opacity(0.6)" }
+                      : {}
+                  }
                 />
                 {product.available_quantity <= 0 && (
-                  <div className={styles.outOfStockOverlay}>
-                    OUT OF STOCK
-                  </div>
+                  <div className={styles.outOfStockOverlay}>OUT OF STOCK</div>
                 )}
               </div>
 
@@ -140,7 +187,13 @@ export default function DailyDeals() {
 
                 <div className={styles.metaRow}>
                   <div className={styles.ratingBox}>
-                    <Rating initialValue={product.overall_rating} readonly size={14} allowFraction fillColor="#FFB800" />
+                    <Rating
+                      initialValue={product.overall_rating}
+                      readonly
+                      size={14}
+                      allowFraction
+                      fillColor="#FFB800"
+                    />
                     <span>{product.overall_rating}</span>
                   </div>
                   <span className={styles.weightTag}>Standard</span>
@@ -148,19 +201,33 @@ export default function DailyDeals() {
 
                 <div className={styles.actionRow}>
                   <div className={styles.priceBlock}>
-                    <div className={styles.currentPrice}>₹ {Math.round(parseFloat(product.selling_price))}</div>
-                    <div className={styles.oldPrice}>₹{Math.round(parseFloat(product.price))}</div>
+                    <div className={styles.currentPrice}>
+                      ₹ {Math.round(parseFloat(product.selling_price))}
+                    </div>
+                    <div className={styles.oldPrice}>
+                      ₹{Math.round(parseFloat(product.price))}
+                    </div>
                   </div>
 
                   {product.available_quantity <= 0 ? (
-                    <button className={styles.addBtn} disabled style={{ backgroundColor: '#9ca3af', cursor: 'not-allowed' }}>
+                    <button
+                      className={styles.addBtn}
+                      disabled
+                      style={{
+                        backgroundColor: "#9ca3af",
+                        cursor: "not-allowed",
+                      }}
+                    >
                       Sold Out
                     </button>
                   ) : !showQuantityControls[product.id] ? (
                     <button
                       className={styles.addBtn}
                       onClick={() => {
-                        setShowQuantityControls(prev => ({ ...prev, [product.id]: true }));
+                        setShowQuantityControls((prev) => ({
+                          ...prev,
+                          [product.id]: true,
+                        }));
                         addToCart(product.id, 1);
                       }}
                     >
@@ -168,25 +235,47 @@ export default function DailyDeals() {
                     </button>
                   ) : (
                     <div className={styles.qtyControl}>
-                      <button onClick={() => {
-                        const newQty = (quantities[product.id] || 1) - 1;
-                        if (newQty === 0) {
-                          setShowQuantityControls(prev => ({ ...prev, [product.id]: false }));
-                          setQuantities(prev => ({ ...prev, [product.id]: 1 }));
-                          updateQuantity(product.id, 0);
-                        } else {
-                          setQuantities(prev => ({ ...prev, [product.id]: newQty }));
+                      <button
+                        onClick={() => {
+                          const newQty = (quantities[product.id] || 1) - 1;
+                          if (newQty === 0) {
+                            setShowQuantityControls((prev) => ({
+                              ...prev,
+                              [product.id]: false,
+                            }));
+                            setQuantities((prev) => ({
+                              ...prev,
+                              [product.id]: 1,
+                            }));
+                            updateQuantity(product.id, 0);
+                          } else {
+                            setQuantities((prev) => ({
+                              ...prev,
+                              [product.id]: newQty,
+                            }));
+                            updateQuantity(product.id, newQty);
+                          }
+                        }}
+                      >
+                        −
+                      </button>
+
+                      <div className={styles.qtyValue}>
+                        {quantities[product.id] || 1}
+                      </div>
+
+                      <button
+                        onClick={() => {
+                          const newQty = (quantities[product.id] || 1) + 1;
+                          setQuantities((prev) => ({
+                            ...prev,
+                            [product.id]: newQty,
+                          }));
                           updateQuantity(product.id, newQty);
-                        }
-                      }}>−</button>
-
-                      <div className={styles.qtyValue}>{quantities[product.id] || 1}</div>
-
-                      <button onClick={() => {
-                        const newQty = (quantities[product.id] || 1) + 1;
-                        setQuantities(prev => ({ ...prev, [product.id]: newQty }));
-                        updateQuantity(product.id, newQty);
-                      }}>+</button>
+                        }}
+                      >
+                        +
+                      </button>
                     </div>
                   )}
                 </div>
@@ -197,8 +286,8 @@ export default function DailyDeals() {
 
         {/* Right Arrow */}
         {canScrollRight && (
-          <button 
-            className={`${styles.navBtn} ${styles.navBtnRight}`} 
+          <button
+            className={`${styles.navBtn} ${styles.navBtnRight}`}
             onClick={() => scrollByAmount(350)}
             aria-label="Scroll Right"
           >
@@ -207,7 +296,6 @@ export default function DailyDeals() {
             </div>
           </button>
         )}
-
       </div>
     </div>
   );
