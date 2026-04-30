@@ -46,7 +46,7 @@ export default function About() {
               {/* Background Image Block */}
               <div className={styles.storyBgImg}>
                 <Image
-                  src="https://futurenature.s3.ap-south-1.amazonaws.com/others/About us.png"
+                  src="https://futurenature.s3.ap-south-1.amazonaws.com/others/About+us.jpg"
                   alt="Beekeeping Background"
                   fill
                   className={styles.bgImg}
